@@ -11,7 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NuevoProyecto"></activity>
+        <activity android:name=".GrabadoraAudio"></activity>
+        <activity android:name=".AyudaPlanilla" />
+        <activity android:name=".CambiarDiagramas" />
+        <activity android:name=".DiagramaCompleto" />
+        <activity android:name=".Planilla" />
+        <activity android:name=".Marcar" />
+        <activity android:name=".Principal" />
+        <activity android:name=".CrearCargarProyecto" />
+        <activity android:name=".ListadoProyectos" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

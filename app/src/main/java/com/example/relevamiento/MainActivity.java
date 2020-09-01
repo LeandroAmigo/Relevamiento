@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.developer.filepicker.controller.DialogSelectionListener;
-import com.developer.filepicker.model.DialogConfigs;
-import com.developer.filepicker.model.DialogProperties;
-import com.developer.filepicker.view.FilePickerDialog;
+import com.example.relevamiento.db.DataBaseHelper;
 
-import java.io.File;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btn_abrir, btn_nuevo;
-    private DialogProperties properties;
+    private static DataBaseHelper dbHelper;
+    private Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +26,27 @@ public class MainActivity extends AppCompatActivity {
         btn_abrir = (Button) findViewById(R.id.btn_abrir);
         btn_nuevo = (Button) findViewById(R.id.btn_nuevo);
 
-        properties = new DialogProperties();
+        conexionBD(); //onCreate. equivalente a patron Singleton.
+
     }
 
-    public void abrirProyecto (View view) {
-        //traer todos los nombres de proyectos de la BD
-        //mostrarlos en un Spinner
+    private void conexionBD() {
+        dbHelper = new DataBaseHelper(this);
     }
 
-    private void nuevoProyecto(View view){
-        Intent i = new Intent(this, NuevoProyecto.class);
-        startActivity(i);
+    public void abrir (View view) {
+        intent = new Intent(this, ListadoProyectos.class);
+        startActivity(intent);
+
+    }
+
+    public void nuevo (View view){
+        intent = new Intent(this, CrearCargarProyecto.class);
+        startActivity(intent);
+    }
+
+    public static DataBaseHelper getBD(){
+        return dbHelper;
     }
 
 

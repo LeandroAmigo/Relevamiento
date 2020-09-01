@@ -1,41 +1,62 @@
 package com.example.relevamiento.modelos;
 
+import java.util.ArrayList;
+
+
 public class Proyecto {
 
     private String nombre;
-    private String ubicacion_elementos;
-    private String ubicacion_diagramas;
+    private ArrayList<String> diagramas; //lista de direcciones a memoria del dispositivo
+    private ArrayList<Elemento> elementos;
     private boolean permite_fotos;
 
-    public Proyecto(String nombre, String ubicacion_diagramas, String ubicacion_elementos, boolean permite_fotos) {
-        this.nombre = nombre;
-        this.ubicacion_elementos = ubicacion_elementos;
-        this.ubicacion_diagramas = ubicacion_diagramas;
-        this.permite_fotos = permite_fotos;
-    }
+
+    public Proyecto() {    }
+
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getUbicacion_elementos() {
-        return ubicacion_elementos;
+    public ArrayList<Elemento> getElementos() {
+        return elementos;
     }
 
-    public String getUbicacion_diagramas() {
-        return ubicacion_diagramas;
+    public Elemento getElemento(int i) {
+        if ( i>=0 && i<elementos.size() )
+            return elementos.get(i);
+        return null;
     }
 
-    public boolean Permite_fotos() {
+    public String getDiagrama(String s) {
+        String salida = null;
+        for (String str: diagramas) {
+            if (str.equals(s)){
+                salida = str;
+            }
+        }
+        return salida;
+    }
+
+    public ArrayList<String> getDiagramas() {
+        return diagramas;
+
+    }
+
+    public boolean permite_fotos() {
         return permite_fotos;
     }
 
-    public void setUbicacion_elementos(String ubicacion_elementos) {
-        this.ubicacion_elementos = ubicacion_elementos;
+    public void setNombre(String nombre) {
+        this.nombre= nombre;
     }
 
-    public void setUbicacion_diagramas(String ubicacion_diagramas) {
-        this.ubicacion_diagramas = ubicacion_diagramas;
+    public void setElementos(ArrayList<Elemento> e) {
+        this.elementos = e;
+    }
+
+    public void setDiagramas(ArrayList<String> ubicacion_diagramas) {
+        this.diagramas = ubicacion_diagramas;
 
     }
 
