@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="164dp"
+        android:onClick="cargarListaElementos"
         android:text="Cargar Lista de Elementos"
         app:layout_constraintStart_toEndOf="@+id/btn_cargarDiagrama"
         app:layout_constraintTop_toTopOf="parent" />

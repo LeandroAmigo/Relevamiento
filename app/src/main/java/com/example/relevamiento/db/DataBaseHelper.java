@@ -17,35 +17,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase BaseDeDatos) {
-        BaseDeDatos.execSQL("CREATE TABLE IF NOT EXISTS proyectos (proyecto_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                                                   "proyecto_nombre TEXT NOT NULL, " +
-                                                   "proyecto_diagramas TEXT NOT NULL, " +
-                                                   "proyecto_elementos TEXT, " +
-                                                   "proyecto_fotos INTEGER NOT NULL)"
+        BaseDeDatos.execSQL("CREATE TABLE IF NOT EXISTS proyectos (proyecto_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                                                                        "proyecto_nombre TEXT NOT NULL, " +
+                                                                        "proyecto_diagramas TEXT NOT NULL, " +
+                                                                        "proyecto_permiteFotos INTEGER NOT NULL)"
                             );
 
-        BaseDeDatos.execSQL("CREATE TABLE elementos (elemento_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                                    "elemento_numero INTEGER, " +
-                                                    "elemento_marcas TEXT, " +
-                                                    "elemento_correcto INTEGER, " +
-                                                    "elemento_diagrama TEXT, " +
-                                                    "proyecto_id INTEGER NOT NULL, " +
-                                                    "FOREIGN KEY (proyecto_id) " +
-                                                    "REFERENCES proyectos(proyecto_id) " +
-                                                            "ON UPDATE CASCADE " +
-                                                            "ON DELETE CASCADE)"
+        BaseDeDatos.execSQL("CREATE TABLE IF NOT EXISTS formularios (formulario_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                                                                        "formulario_diagrama TEXT NOT NULL, " +
+                                                                        "formulario_marcas TEXT NOT NULL, " +
+                                                                        "formulario_correcto INTEGER NOT NULL, " +
+                                                                        "formulario_observacion TEXT, " +
+                                                                        "formulario_foto TEXT, " +
+                                                                        "formulario_audio TEXT," +
+                                                                        "formulario_imagen TEXT, " +
+                                                                        "proyecto_id INTEGER NOT NULL, " +
+                                                                        "FOREIGN KEY (proyecto_id) " +
+                                                                        "REFERENCES proyectos(proyecto_id) " +
+                                                                            "ON UPDATE CASCADE " +
+                                                                            "ON DELETE CASCADE)"
                             );
 
-        BaseDeDatos.execSQL("CREATE TABLE formularios (formulario_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                                     "formulario_observacion TEXT, " +
-                                                     "formulario_foto TEXT, " +
-                                                     "formulario_audio TEXT," +
-                                                     "elemento_id INTEGER NOT NULL, " +
-                                                     "FOREIGN KEY (elemento_id) " +
-                                                     "REFERENCES elementos(elemento_id) " +
-                                                            "ON UPDATE CASCADE " +
-                                                            "ON DELETE CASCADE)"
+        BaseDeDatos.execSQL("CREATE TABLE IF NOT EXISTS elementos (elemento_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                                                                       "elemento_nombre TEXT NOT NULL, " +
+                                                                       "proyecto_id TEXT NOT NULL, " +
+                                                                       "formulario_id INTEGER, " +
+                                                                        "FOREIGN KEY (proyecto_id) " +
+                                                                        "REFERENCES proyectos(proyecto_id) " +
+                                                                            "ON UPDATE CASCADE " +
+                                                                            "ON DELETE CASCADE)"
                             );
+
+
     }
 
     @Override
@@ -54,5 +57,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         BaseDeDatos.execSQL("drop table if exists elementos");
         BaseDeDatos.execSQL("drop table if exists formularios");
         onCreate(BaseDeDatos);
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase BaseDeDatos) {
+        BaseDeDatos.setForeignKeyConstraintsEnabled(true);
     }
 }

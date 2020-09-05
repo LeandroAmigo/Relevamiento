@@ -1,37 +1,59 @@
 package com.example.relevamiento.modelos;
 
+import java.util.ArrayList;
+
 public class Formulario {
-    private int color;
+    private Proyecto proyecto;
+    private String diagrama; //direccion a memoria del dispositivo
+    private ArrayList<Float> marcas; //[x1],[y1],[x2],[y2], ...,
+    private ArrayList<Elemento> elementos;
+    private boolean esCorrecto;
     private String observacion;
     private String foto;
     private String audio;
+    private String imagen;
 
-
-
-    public Formulario( int color){
-        this.color = color;
+    public Formulario( Proyecto p, String diag, ArrayList<Float> m, ArrayList<Elemento> elem, boolean correct) {
+        proyecto = p;
+        diagrama = diag;
+        esCorrecto = correct;
+        marcas = m;
+        elementos = elem;
         observacion = null;
         audio = null;
         foto = null;
+        imagen = null;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setObservacion(String obs) {
+        observacion = obs;
     }
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
+    public void setFoto(String f) {
+        foto = f;
     }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
-    public void setAudio(String audio) {
-        this.audio = audio;
+    public void setAudio(String a) { audio = a; }
+    public void setEsCorrecto(boolean correct) {
+        esCorrecto = correct;
     }
 
-    public int getColor() {
-        return color;
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public String getDiagrama() {
+        return diagrama;
+    }
+
+    public ArrayList<Float> getMarcas() {
+        return marcas;
+    }
+
+    public ArrayList<Elemento> getElementos() {
+        return elementos;
+    }
+
+    public boolean isEsCorrecto() {
+        return esCorrecto;
     }
 
     public String getObservacion() {
@@ -45,4 +67,12 @@ public class Formulario {
     public String getAudio() {
         return audio;
     }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+
+
 }
+
