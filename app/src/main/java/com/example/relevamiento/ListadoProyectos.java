@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.relevamiento.db.DataBaseHelper;
+import com.example.relevamiento.repositorio.Repositorio;
+
 import java.util.ArrayList;
 
 public class ListadoProyectos extends AppCompatActivity {
@@ -27,25 +30,14 @@ public class ListadoProyectos extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
 
         ArrayList<String> nombreProyectos = getProyectos();
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_proyectos, nombreProyectos);
         spinner.setAdapter(adapter);
     }
 
-
     private ArrayList<String> getProyectos(){
-        ArrayList<String> nombreProyectos = new ArrayList<String>();
-        SQLiteDatabase BaseDeDatos = MainActivity.getBD().getWritableDatabase();
-        Cursor c = BaseDeDatos.rawQuery("select proyecto_nombre from proyectos", null);
-        if (c.moveToFirst()){
-            do {
-                nombreProyectos.add(c.getString(0)); //"select 0,1,2,3... from proyectos"
-            } while(c.moveToNext());
-        }
-        BaseDeDatos.close();
-        return nombreProyectos;
+        Repositorio repo = new Repositorio(this);
+        return repo.getProyectos();
     }
-
 
 
     public void abrirProyecto(View view){
@@ -58,6 +50,9 @@ public class ListadoProyectos extends AppCompatActivity {
 
     public void editarProyecto(View view){
         seleccion = spinner.getSelectedItem().toString();
+        intent = new Intent(this, CrearCargarProyecto.class );
+        intent.putExtra(Principal.NOMBRE_PROYECTO, seleccion);
+        startActivity(intent);
 
     }
 
@@ -66,9 +61,5 @@ public class ListadoProyectos extends AppCompatActivity {
     }
 
     */
-
-
-
-
 
 }

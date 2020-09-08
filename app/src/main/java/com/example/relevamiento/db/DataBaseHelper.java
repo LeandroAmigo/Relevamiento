@@ -5,13 +5,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
+import com.example.relevamiento.MainActivity;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
+    private static DataBaseHelper instance = null;
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "relevamiento";
 
+    public static DataBaseHelper getInstance(Context ctx) {
+        if (instance == null) {
+            instance = new DataBaseHelper(ctx.getApplicationContext());
+        }
+        return instance;
+    }
 
-    public DataBaseHelper(@Nullable Context context) {
+    private DataBaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -40,12 +49,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         BaseDeDatos.execSQL("CREATE TABLE IF NOT EXISTS elementos (elemento_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                                                                        "elemento_nombre TEXT NOT NULL, " +
-                                                                       "proyecto_id TEXT NOT NULL, " +
+                                                                       "proyecto_id INTEGER NOT NULL, " +
                                                                        "formulario_id INTEGER, " +
                                                                         "FOREIGN KEY (proyecto_id) " +
                                                                         "REFERENCES proyectos(proyecto_id) " +
                                                                             "ON UPDATE CASCADE " +
-                                                                            "ON DELETE CASCADE)"
+                                                                            "ON DELETE CASCADE, " +
+                                                                        "FOREIGN KEY (formulario_id)" +
+                                                                        "REFERENCES formularios(formulario_id) " +
+                                                                                "ON UPDATE CASCADE "  +
+                                                                                "ON DELETE CASCADE)"
                             );
 
 

@@ -2,6 +2,7 @@ package com.example.relevamiento;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.example.relevamiento.db.DataBaseHelper;
 public class MainActivity extends AppCompatActivity {
 
     private Button btn_abrir, btn_nuevo;
-    private static DataBaseHelper dbHelper;
     private Intent intent;
 
 
@@ -25,13 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         btn_abrir = (Button) findViewById(R.id.btn_abrir);
         btn_nuevo = (Button) findViewById(R.id.btn_nuevo);
-
-        conexionBD(); //onCreate. equivalente a patron Singleton.
-
-    }
-
-    private void conexionBD() {
-        dbHelper = new DataBaseHelper(this);
     }
 
     public void abrir (View view) {
@@ -44,10 +37,5 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, CrearCargarProyecto.class);
         startActivity(intent);
     }
-
-    public static DataBaseHelper getBD(){
-        return dbHelper;
-    }
-
 
 }

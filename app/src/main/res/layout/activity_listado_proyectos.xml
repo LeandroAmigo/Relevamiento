@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="128dp"
+        android:onClick="editarProyecto"
         android:text="Editar"
         app:layout_constraintStart_toEndOf="@+id/btn_abrir"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
         android:layout_marginTop="128dp"
+        android:onClick="abrirProyecto"
         android:text="Abrir"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
