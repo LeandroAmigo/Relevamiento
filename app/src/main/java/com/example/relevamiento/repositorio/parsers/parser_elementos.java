@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class parser_elementos {
 
+    public static String separador = ";";
+
     public static ArrayList<String> obtenerListaNombresElementos(String pathElementos) {
         ArrayList<String> salida = new ArrayList<>();
         String line = "";
@@ -16,8 +18,8 @@ public class parser_elementos {
             BufferedReader csvReader = new BufferedReader(new FileReader(pathElementos));
             //csvReader.readLine();  //si hay encabezado
             while ((line = csvReader.readLine()) != null) {
-                // separar cada columna por coma ","
-                data = line.split(",");
+                // separar cada columna por "separador"
+                data = line.split(separador);
                 nombreElemento = data[0];
                 salida.add(nombreElemento);
             }
@@ -38,7 +40,7 @@ public class parser_elementos {
             //csvReader.readLine();  //si hay encabezado
             while ((line = csvReader.readLine()) != null) {
                 // separar cada columna por coma ","
-                data = line.split(",");
+                data = line.split(separador);
                 nombreElemento = data[0];
                 if (sb.length() > 0) {
                     sb.append(",");

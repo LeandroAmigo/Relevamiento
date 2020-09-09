@@ -2,6 +2,7 @@ package com.example.relevamiento;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.developer.filepicker.model.DialogConfigs;
 import com.developer.filepicker.model.DialogProperties;
 import com.developer.filepicker.view.FilePickerDialog;
 
+import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.Repositorio;
 
 import java.io.File;
@@ -27,6 +29,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
     private String pathElementos, nombreProyecto;
     private int proyId = -1;
     private Repositorio repo;
+    private Proyecto proyectoSeleccionado;
 
     public static final String NOMBRE_PROYECTO = "proyecto_nombre";
 
@@ -45,10 +48,15 @@ public class CrearCargarProyecto extends AppCompatActivity {
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
-            et_nombre.setText(nombreProyecto);
-            proyId = getIdProyecto(nombreProyecto);
+            proyectoSeleccionado = getProyecto(nombreProyecto);
+            proyId = proyectoSeleccionado.getId();
+            mostrarDatosProyectoPantalla();
         }
+    }
 
+    private void mostrarDatosProyectoPantalla() {
+        et_nombre.setText(proyectoSeleccionado.getNombre());
+        checkBox_fotos.setChecked(proyectoSeleccionado.permite_fotos());
     }
 
     //setea variable pathDiagramas usando FilePicker
@@ -101,26 +109,53 @@ public class CrearCargarProyecto extends AppCompatActivity {
         });
     }
 
-    private int getIdProyecto(String nombreProyecto) {
-        return repo.getIdProyecto(nombreProyecto);
+
+    private Proyecto getProyecto(String nombreProyecto){
+        return repo.getProyecto(nombreProyecto);
     }
 
     public void crear_actualizar_Proyecto(View view) {
-        boolean exito;
+        boolean exito = false;
         nombreProyecto = et_nombre.getText().toString(); /////CONTROLAR Q NO SEA VACIO
         boolean permiteFoto = checkBox_fotos.isChecked();
-        Log.e("BOOLEAN", ""+permiteFoto);
 
         if (proyId == -1) {
             exito = repo.crearProyecto(nombreProyecto, pathDiagramas, pathElementos, permiteFoto); //guarda BD
         }else{
-            exito = repo.actualizarProyecto(proyId, nombreProyecto, pathDiagramas, pathElementos, permiteFoto);//actualiza BD
+                if (!nombreProyecto.equals(proyectoSeleccionado.getNombre()))
+                    exito = actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
+                if (pathDiagramas != null)
+                    exito = actualizarDiagramasProyecto(proyId, pathDiagramas); //sobreescribe
+                if (permiteFoto != proyectoSeleccionado.permite_fotos())
+                    exito = actualizarPermiteFotosProyecto(proyId, permiteFoto); //sobreescribe
+                if (pathElementos != null)
+                    agregarElementos(proyId, pathElementos); //agrega
         }
-
-        if (exito == true)
+        if (exito == true) {
             Toast.makeText(this, "Proyecto guardado", Toast.LENGTH_SHORT).show();
-        else
+        }
+        else {
             Toast.makeText(this, "se produjo un ERROR!", Toast.LENGTH_SHORT).show();
+        }
+        Intent intent = new Intent(this, ListadoProyectos.class);
+        startActivity(intent);
     }
+
+    private void agregarElementos(int proyId, String pathElementos) {
+         repo.agregarElementos(proyId, pathElementos);
+    }
+
+    private boolean actualizarPermiteFotosProyecto(int proyId, boolean permiteFoto) {
+        return repo.actualizarPermiteFotosProyecto(proyId, permiteFoto);
+    }
+
+    private boolean actualizarDiagramasProyecto(int proyId, String[] pathDiagramas) {
+        return repo.actualizarDiagramasProyecto(proyId, pathDiagramas);
+    }
+
+    private boolean actualizarNombreProyecto(int proyId, String nombreProyecto) {
+        return repo.actualizarNombreProyecto(proyId, nombreProyecto);
+    }
+
 
 }
