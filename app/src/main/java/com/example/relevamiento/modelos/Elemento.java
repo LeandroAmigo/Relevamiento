@@ -4,21 +4,20 @@ import java.util.ArrayList;
 
 public class Elemento {
 
+    private int id;
     private String nombre;
-    private Formulario formulario;
 
-    public Elemento (String name){
+    public Elemento (int id, String name){
+        this.id = id;
         nombre = name;
-        formulario = null;
     }
 
-    public void setFormulario(Formulario form) { formulario = form; }
 
     public String getNombre() {
         return nombre;
     }
-    public Formulario getFormulario() {
-        return formulario;
+    public int getId() {
+        return id;
     }
 
 

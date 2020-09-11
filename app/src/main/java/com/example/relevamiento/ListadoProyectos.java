@@ -51,7 +51,7 @@ public class ListadoProyectos extends AppCompatActivity {
     public void editarProyecto(View view){
         seleccion = spinner.getSelectedItem().toString();
         intent = new Intent(this, CrearCargarProyecto.class );
-        intent.putExtra(Principal.NOMBRE_PROYECTO, seleccion);
+        intent.putExtra(CrearCargarProyecto.NOMBRE_PROYECTO, seleccion);
         startActivity(intent);
 
     }

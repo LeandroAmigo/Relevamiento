@@ -3,22 +3,20 @@ package com.example.relevamiento.modelos;
 import java.util.ArrayList;
 
 public class Formulario {
-    private Proyecto proyecto;
+    private int id;
     private String diagrama; //direccion a memoria del dispositivo
     private ArrayList<Float> marcas; //[x1],[y1],[x2],[y2], ...,
-    private ArrayList<Elemento> elementos;
     private boolean esCorrecto;
     private String observacion;
     private String foto;
     private String audio;
     private String imagen;
 
-    public Formulario( Proyecto p, String diag, ArrayList<Float> m, ArrayList<Elemento> elem, boolean correct) {
-        proyecto = p;
+    public Formulario( int id, String diag, ArrayList<Float> m, boolean correct) {
+        this.id = id;
         diagrama = diag;
         esCorrecto = correct;
         marcas = m;
-        elementos = elem;
         observacion = null;
         audio = null;
         foto = null;
@@ -36,20 +34,14 @@ public class Formulario {
         esCorrecto = correct;
     }
 
-    public Proyecto getProyecto() {
-        return proyecto;
-    }
 
+    public int getId() { return id; }
     public String getDiagrama() {
         return diagrama;
     }
 
     public ArrayList<Float> getMarcas() {
         return marcas;
-    }
-
-    public ArrayList<Elemento> getElementos() {
-        return elementos;
     }
 
     public boolean isEsCorrecto() {

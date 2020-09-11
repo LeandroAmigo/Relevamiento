@@ -25,9 +25,8 @@ public class CrearCargarProyecto extends AppCompatActivity {
     private EditText et_nombre;
     private CheckBox checkBox_fotos;
     private DialogProperties properties;
-    private String[] pathDiagramas;
-    private String pathElementos, nombreProyecto;
-    private int proyId = -1;
+    private String[] pathDiagramas = null;
+    private String pathElementos = null, nombreProyecto = null;
     private Repositorio repo;
     private Proyecto proyectoSeleccionado;
 
@@ -49,8 +48,8 @@ public class CrearCargarProyecto extends AppCompatActivity {
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
             proyectoSeleccionado = getProyecto(nombreProyecto);
-            proyId = proyectoSeleccionado.getId();
             mostrarDatosProyectoPantalla();
+            Log.e("CREAR CARGAR ONCREATE", "");
         }
     }
 
@@ -109,36 +108,47 @@ public class CrearCargarProyecto extends AppCompatActivity {
         });
     }
 
-
     private Proyecto getProyecto(String nombreProyecto){
         return repo.getProyecto(nombreProyecto);
     }
 
     public void crear_actualizar_Proyecto(View view) {
         boolean exito = false;
-        nombreProyecto = et_nombre.getText().toString(); /////CONTROLAR Q NO SEA VACIO
+        nombreProyecto = et_nombre.getText().toString(); /////CONTROLAR Q NO SEA VACIO ///// idem para DIAGRAMAS
         boolean permiteFoto = checkBox_fotos.isChecked();
 
-        if (proyId == -1) {
-            exito = repo.crearProyecto(nombreProyecto, pathDiagramas, pathElementos, permiteFoto); //guarda BD
-        }else{
-                if (!nombreProyecto.equals(proyectoSeleccionado.getNombre()))
-                    exito = actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
-                if (pathDiagramas != null)
-                    exito = actualizarDiagramasProyecto(proyId, pathDiagramas); //sobreescribe
-                if (permiteFoto != proyectoSeleccionado.permite_fotos())
-                    exito = actualizarPermiteFotosProyecto(proyId, permiteFoto); //sobreescribe
-                if (pathElementos != null)
-                    agregarElementos(proyId, pathElementos); //agrega
+        if (proyectoSeleccionado == null){  //crear proyecto
+            if (pathDiagramas == null) {
+                Toast.makeText(this, "Seleccionar al menos un diagrama", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.e("CREAR PROY", nombreProyecto + " - " + pathDiagramas + " - " + pathElementos + " - " + permiteFoto);
+                exito = repo.crearProyecto(nombreProyecto, pathDiagramas, pathElementos, permiteFoto); //guarda BD
+            }
+        }else {
+            int proyId = proyectoSeleccionado.getId();
+            if (!nombreProyecto.equals(proyectoSeleccionado.getNombre())) {
+                Log.e("EDITANDO NOMBRE", nombreProyecto + " -- " + proyectoSeleccionado.getNombre());
+                exito = actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
+            }
+            if (pathDiagramas != null) {
+                Log.e("EDITANDO DIAGRAMAS", pathDiagramas + " -- " + proyectoSeleccionado.getDiagramas());
+                exito = actualizarDiagramasProyecto(proyId, pathDiagramas); //sobreescribe
+            }
+            if (permiteFoto != proyectoSeleccionado.permite_fotos()) {
+                exito = actualizarPermiteFotosProyecto(proyId, permiteFoto); //sobreescribe
+            }
+            if (pathElementos != null) {
+                agregarElementos(proyId, pathElementos); //agrega
+            }
         }
+
         if (exito == true) {
             Toast.makeText(this, "Proyecto guardado", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, Principal.class);
+            intent.putExtra(Principal.NOMBRE_PROYECTO, nombreProyecto);
+            startActivity(intent);
         }
-        else {
-            Toast.makeText(this, "se produjo un ERROR!", Toast.LENGTH_SHORT).show();
-        }
-        Intent intent = new Intent(this, ListadoProyectos.class);
-        startActivity(intent);
     }
 
     private void agregarElementos(int proyId, String pathElementos) {
