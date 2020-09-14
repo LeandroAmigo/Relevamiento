@@ -20,6 +20,7 @@ import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.Repositorio;
+import com.example.relevamiento.repositorio.parsers.parser_marcas;
 
 import java.io.File;
 import java.text.Normalizer;
@@ -35,7 +36,6 @@ public class Principal extends AppCompatActivity {
     private String diagramaActual;
     private Proyecto proyectoSeleccionado;
     private Repositorio repo;
-
     private ImageView iv_diagrama;
     private Bitmap myBitmap;
     private ListView lv_elementos;
@@ -54,7 +54,6 @@ public class Principal extends AppCompatActivity {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
             proyectoSeleccionado = getProyecto(nombreProyecto);
         }
-        Log.e("PRINCIPAL", "");
         mostrarDatosProyectoPantalla();
     }
 
@@ -62,7 +61,7 @@ public class Principal extends AppCompatActivity {
         diagramaActual = proyectoSeleccionado.getDiagramas().get(0);
         mostrarDiagrama();
         mostrarElementos();
-        mostrarFormularios(diagramaActual);
+       // mostrarFormularios(diagramaActual);
     }
 
     private void mostrarElementos() {
@@ -98,10 +97,12 @@ public class Principal extends AppCompatActivity {
         for (Formulario form: formularios) {
             marcarEnDiagrama(form.getMarcas(), form.isEsCorrecto());
             //colorearElementos(form.getId());
+
         }
     }
 
     private void colorearElementos(int id) {
+
     }
 
 
@@ -125,17 +126,24 @@ public class Principal extends AppCompatActivity {
 
 
     public void marcarEnDiagrama(ArrayList<Float> marcas, boolean correcto){
+        int color;
+        if (correcto)
+            color = Color.GREEN;
+        else
+            color = Color.RED;
+
         BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
         Bitmap aux = drawable.getBitmap();
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
         Canvas tempCanvas = new Canvas(mutableBitMap);
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(color);
+        paint.setAlpha(50);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(3);
-        tempCanvas.drawRect((float)50, (float)50, (float)80, (float)80, paint);
+        tempCanvas.drawRect((float)marcas.get(1), (float)marcas.get(0), (float)marcas.get(3), (float)marcas.get(2), paint);
 
         iv_diagrama.setImageBitmap(mutableBitMap);
 

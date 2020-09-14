@@ -45,6 +45,7 @@ public class ListadoProyectos extends AppCompatActivity {
         intent = new Intent(this, Principal.class );
         intent.putExtra(Principal.NOMBRE_PROYECTO, seleccion);
         startActivity(intent);
+        finish();
 
     }
 
@@ -53,6 +54,7 @@ public class ListadoProyectos extends AppCompatActivity {
         intent = new Intent(this, CrearCargarProyecto.class );
         intent.putExtra(CrearCargarProyecto.NOMBRE_PROYECTO, seleccion);
         startActivity(intent);
+        finish();
 
     }
 

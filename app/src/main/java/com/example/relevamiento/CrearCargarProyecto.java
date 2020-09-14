@@ -139,6 +139,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
             }
             if (pathElementos != null) {
                 agregarElementos(proyId, pathElementos); //agrega
+                exito = true;
             }
         }
 
@@ -148,11 +149,12 @@ public class CrearCargarProyecto extends AppCompatActivity {
             Intent intent = new Intent(this, Principal.class);
             intent.putExtra(Principal.NOMBRE_PROYECTO, nombreProyecto);
             startActivity(intent);
+            finish();
         }
     }
 
     private void agregarElementos(int proyId, String pathElementos) {
-         repo.agregarElementos(proyId, pathElementos);
+          repo.agregarElementos(proyId, pathElementos);
     }
 
     private boolean actualizarPermiteFotosProyecto(int proyId, boolean permiteFoto) {
