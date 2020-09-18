@@ -170,7 +170,7 @@ public class Repositorio {
             cv.put("proyecto_id", proyId);
             BaseDeDatos.insert("elementos", null, cv);
 
-            Log.e("AGRGANDO ELEMENTO", listaElementos.get(i) +" "+ proyId );
+            Log.e("AGRGANDO ELEMENTO", listaElementos.get(i) +" AL PROYECTO "+ proyId );
         }
         close();
     }
@@ -178,10 +178,10 @@ public class Repositorio {
     public ArrayList<Elemento> getElementos (int proyId){
         ArrayList<Elemento> salida = new ArrayList<Elemento>();
         open();
-        Cursor c = BaseDeDatos.rawQuery("select elemento_id, elemento_nombre from elementos where proyecto_id =" + proyId, null);
+        Cursor c = BaseDeDatos.rawQuery("select elemento_id, elemento_nombre, formulario_id from elementos where proyecto_id =" + proyId, null);
         if (c.moveToFirst()) {
             do {
-                salida.add (new Elemento (c.getInt(0), c.getString(1)) );
+                salida.add (new Elemento (c.getInt(0), c.getString(1), c.getInt(2)) );
             } while (c.moveToNext());
         }
         close();
@@ -216,4 +216,21 @@ public class Repositorio {
         close();
         return salida;
     }
-}
+
+
+    public int getCorrectitudFormulario ( int formId){
+        int salida = -1;
+        open();
+        Cursor c = BaseDeDatos.rawQuery
+                ("select formulario_correcto from formularios where formulario_id =" +formId, null);
+        if (c.moveToFirst()) {
+             salida = c.getInt(0);
+        }
+        close();
+        return salida;
+    }
+
+
+
+
+    }

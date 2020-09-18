@@ -118,12 +118,14 @@ public class CrearCargarProyecto extends AppCompatActivity {
         boolean permiteFoto = checkBox_fotos.isChecked();
 
         if (proyectoSeleccionado == null){  //crear proyecto
-            if (pathDiagramas == null) {
-                Toast.makeText(this, "Seleccionar al menos un diagrama", Toast.LENGTH_SHORT).show();
-            }else {
+            if (pathDiagramas != null && !nombreProyecto.isEmpty()) {
                 Log.e("CREAR PROY", nombreProyecto + " - " + pathDiagramas + " - " + pathElementos + " - " + permiteFoto);
                 exito = repo.crearProyecto(nombreProyecto, pathDiagramas, pathElementos, permiteFoto); //guarda BD
-            }
+            }else if (nombreProyecto.isEmpty()) {
+                    Toast.makeText(this, "Ingresar nombre ", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "Seleccionar al menos un diagrama", Toast.LENGTH_SHORT).show();
+                    }
         }else {
             int proyId = proyectoSeleccionado.getId();
             if (!nombreProyecto.equals(proyectoSeleccionado.getNombre())) {

@@ -8,46 +8,44 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="483dp"
-        android:layout_height="358dp"
+        android:layout_width="572dp"
+        android:layout_height="444dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/diagrama"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="578dp"
+            android:layout_height="459dp"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="155dp"
-        android:layout_height="fill_parent"
-        android:layout_marginStart="2dp"
+        android:layout_width="267dp"
+        android:layout_height="420dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frameLayout"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="419dp"
             android:layout_weight="0.1"
             android:orientation="vertical">
 
             <ListView
                 android:id="@+id/listaElem"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:dividerHeight="2px"></ListView>
+                android:layout_height="wrap_content"
+                android:dividerHeight="0.5px"></ListView>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45px"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -56,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="cambiarDiagramas"
                 android:text="Diagramas" />
 
             <Button

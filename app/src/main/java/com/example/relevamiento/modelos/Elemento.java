@@ -6,10 +6,10 @@ public class Elemento {
     private String nombre;
     private int formId;
 
-    public Elemento (int id, String name){
+    public Elemento (int id, String name, int formId){
         this.id = id;
         nombre = name;
-        formId = -1;
+        this.formId = formId;
     }
 
 

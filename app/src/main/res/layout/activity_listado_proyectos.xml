@@ -17,34 +17,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_editar"
+        android:id="@+id/btn_exportar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="128dp"
-        android:onClick="editarProyecto"
-        android:text="Editar"
-        app:layout_constraintStart_toEndOf="@+id/btn_abrir"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="184dp"
+        android:text="Exportar"
+        app:layout_constraintStart_toEndOf="@+id/btn_editar"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Button
         android:id="@+id/btn_abrir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="184dp"
         android:onClick="abrirProyecto"
         android:text="Abrir"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Button
-        android:id="@+id/btn_exportar"
+        android:id="@+id/btn_editar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="128dp"
-        android:text="Exportar"
-        app:layout_constraintStart_toEndOf="@+id/btn_editar"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="184dp"
+        android:onClick="editarProyecto"
+        android:text="Editar"
+        app:layout_constraintStart_toEndOf="@+id/btn_abrir"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>
