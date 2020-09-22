@@ -20,7 +20,6 @@ public class ListadoProyectos extends AppCompatActivity {
     private Spinner spinner;
     private String seleccion;
     private Intent intent;
-    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

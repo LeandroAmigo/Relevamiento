@@ -37,7 +37,7 @@ public class Marcar extends AppCompatActivity {
     private String diagramaActual;
     private Proyecto proyectoSeleccionado;
     private Repositorio repo;
-    private Bitmap myBitmap;
+    private Bitmap myBitmap, aux;
     private int color;
     private ArrayList<Float> listaMarcas;
 
@@ -104,21 +104,21 @@ public class Marcar extends AppCompatActivity {
     private View.OnTouchListener handleTouch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (switch_correcto.isChecked())
+                    color = Color.GREEN;
+                else
+                    color = Color.RED;
 
-            if (switch_correcto.isChecked())
-                color = Color.GREEN;
-            else
-                color = Color.RED;
+                listaMarcas.add(motionEvent.getX());
+                listaMarcas.add(motionEvent.getY());
+                marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY(), color);
 
-            listaMarcas.add(motionEvent.getX());
-            listaMarcas.add(motionEvent.getY());
-            marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY(), color);
-
-            if (listaMarcas.size() == 4) {
-                ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
-                btn_aceptar.setEnabled(true);
+                if (listaMarcas.size() == 4) {
+                    ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
+                    btn_aceptar.setEnabled(true);
+                }
             }
-
             return true;
         }
     };
@@ -182,7 +182,7 @@ public class Marcar extends AppCompatActivity {
         Canvas tempCanvas = new Canvas(mutableBitMap);
         Paint paint = new Paint();
         paint.setColor(color);
-        paint.setAlpha(96); //transparencia
+        paint.setAlpha(64); //transparencia
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(3);
@@ -199,7 +199,6 @@ public class Marcar extends AppCompatActivity {
         iv_zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //editor = sharedpreferences.edit();
                 iv_diagrama.setMaxZoom(12);
                 float zm = iv_diagrama.getCurrentZoom()* 5.5f;
                 Toast.makeText(getApplicationContext(),"CURRENT ZOOM:  "+zm, Toast.LENGTH_SHORT).show();
@@ -248,7 +247,7 @@ public class Marcar extends AppCompatActivity {
     private void marcarEnDiagramaNuevoFormulario(float x, float y, int color) {
         //el bitmap actual se guarda en aux. se lo copia en mutableBitMap para modificarlo. se lo almacena en iv_imagen.. ciclo...
         BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
-        Bitmap aux = drawable.getBitmap();
+        aux = drawable.getBitmap();
 
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
@@ -304,17 +303,30 @@ public class Marcar extends AppCompatActivity {
 
 
     public void acpeptar(View view){
-        Toast.makeText(this, "MARCAS: "+listaMarcas.get(0)+" - "+listaMarcas.get(1)+" - "+listaMarcas.get(2)+" - "+listaMarcas.get(3), Toast.LENGTH_SHORT ).show();
-        //intent planilla
-        //guardar BD (formulario) diagramas, marcas, correctitud
-        //deshabilitar mira
+        //guardar diagramas, marcas y correctitud del Formulario en BD
+        int formId = repo.crearFormulario(proyectoSeleccionado.getId(), diagramaActual, listaMarcas, switch_correcto.isChecked());
+
+        //deshabilitar MOUSE
+        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+
+       /* if (formId != -1){
+            Intent i = new Intent(this, Planilla.class);
+            i.putExtra(Planilla.ID_PROYECTO, proyectoSeleccionado.getId());
+            i.putExtra(Planilla.ID_FORMULARIO, formId);
+            startActivity(i);
+            finish();
+        }*/
     }
 
-    public void cancelar (View view){
+
+
+    public void cancelar (View view){ // borra la ultima marca
         if (listaMarcas.size() >= 2) {
             listaMarcas.remove(listaMarcas.size() - 1); // y2
             listaMarcas.remove(listaMarcas.size() - 1); // x2
         }
+        iv_diagrama.setImageBitmap(aux);
     }
 
 

@@ -8,8 +8,8 @@
 
 
     <FrameLayout
-        android:layout_width="830dp"
-        android:layout_height="460dp"
+        android:layout_width="726dp"
+        android:layout_height="408dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
@@ -19,7 +19,7 @@
 
         <com.ortiz.touchview.TouchImageView
             android:id="@+id/iv_diagrama"
-            android:layout_width="835dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
 
@@ -85,8 +85,8 @@
 
     <Switch
         android:id="@+id/switch_marcar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="112dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="5dp"
         android:checked="false"
         android:contentDescription="hf_use_description|Correcto"

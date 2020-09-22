@@ -8,23 +8,23 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="572dp"
-        android:layout_height="444dp"
+        android:layout_width="532dp"
+        android:layout_height="401dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/diagrama"
-            android:layout_width="578dp"
-            android:layout_height="459dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="267dp"
-        android:layout_height="420dp"
+        android:layout_width="197dp"
+        android:layout_height="403dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,8 +59,8 @@
 
             <Button
                 android:id="@+id/btn_marcar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="169dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="marcarFormulario"
                 android:text="Marcar" />

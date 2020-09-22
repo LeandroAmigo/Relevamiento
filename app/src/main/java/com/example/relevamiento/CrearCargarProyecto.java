@@ -49,7 +49,6 @@ public class CrearCargarProyecto extends AppCompatActivity {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
             proyectoSeleccionado = repo.getProyecto(nombreProyecto);
             mostrarDatosProyectoPantalla();
-            Log.e("CREAR CARGAR ONCREATE", "");
         }
     }
 
@@ -110,7 +109,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
 
     public void crear_actualizar_Proyecto(View view) {
         boolean exito = false;
-        nombreProyecto = et_nombre.getText().toString(); /////CONTROLAR Q NO SEA VACIO ///// idem para DIAGRAMAS
+        nombreProyecto = et_nombre.getText().toString();
         boolean permiteFoto = checkBox_fotos.isChecked();
 
         if (proyectoSeleccionado == null){  //crear proyecto
@@ -126,17 +125,17 @@ public class CrearCargarProyecto extends AppCompatActivity {
             int proyId = proyectoSeleccionado.getId();
             if (!nombreProyecto.equals(proyectoSeleccionado.getNombre())) {
                 Log.e("EDITANDO NOMBRE", nombreProyecto + " -- " + proyectoSeleccionado.getNombre());
-                exito = actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
+                exito = repo.actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
             }
             if (pathDiagramas != null) {
                 Log.e("EDITANDO DIAGRAMAS", pathDiagramas + " -- " + proyectoSeleccionado.getDiagramas());
-                exito = actualizarDiagramasProyecto(proyId, pathDiagramas); //sobreescribe
+                exito =  repo.actualizarDiagramasProyecto(proyId, pathDiagramas); //sobreescribe
             }
             if (permiteFoto != proyectoSeleccionado.permite_fotos()) {
-                exito = actualizarPermiteFotosProyecto(proyId, permiteFoto); //sobreescribe
+                exito = repo.actualizarPermiteFotosProyecto(proyId, permiteFoto); //sobreescribe
             }
             if (pathElementos != null) {
-                agregarElementos(proyId, pathElementos); //agrega
+                repo.agregarElementos(proyId, pathElementos); //agrega
                 exito = true;
             }
         }
@@ -149,22 +148,6 @@ public class CrearCargarProyecto extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-    }
-
-    private void agregarElementos(int proyId, String pathElementos) {
-          repo.agregarElementos(proyId, pathElementos);
-    }
-
-    private boolean actualizarPermiteFotosProyecto(int proyId, boolean permiteFoto) {
-        return repo.actualizarPermiteFotosProyecto(proyId, permiteFoto);
-    }
-
-    private boolean actualizarDiagramasProyecto(int proyId, String[] pathDiagramas) {
-        return repo.actualizarDiagramasProyecto(proyId, pathDiagramas);
-    }
-
-    private boolean actualizarNombreProyecto(int proyId, String nombreProyecto) {
-        return repo.actualizarNombreProyecto(proyId, nombreProyecto);
     }
 
 

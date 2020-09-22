@@ -12,12 +12,11 @@ import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.parsers.parser_diagramas;
 import com.example.relevamiento.repositorio.parsers.parser_elementos;
+import com.example.relevamiento.repositorio.parsers.parser_marcas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static com.example.relevamiento.repositorio.parsers.parser_marcas.convertStringToList;
 
 public class Repositorio {
 
@@ -191,7 +190,7 @@ public class Repositorio {
     public ArrayList<Formulario> getFormularios (String pathDiagrama, int proyId){
         ArrayList<Formulario> salida = new ArrayList<Formulario>();
         int formId;
-        String marcas_existentes = null;
+        String marcas_existentes;
         int esCorrecto_existente;
         boolean correcto;
         ArrayList<Float> marcas;
@@ -203,7 +202,7 @@ public class Repositorio {
                 formId = c.getInt(0);
 
                 marcas_existentes = c.getString(1);
-                marcas = convertStringToList(marcas_existentes);
+                marcas = parser_marcas.convertStringToList(marcas_existentes);
 
                 correcto = false;
                 esCorrecto_existente = c.getInt(2);
@@ -228,6 +227,31 @@ public class Repositorio {
         }
         close();
         return salida;
+    }
+
+    public int crearFormulario(int proyId, String diagrama, ArrayList<Float> listaMarcas, boolean correctitud){
+        String marcas = parser_marcas.convertListToString(listaMarcas);
+        int formulario_correcto = 0;
+        if (correctitud == true) {
+            formulario_correcto = 1;
+        }
+        ContentValues cv = new ContentValues();
+        cv.put("formulario_diagrama",diagrama);
+        cv.put("formulario_marcas", marcas);
+        cv.put("formulario_correcto", formulario_correcto);
+        cv.put("proyecto_id", proyId);
+
+        open();
+        long result = BaseDeDatos.insert("formularios", null, cv);
+        close();
+
+        Log.e("FORMULARIO: ID", (int)result +" "+diagrama +" marcas: "+ marcas +" correct: "+ formulario_correcto);
+
+        return (int) result;
+    }
+
+    public void agregarFormulario(){
+
     }
 
 
