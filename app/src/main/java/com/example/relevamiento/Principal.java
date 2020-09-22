@@ -56,16 +56,12 @@ public class Principal extends AppCompatActivity {
         repo = new Repositorio(this);
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
-            proyectoSeleccionado = getProyecto(nombreProyecto);
+            proyectoSeleccionado = repo.getProyecto(nombreProyecto);
         }
 
         setTitle("Proyecto: "+nombreProyecto);
 
         mostrarDatosProyectoPantalla();
-    }
-
-    private Proyecto getProyecto(String nombreProyecto){
-        return repo.getProyecto(nombreProyecto);
     }
 
 
@@ -192,6 +188,16 @@ public class Principal extends AppCompatActivity {
                 mostrarDiagrama();
             }
         }
+    }
+
+    public void marcarFormulario(View view){
+        Intent i = new Intent(this, Marcar.class);
+        i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
+        i.putExtra(Marcar.DIAGRAMA, diagramaActual);
+        startActivity(i);
+        //finish();
+
+
     }
 
 

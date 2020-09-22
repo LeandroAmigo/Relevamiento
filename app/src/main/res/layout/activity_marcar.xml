@@ -6,4 +6,102 @@
     android:layout_height="match_parent"
     tools:context=".Marcar">
 
+
+    <FrameLayout
+        android:layout_width="830dp"
+        android:layout_height="460dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.ortiz.touchview.TouchImageView
+            android:id="@+id/iv_diagrama"
+            android:layout_width="835dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <ImageView
+            android:id="@+id/zoomIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Zoom In"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/zoomOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Zoom Out"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Izquierda"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Derecha"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Arriba"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Abajo"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_cancelar_marcar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#F43636"
+        android:onClick="cancelar"
+        android:text="Cancelar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Switch
+        android:id="@+id/switch_marcar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:checked="false"
+        android:contentDescription="hf_use_description|Correcto"
+        android:text="Correcto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_aceptar_marcar" />
+
+    <Button
+        android:id="@+id/btn_aceptar_marcar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#4CAF50"
+        android:enabled="false"
+        android:onClick="acpeptar"
+        android:text="Aceptar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancelar_marcar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

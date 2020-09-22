@@ -47,7 +47,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
-            proyectoSeleccionado = getProyecto(nombreProyecto);
+            proyectoSeleccionado = repo.getProyecto(nombreProyecto);
             mostrarDatosProyectoPantalla();
             Log.e("CREAR CARGAR ONCREATE", "");
         }
@@ -106,10 +106,6 @@ public class CrearCargarProyecto extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private Proyecto getProyecto(String nombreProyecto){
-        return repo.getProyecto(nombreProyecto);
     }
 
     public void crear_actualizar_Proyecto(View view) {
