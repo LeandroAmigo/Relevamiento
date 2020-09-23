@@ -59,6 +59,12 @@ public class Principal extends AppCompatActivity {
             proyectoSeleccionado = repo.getProyecto(nombreProyecto);
         }
 
+        if (getIntent().hasExtra(DIAGRAMA)) {
+            diagramaActual = getIntent().getStringExtra(DIAGRAMA);
+        }else{
+            diagramaActual = proyectoSeleccionado.getDiagramas().get(0);
+        }
+
         setTitle("Proyecto: "+nombreProyecto);
 
         mostrarDatosProyectoPantalla();
@@ -66,7 +72,6 @@ public class Principal extends AppCompatActivity {
 
 
     private void mostrarDatosProyectoPantalla() {
-        diagramaActual = proyectoSeleccionado.getDiagramas().get(0);
         mostrarDiagrama();
         mostrarElementos();
     }
@@ -125,16 +130,18 @@ public class Principal extends AppCompatActivity {
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
 
-        float [] eventXY = {marcas.get(0) , marcas.get(1) , marcas.get(2) , marcas.get(3) };
+        float [] eventXY = {marcas.get(0) , marcas.get(1)};
+        float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
 
         Matrix invertMatrix = new Matrix();
         iv_diagrama.getImageMatrix().invert(invertMatrix);
         invertMatrix.mapPoints(eventXY);
+        invertMatrix.mapPoints(eventXY2);
 
         int x1Coordinate = Math.round(eventXY[0]);
         int y1Coordinate = Math.round(eventXY[1]);
-        int x2Coordinate = Math.round(eventXY[2]);
-        int y2Coordinate = Math.round(eventXY[3]);
+        int x2Coordinate = Math.round(eventXY2[0]);
+        int y2Coordinate = Math.round(eventXY2[1]);
 
         if (x1Coordinate < 0) {
             x1Coordinate = 0;
@@ -195,7 +202,7 @@ public class Principal extends AppCompatActivity {
         i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
         i.putExtra(Marcar.DIAGRAMA, diagramaActual);
         startActivity(i);
-        //finish();
+        finish();
 
 
     }

@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.modelos.Formulario;
@@ -22,6 +25,8 @@ public class Planilla extends AppCompatActivity {
 
     public static final String ID_PROYECTO = "proyecto_id";
     public static final String ID_FORMULARIO = "formulario_id";
+    public static final String NOMBRE_PROYECTO = "proyecto_nombre";
+    public static final String DIAGRAMA = "diagrama";
 
     public static final String AUDIO = "audio";
     public static final String FOTO = "foto";
@@ -32,14 +37,13 @@ public class Planilla extends AppCompatActivity {
 
 
     private Repositorio repo;
-    private Formulario formulario;
     private int proyId, formId;
-    private Spinner spinner;
-    private Button btn_agregar;
-
     private ArrayList<String> elem_seleccionados;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter, adapterSeleccion;
     private String pathAudio, pathFoto;
+
+    private Spinner spinner;
+    private ListView elementosSeleccionados;
 
 
     @Override
@@ -48,8 +52,12 @@ public class Planilla extends AppCompatActivity {
         setContentView(R.layout.activity_planilla);
 
         spinner = (Spinner) findViewById(R.id.spinner_elem);
+        elementosSeleccionados = (ListView) findViewById(R.id.lv_listaElem);
 
         repo = new Repositorio(this);
+        //inicializa lista
+        elem_seleccionados = new ArrayList<String>();
+        adapterSeleccion = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
 
         if (getIntent().hasExtra(ID_PROYECTO) && getIntent().hasExtra(ID_FORMULARIO)) {
             proyId = getIntent().getIntExtra(ID_PROYECTO,-1);
@@ -70,21 +78,29 @@ public class Planilla extends AppCompatActivity {
         }
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
         spinner.setAdapter(adapter);
-        //inicializa lista
-        elem_seleccionados = new ArrayList<String>();
     }
 
 
-    public void agregarElementos(View view){
+    public void agregarElementos(View view){  ////// ver como funciona adapter cuando se actualiza ""elem_seleccionados""
         String elem = spinner.getSelectedItem().toString();
         elem_seleccionados.add(elem);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
-        /////quitarlo de spinner
+
+        elementosSeleccionados.setAdapter(adapterSeleccion);
     }
 
     public void agregarAudio(View view){
         Intent i = new Intent(this, GrabadoraAudio.class);
         startActivityForResult(i, ACTIVITY_GRABAR_AUDIO);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ACTIVITY_GRABAR_AUDIO) {
+            if (resultCode == Activity.RESULT_OK) {
+                pathAudio = data.getStringExtra(AUDIO);
+            }
+        }
     }
 
     public void agregarFoto(View view) {
@@ -98,30 +114,32 @@ public class Planilla extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ACTIVITY_GRABAR_AUDIO) {
-            if (resultCode == Activity.RESULT_OK) {
-                pathAudio = data.getStringExtra(AUDIO);
-            }
+    public void guardarFormulario(View view){
+        boolean exito;
+        if (!actualizarElementos()) {
+            Toast.makeText(this, "Error al actualizar elementos", Toast.LENGTH_SHORT).show();
+            exito = false;
         }
-        if (requestCode == ACTIVITY_FOTO) {
-            if (resultCode == Activity.RESULT_OK) {
-                pathFoto = data.getStringExtra(FOTO);
-            }
-        }
-        if (requestCode == ACTIVITY_PLANO) {
+        /////solo guarda AUDIO para probar
+        exito = repo.agregarFormulario(formId, pathAudio);
 
+        if (exito) {
+            Intent intent = new Intent(this, Principal.class);
+            intent.putExtra(Principal.NOMBRE_PROYECTO, getIntent().getStringExtra(NOMBRE_PROYECTO));
+            intent.putExtra(Principal.DIAGRAMA, getIntent().getStringExtra(DIAGRAMA));
+            startActivity(intent);
+            finish();
         }
-
     }
 
-    public void guardarFormulario(View view){
-        //agregar formId a cada elemento;
-        //actualizar el formulario con foto, audio, imagen
-        //finish(); volver a principal
+    private boolean actualizarElementos() {
+        boolean exito= false;
+        for (String s: elem_seleccionados) {
+            int elemId = repo.getIdElemento(s, proyId);
+            exito = repo.actualizarElemento(elemId, formId);
+            Log.e("EXITO ACTULIZAR ELEM", ""+exito);
+        }
+        return exito;
     }
 
 }

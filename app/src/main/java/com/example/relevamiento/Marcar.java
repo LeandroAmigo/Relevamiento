@@ -145,16 +145,18 @@ public class Marcar extends AppCompatActivity {
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
 
-        float [] eventXY = {marcas.get(0) , marcas.get(1) , marcas.get(2) , marcas.get(3) };
+        float [] eventXY = {marcas.get(0) , marcas.get(1)};
+        float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
 
         Matrix invertMatrix = new Matrix();
         iv_diagrama.getImageMatrix().invert(invertMatrix);
         invertMatrix.mapPoints(eventXY);
+        invertMatrix.mapPoints(eventXY2);
 
         int x1Coordinate = Math.round(eventXY[0]);
         int y1Coordinate = Math.round(eventXY[1]);
-        int x2Coordinate = Math.round(eventXY[2]);
-        int y2Coordinate = Math.round(eventXY[3]);
+        int x2Coordinate = Math.round(eventXY2[0]);
+        int y2Coordinate = Math.round(eventXY2[1]);
 
         if (x1Coordinate < 0) {
             x1Coordinate = 0;
@@ -187,6 +189,10 @@ public class Marcar extends AppCompatActivity {
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(3);
         tempCanvas.drawRect((float)x1Coordinate, (float)y1Coordinate, (float)x2Coordinate, (float)y2Coordinate, paint);
+
+
+        Log.e("MARCAS 1: ", "x1: "+marcas.get(0)+" - y1: "+marcas.get(1)+" - x1Coordinate: "+x1Coordinate+" - y1Coordinate: "+y1Coordinate);
+        Log.e("MARCAS 2: ", "x2: "+marcas.get(2)+" - y2: "+marcas.get(3)+" - x2Coordinate: "+x2Coordinate+" - y2Coordinate: "+y2Coordinate);
 
         iv_diagrama.setImageBitmap(mutableBitMap);
 
@@ -284,6 +290,8 @@ public class Marcar extends AppCompatActivity {
                                 15F, // Radius
                                 paint // Paint
         );
+
+        Log.e("MARCAS: ", "x: "+x+" - y: "+y+" - xCoordinate: "+xCoordinate+" - yCoordinate: "+yCoordinate);
         iv_diagrama.setImageBitmap(mutableBitMap);
     }
 
@@ -305,18 +313,19 @@ public class Marcar extends AppCompatActivity {
     public void acpeptar(View view){
         //guardar diagramas, marcas y correctitud del Formulario en BD
         int formId = repo.crearFormulario(proyectoSeleccionado.getId(), diagramaActual, listaMarcas, switch_correcto.isChecked());
-
         //deshabilitar MOUSE
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
 
-       /* if (formId != -1){
+        if (formId != -1){
             Intent i = new Intent(this, Planilla.class);
             i.putExtra(Planilla.ID_PROYECTO, proyectoSeleccionado.getId());
             i.putExtra(Planilla.ID_FORMULARIO, formId);
+            i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
+            i.putExtra(Planilla.DIAGRAMA, diagramaActual);
             startActivity(i);
             finish();
-        }*/
+        }
     }
 
 

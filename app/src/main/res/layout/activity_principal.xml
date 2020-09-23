@@ -8,8 +8,8 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="532dp"
-        android:layout_height="401dp"
+        android:layout_width="536dp"
+        android:layout_height="365dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,8 +23,10 @@
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="197dp"
-        android:layout_height="403dp"
+        android:layout_width="151dp"
+        android:layout_height="370dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,7 @@
                 android:id="@+id/listaElem"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:dividerHeight="0.5px"></ListView>
+                android:dividerHeight="1dp"></ListView>
         </LinearLayout>
 
         <LinearLayout
@@ -51,15 +53,15 @@
 
             <Button
                 android:id="@+id/btn_diagramas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="cambiarDiagramas"
                 android:text="Diagramas" />
 
             <Button
                 android:id="@+id/btn_marcar"
-                android:layout_width="169dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="marcarFormulario"

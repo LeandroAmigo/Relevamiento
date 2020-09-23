@@ -15,7 +15,7 @@
 
     <ListView
         android:id="@+id/lv_listaElem"
-        android:layout_width="210dp"
+        android:layout_width="193dp"
         android:layout_height="288dp"
         android:layout_marginStart="120dp"
         app:layout_constraintStart_toEndOf="@+id/spinner_elem"
@@ -76,6 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:onClick="guardarFormulario"
         android:text="Guardar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

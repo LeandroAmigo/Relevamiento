@@ -8,8 +8,8 @@
 
 
     <FrameLayout
-        android:layout_width="726dp"
-        android:layout_height="408dp"
+        android:layout_width="732dp"
+        android:layout_height="411dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"

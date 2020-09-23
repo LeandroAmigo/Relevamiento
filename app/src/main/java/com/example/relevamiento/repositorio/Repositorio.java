@@ -187,6 +187,33 @@ public class Repositorio {
         return salida;
     }
 
+    public int getIdElemento(String nombre, int proyId){
+        int salida = -1;
+        open();
+        Cursor c = BaseDeDatos.rawQuery
+                ("select elemento_id from elementos where elemento_nombre = '" + nombre + "' and proyecto_id = "+proyId, null);
+        if (c.moveToFirst()) {
+            salida = (c.getInt(0)); //"select 0,1,2,3... from .."
+        }
+        close();
+        return salida;
+    }
+
+    public boolean actualizarElemento(int elemId, int formId){
+        boolean exito = false;
+        ContentValues cv = new ContentValues();
+        cv.put("formulario_id", formId);
+        open();
+        int cant = BaseDeDatos.update("elementos", cv, "elemento_id = " +elemId, null);
+        close();
+        if (cant == 1)
+            exito = true;
+        Log.e("actualizar ELEMENTO:", "elemento ID: "+elemId+" formID: "+formId);
+        return exito;
+    }
+
+
+
     public ArrayList<Formulario> getFormularios (String pathDiagrama, int proyId){
         ArrayList<Formulario> salida = new ArrayList<Formulario>();
         int formId;
@@ -245,15 +272,25 @@ public class Repositorio {
         long result = BaseDeDatos.insert("formularios", null, cv);
         close();
 
-        Log.e("FORMULARIO: ID", (int)result +" "+diagrama +" marcas: "+ marcas +" correct: "+ formulario_correcto);
+        Log.e("crear FORMULARIO: ID",(int)result +" diag: "+diagrama+ " -marcas: "+marcas+" correct: "+formulario_correcto);
 
         return (int) result;
     }
 
-    public void agregarFormulario(){
+    public boolean agregarFormulario(int formId, String pathAudio){
+        boolean exito = false;
+        ContentValues cv = new ContentValues();
+        cv.put("formulario_audio",pathAudio);
+        open();
+        int cant = BaseDeDatos.update("formularios", cv, "formulario_id =" +formId, null);
+        close();
+        if (cant == 1)
+            exito = true;
 
+        Log.e("agregar al FORMULARIO", " ID: "+formId +" pathAudio: "+pathAudio);
+        return exito;
     }
 
 
 
-    }
+}
