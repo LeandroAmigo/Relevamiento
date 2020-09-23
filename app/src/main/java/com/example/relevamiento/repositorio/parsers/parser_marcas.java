@@ -6,7 +6,7 @@ public class parser_marcas {
 
     public static String Separator = "_,_";
 
-    public static String convertListToString(ArrayList<Float> array){
+    public static String convertListToString(ArrayList<Integer> array){
         String str = "";
         for (int i=0; i<array.size(); i++) {
             str = str+array.get(i);
@@ -17,11 +17,11 @@ public class parser_marcas {
         }
         return str;
     }
-    public static ArrayList<Float> convertStringToList(String str){
+    public static ArrayList<Integer> convertStringToList(String str){
         String[] arr = str.split(Separator);
-        ArrayList<Float> salida = new ArrayList<Float>(arr.length);
+        ArrayList<Integer> salida = new ArrayList<Integer>(arr.length);
         for (String s: arr){
-            salida.add(Float.parseFloat(s));
+            salida.add(Integer.parseInt(s));
         }
         return salida;
     }

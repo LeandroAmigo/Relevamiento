@@ -39,7 +39,7 @@ public class Marcar extends AppCompatActivity {
     private Repositorio repo;
     private Bitmap myBitmap, aux;
     private int color;
-    private ArrayList<Float> listaMarcas;
+    private ArrayList<Integer> listaMarcas;
 
     private TouchImageView iv_diagrama;
     private ImageView iv_zoomIn;
@@ -59,7 +59,7 @@ public class Marcar extends AppCompatActivity {
         setContentView(R.layout.activity_marcar);
 
         repo = new Repositorio(this);
-        listaMarcas = new ArrayList<Float>();
+        listaMarcas = new ArrayList<Integer>();
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -110,12 +110,12 @@ public class Marcar extends AppCompatActivity {
                 else
                     color = Color.RED;
 
-                listaMarcas.add(motionEvent.getX());
-                listaMarcas.add(motionEvent.getY());
+                //listaMarcas.add(motionEvent.getX());
+                //listaMarcas.add(motionEvent.getY());
                 marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY(), color);
 
                 if (listaMarcas.size() == 4) {
-                    ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
+                   // ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
                     btn_aceptar.setEnabled(true);
                 }
             }
@@ -132,7 +132,7 @@ public class Marcar extends AppCompatActivity {
         }
     }
 
-
+/*
     private void marcarEnDiagrama(ArrayList<Float> marcas, boolean correcto){
         int color;
         if (correcto)
@@ -188,15 +188,81 @@ public class Marcar extends AppCompatActivity {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(3);
-        tempCanvas.drawRect((float)x1Coordinate, (float)y1Coordinate, (float)x2Coordinate, (float)y2Coordinate, paint);
+        tempCanvas.drawRect(x1Coordinate, y1Coordinate, x2Coordinate, y2Coordinate, paint);
 
 
-        Log.e("MARCAS 1: ", "x1: "+marcas.get(0)+" - y1: "+marcas.get(1)+" - x1Coordinate: "+x1Coordinate+" - y1Coordinate: "+y1Coordinate);
-        Log.e("MARCAS 2: ", "x2: "+marcas.get(2)+" - y2: "+marcas.get(3)+" - x2Coordinate: "+x2Coordinate+" - y2Coordinate: "+y2Coordinate);
+        Log.e("MARCAS 1 ", "x1: "+marcas.get(0)+" - y1: "+marcas.get(1)+" - x1Coordinate: "+x1Coordinate+" - y1Coordinate: "+y1Coordinate);
+        Log.e("MARCAS 2 ", "x2: "+marcas.get(2)+" - y2: "+marcas.get(3)+" - x2Coordinate: "+x2Coordinate+" - y2Coordinate: "+y2Coordinate);
 
         iv_diagrama.setImageBitmap(mutableBitMap);
 
     }
+    */
+
+
+    private void marcarEnDiagrama(ArrayList<Integer> marcas, boolean correcto){
+        int color;
+        if (correcto)
+            color = Color.GREEN;
+        else
+            color = Color.RED;
+
+        BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
+        Bitmap aux = drawable.getBitmap();
+        Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
+
+
+        // float [] eventXY = {marcas.get(0) , marcas.get(1)};
+        // float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
+
+        Matrix invertMatrix = new Matrix();
+        iv_diagrama.getImageMatrix().invert(invertMatrix);
+        // invertMatrix.mapPoints(eventXY);
+        // invertMatrix.mapPoints(eventXY2);
+    /*
+        int x1Coordinate = Math.round(eventXY[0]);
+        int y1Coordinate = Math.round(eventXY[1]);
+        int x2Coordinate = Math.round(eventXY2[0]);
+        int y2Coordinate = Math.round(eventXY2[1]);
+
+        if (x1Coordinate < 0) {
+            x1Coordinate = 0;
+        } else if (x1Coordinate > mutableBitMap.getWidth() - 1) {
+            x1Coordinate = mutableBitMap.getWidth() - 1;
+        }
+
+        if (y1Coordinate < 0) {
+            y1Coordinate = 0;
+        } else if (y1Coordinate > mutableBitMap.getHeight() - 1) {
+            y1Coordinate = mutableBitMap.getHeight() - 1;
+        }
+        if (x2Coordinate < 0) {
+            x2Coordinate = 0;
+        } else if (x2Coordinate > mutableBitMap.getWidth() - 1) {
+            x2Coordinate = mutableBitMap.getWidth() - 1;
+        }
+
+        if (y2Coordinate < 0) {
+            y2Coordinate = 0;
+        } else if (y2Coordinate > mutableBitMap.getHeight() - 1) {
+            y2Coordinate = mutableBitMap.getHeight() - 1;
+        }
+
+     */
+
+        Canvas tempCanvas = new Canvas(mutableBitMap);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setAlpha(50);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+        //paint.setStrokeWidth(3);
+        tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
+
+        iv_diagrama.setImageBitmap(mutableBitMap);
+
+    }
+
 
 
     private void AsignarOyentesImageViewTouchable() {
@@ -291,10 +357,13 @@ public class Marcar extends AppCompatActivity {
                                 paint // Paint
         );
 
+        listaMarcas.add(xCoordinate);
+        listaMarcas.add(yCoordinate);
+
         Log.e("MARCAS: ", "x: "+x+" - y: "+y+" - xCoordinate: "+xCoordinate+" - yCoordinate: "+yCoordinate);
         iv_diagrama.setImageBitmap(mutableBitMap);
     }
-
+/*
     private void ordenarMarcas(){
         float aux;
         if (listaMarcas.get(0) > listaMarcas.get(2)){
@@ -308,6 +377,8 @@ public class Marcar extends AppCompatActivity {
             listaMarcas.set(3,aux);
         }
     }
+
+ */
 
 
     public void acpeptar(View view){

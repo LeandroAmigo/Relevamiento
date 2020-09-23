@@ -118,7 +118,7 @@ public class Principal extends AppCompatActivity {
     }
 
 
-    private void marcarEnDiagrama(ArrayList<Float> marcas, boolean correcto){
+    private void marcarEnDiagrama(ArrayList<Integer> marcas, boolean correcto){
         int color;
         if (correcto)
             color = Color.GREEN;
@@ -130,14 +130,14 @@ public class Principal extends AppCompatActivity {
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
 
-        float [] eventXY = {marcas.get(0) , marcas.get(1)};
-        float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
+       // float [] eventXY = {marcas.get(0) , marcas.get(1)};
+       // float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
 
         Matrix invertMatrix = new Matrix();
         iv_diagrama.getImageMatrix().invert(invertMatrix);
-        invertMatrix.mapPoints(eventXY);
-        invertMatrix.mapPoints(eventXY2);
-
+       // invertMatrix.mapPoints(eventXY);
+       // invertMatrix.mapPoints(eventXY2);
+/*
         int x1Coordinate = Math.round(eventXY[0]);
         int y1Coordinate = Math.round(eventXY[1]);
         int x2Coordinate = Math.round(eventXY2[0]);
@@ -166,6 +166,8 @@ public class Principal extends AppCompatActivity {
             y2Coordinate = mutableBitMap.getHeight() - 1;
         }
 
+ */
+
         Canvas tempCanvas = new Canvas(mutableBitMap);
         Paint paint = new Paint();
         paint.setColor(color);
@@ -173,7 +175,7 @@ public class Principal extends AppCompatActivity {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(3);
-        tempCanvas.drawRect((float)x1Coordinate, (float)y1Coordinate, (float)x2Coordinate, (float)y2Coordinate, paint);
+        tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
 
         iv_diagrama.setImageBitmap(mutableBitMap);
 

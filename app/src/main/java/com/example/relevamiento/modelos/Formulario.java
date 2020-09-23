@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class Formulario {
     private int id;
     private String diagrama; //direccion a memoria del dispositivo
-    private ArrayList<Float> marcas; //[x1],[y1],[x2],[y2], ...,
+    private ArrayList<Integer> marcas; //[x1],[y1],[x2],[y2], ...,
     private boolean esCorrecto;
     private String observacion;
     private String foto;
     private String audio;
     private String imagen;
 
-    public Formulario( int id, String diag, ArrayList<Float> m, boolean correct) {
+    public Formulario( int id, String diag, ArrayList<Integer> m, boolean correct) {
         this.id = id;
         diagrama = diag;
         esCorrecto = correct;
@@ -40,7 +40,7 @@ public class Formulario {
         return diagrama;
     }
 
-    public ArrayList<Float> getMarcas() {
+    public ArrayList<Integer> getMarcas() {
         return marcas;
     }
 

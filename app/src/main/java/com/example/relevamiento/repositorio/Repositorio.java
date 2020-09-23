@@ -220,7 +220,7 @@ public class Repositorio {
         String marcas_existentes;
         int esCorrecto_existente;
         boolean correcto;
-        ArrayList<Float> marcas;
+        ArrayList<Integer> marcas;
         open();
         Cursor c = BaseDeDatos.rawQuery
                 ("select formulario_id, formulario_marcas, formulario_correcto from formularios where proyecto_id =" +proyId+" and formulario_diagrama = '" +pathDiagrama+ "'", null);
@@ -256,7 +256,7 @@ public class Repositorio {
         return salida;
     }
 
-    public int crearFormulario(int proyId, String diagrama, ArrayList<Float> listaMarcas, boolean correctitud){
+    public int crearFormulario(int proyId, String diagrama, ArrayList<Integer> listaMarcas, boolean correctitud){
         String marcas = parser_marcas.convertListToString(listaMarcas);
         int formulario_correcto = 0;
         if (correctitud == true) {
