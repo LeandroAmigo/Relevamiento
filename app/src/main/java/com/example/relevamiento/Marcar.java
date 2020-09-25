@@ -86,6 +86,7 @@ public class Marcar extends AppCompatActivity {
         //activar MOUSE
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", true);
+        sendBroadcast(intent);
 
     }
 
@@ -110,12 +111,10 @@ public class Marcar extends AppCompatActivity {
                 else
                     color = Color.RED;
 
-                //listaMarcas.add(motionEvent.getX());
-                //listaMarcas.add(motionEvent.getY());
                 marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY(), color);
 
                 if (listaMarcas.size() == 4) {
-                   // ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
+                    ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
                     btn_aceptar.setEnabled(true);
                 }
             }
@@ -132,73 +131,6 @@ public class Marcar extends AppCompatActivity {
         }
     }
 
-/*
-    private void marcarEnDiagrama(ArrayList<Float> marcas, boolean correcto){
-        int color;
-        if (correcto)
-            color = Color.GREEN;
-        else
-            color = Color.RED;
-
-        BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
-        Bitmap aux = drawable.getBitmap();
-        Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
-
-
-        float [] eventXY = {marcas.get(0) , marcas.get(1)};
-        float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
-
-        Matrix invertMatrix = new Matrix();
-        iv_diagrama.getImageMatrix().invert(invertMatrix);
-        invertMatrix.mapPoints(eventXY);
-        invertMatrix.mapPoints(eventXY2);
-
-        int x1Coordinate = Math.round(eventXY[0]);
-        int y1Coordinate = Math.round(eventXY[1]);
-        int x2Coordinate = Math.round(eventXY2[0]);
-        int y2Coordinate = Math.round(eventXY2[1]);
-
-        if (x1Coordinate < 0) {
-            x1Coordinate = 0;
-        } else if (x1Coordinate > mutableBitMap.getWidth() - 1) {
-            x1Coordinate = mutableBitMap.getWidth() - 1;
-        }
-
-        if (y1Coordinate < 0) {
-            y1Coordinate = 0;
-        } else if (y1Coordinate > mutableBitMap.getHeight() - 1) {
-            y1Coordinate = mutableBitMap.getHeight() - 1;
-        }
-        if (x2Coordinate < 0) {
-            x2Coordinate = 0;
-        } else if (x2Coordinate > mutableBitMap.getWidth() - 1) {
-            x2Coordinate = mutableBitMap.getWidth() - 1;
-        }
-
-        if (y2Coordinate < 0) {
-            y2Coordinate = 0;
-        } else if (y2Coordinate > mutableBitMap.getHeight() - 1) {
-            y2Coordinate = mutableBitMap.getHeight() - 1;
-        }
-
-        Canvas tempCanvas = new Canvas(mutableBitMap);
-        Paint paint = new Paint();
-        paint.setColor(color);
-        paint.setAlpha(64); //transparencia
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
-        //paint.setStrokeWidth(3);
-        tempCanvas.drawRect(x1Coordinate, y1Coordinate, x2Coordinate, y2Coordinate, paint);
-
-
-        Log.e("MARCAS 1 ", "x1: "+marcas.get(0)+" - y1: "+marcas.get(1)+" - x1Coordinate: "+x1Coordinate+" - y1Coordinate: "+y1Coordinate);
-        Log.e("MARCAS 2 ", "x2: "+marcas.get(2)+" - y2: "+marcas.get(3)+" - x2Coordinate: "+x2Coordinate+" - y2Coordinate: "+y2Coordinate);
-
-        iv_diagrama.setImageBitmap(mutableBitMap);
-
-    }
-    */
-
 
     private void marcarEnDiagrama(ArrayList<Integer> marcas, boolean correcto){
         int color;
@@ -211,44 +143,8 @@ public class Marcar extends AppCompatActivity {
         Bitmap aux = drawable.getBitmap();
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
-
-        // float [] eventXY = {marcas.get(0) , marcas.get(1)};
-        // float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
-
         Matrix invertMatrix = new Matrix();
         iv_diagrama.getImageMatrix().invert(invertMatrix);
-        // invertMatrix.mapPoints(eventXY);
-        // invertMatrix.mapPoints(eventXY2);
-    /*
-        int x1Coordinate = Math.round(eventXY[0]);
-        int y1Coordinate = Math.round(eventXY[1]);
-        int x2Coordinate = Math.round(eventXY2[0]);
-        int y2Coordinate = Math.round(eventXY2[1]);
-
-        if (x1Coordinate < 0) {
-            x1Coordinate = 0;
-        } else if (x1Coordinate > mutableBitMap.getWidth() - 1) {
-            x1Coordinate = mutableBitMap.getWidth() - 1;
-        }
-
-        if (y1Coordinate < 0) {
-            y1Coordinate = 0;
-        } else if (y1Coordinate > mutableBitMap.getHeight() - 1) {
-            y1Coordinate = mutableBitMap.getHeight() - 1;
-        }
-        if (x2Coordinate < 0) {
-            x2Coordinate = 0;
-        } else if (x2Coordinate > mutableBitMap.getWidth() - 1) {
-            x2Coordinate = mutableBitMap.getWidth() - 1;
-        }
-
-        if (y2Coordinate < 0) {
-            y2Coordinate = 0;
-        } else if (y2Coordinate > mutableBitMap.getHeight() - 1) {
-            y2Coordinate = mutableBitMap.getHeight() - 1;
-        }
-
-     */
 
         Canvas tempCanvas = new Canvas(mutableBitMap);
         Paint paint = new Paint();
@@ -360,12 +256,11 @@ public class Marcar extends AppCompatActivity {
         listaMarcas.add(xCoordinate);
         listaMarcas.add(yCoordinate);
 
-        Log.e("MARCAS: ", "x: "+x+" - y: "+y+" - xCoordinate: "+xCoordinate+" - yCoordinate: "+yCoordinate);
         iv_diagrama.setImageBitmap(mutableBitMap);
     }
-/*
+
     private void ordenarMarcas(){
-        float aux;
+        int aux;
         if (listaMarcas.get(0) > listaMarcas.get(2)){
             aux = listaMarcas.get(0);
             listaMarcas.set(0, listaMarcas.get(2));
@@ -378,15 +273,14 @@ public class Marcar extends AppCompatActivity {
         }
     }
 
- */
-
 
     public void acpeptar(View view){
         //guardar diagramas, marcas y correctitud del Formulario en BD
         int formId = repo.crearFormulario(proyectoSeleccionado.getId(), diagramaActual, listaMarcas, switch_correcto.isChecked());
         //deshabilitar MOUSE
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
-        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_DISABLED", true);
+        sendBroadcast(intent);
 
         if (formId != -1){
             Intent i = new Intent(this, Planilla.class);

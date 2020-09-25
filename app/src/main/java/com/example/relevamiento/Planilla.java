@@ -81,10 +81,9 @@ public class Planilla extends AppCompatActivity {
     }
 
 
-    public void agregarElementos(View view){  ////// ver como funciona adapter cuando se actualiza ""elem_seleccionados""
+    public void agregarElementos(View view){
         String elem = spinner.getSelectedItem().toString();
         elem_seleccionados.add(elem);
-
         elementosSeleccionados.setAdapter(adapterSeleccion);
     }
 
@@ -117,18 +116,18 @@ public class Planilla extends AppCompatActivity {
     public void guardarFormulario(View view){
         boolean exito;
         if (!actualizarElementos()) {
-            Toast.makeText(this, "Error al actualizar elementos", Toast.LENGTH_SHORT).show();
-            exito = false;
-        }
-        /////solo guarda AUDIO para probar
-        exito = repo.agregarFormulario(formId, pathAudio);
+            Toast.makeText(this, "Ningun elemento seleccionado", Toast.LENGTH_SHORT).show();
+        }else {
+            /////solo guarda AUDIO para probar
+            exito = repo.agregarDatosFormulario(formId, pathAudio);
 
-        if (exito) {
-            Intent intent = new Intent(this, Principal.class);
-            intent.putExtra(Principal.NOMBRE_PROYECTO, getIntent().getStringExtra(NOMBRE_PROYECTO));
-            intent.putExtra(Principal.DIAGRAMA, getIntent().getStringExtra(DIAGRAMA));
-            startActivity(intent);
-            finish();
+            if (exito) {
+                Intent intent = new Intent(this, Principal.class);
+                intent.putExtra(Principal.NOMBRE_PROYECTO, getIntent().getStringExtra(NOMBRE_PROYECTO));
+                intent.putExtra(Principal.DIAGRAMA, getIntent().getStringExtra(DIAGRAMA));
+                startActivity(intent);
+                finish();
+            }
         }
     }
 

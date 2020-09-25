@@ -277,7 +277,7 @@ public class Repositorio {
         return (int) result;
     }
 
-    public boolean agregarFormulario(int formId, String pathAudio){
+    public boolean agregarDatosFormulario(int formId, String pathAudio){
         boolean exito = false;
         ContentValues cv = new ContentValues();
         cv.put("formulario_audio",pathAudio);

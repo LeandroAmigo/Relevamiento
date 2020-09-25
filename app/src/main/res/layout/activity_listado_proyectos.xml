@@ -10,28 +10,18 @@
         android:id="@+id/spinner"
         android:layout_width="296dp"
         android:layout_height="71dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_exportar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="184dp"
-        android:text="Exportar"
-        app:layout_constraintStart_toEndOf="@+id/btn_editar"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Button
         android:id="@+id/btn_abrir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginStart="236dp"
+        android:layout_marginTop="188dp"
         android:onClick="abrirProyecto"
         android:text="Abrir"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,10 +31,21 @@
         android:id="@+id/btn_editar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="188dp"
         android:onClick="editarProyecto"
         android:text="Editar"
         app:layout_constraintStart_toEndOf="@+id/btn_abrir"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <Button
+        android:id="@+id/btn_exportar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="188dp"
+        android:text="Exportar"
+        app:layout_constraintStart_toEndOf="@+id/btn_editar"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

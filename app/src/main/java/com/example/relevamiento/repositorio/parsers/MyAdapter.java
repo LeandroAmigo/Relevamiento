@@ -2,6 +2,7 @@ package com.example.relevamiento.repositorio.parsers;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,15 @@ public class MyAdapter extends ArrayAdapter<StatusAdapter> {
         final Button list_but = (Button) convertView.findViewById(R.id.List_but);
 
         StatusAdapter item = getItem(position);
+        Log.e( "EN ADAPTER", "position: "+position+" nombre: "+item.getNombreElemento()+" correct: "+item.getCorrecto());
         list_txt.setText(item.getNombreElemento());
         int correctitud = item.getCorrecto();
         if (correctitud == 1){
             list_txt.setBackgroundColor(Color.GREEN);
-        } else if (correctitud == 0){
+        } else if (correctitud == 0) {
             list_txt.setBackgroundColor(Color.RED);
+        }else{
+            list_txt.setBackgroundColor(Color.GRAY);
         }
 
         list_but.setText(""+(position+1));

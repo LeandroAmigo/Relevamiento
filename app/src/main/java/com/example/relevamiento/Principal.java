@@ -88,6 +88,7 @@ public class Principal extends AppCompatActivity {
                 correctitud = getCorrectitudFormulario(formId); // 1 o 0
             }
             listaStatus.add(new StatusAdapter (e.getNombre(), correctitud ));
+            Log.e("STATUS", "nombre: "+e.getNombre()+" correctitud: "+correctitud);
         }
 
         MyAdapter adapter = new MyAdapter(this, listaStatus);
@@ -129,44 +130,8 @@ public class Principal extends AppCompatActivity {
         Bitmap aux = drawable.getBitmap();
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
-
-       // float [] eventXY = {marcas.get(0) , marcas.get(1)};
-       // float [] eventXY2 = { marcas.get(2) , marcas.get(3)};
-
         Matrix invertMatrix = new Matrix();
         iv_diagrama.getImageMatrix().invert(invertMatrix);
-       // invertMatrix.mapPoints(eventXY);
-       // invertMatrix.mapPoints(eventXY2);
-/*
-        int x1Coordinate = Math.round(eventXY[0]);
-        int y1Coordinate = Math.round(eventXY[1]);
-        int x2Coordinate = Math.round(eventXY2[0]);
-        int y2Coordinate = Math.round(eventXY2[1]);
-
-        if (x1Coordinate < 0) {
-            x1Coordinate = 0;
-        } else if (x1Coordinate > mutableBitMap.getWidth() - 1) {
-            x1Coordinate = mutableBitMap.getWidth() - 1;
-        }
-
-        if (y1Coordinate < 0) {
-            y1Coordinate = 0;
-        } else if (y1Coordinate > mutableBitMap.getHeight() - 1) {
-            y1Coordinate = mutableBitMap.getHeight() - 1;
-        }
-        if (x2Coordinate < 0) {
-            x2Coordinate = 0;
-        } else if (x2Coordinate > mutableBitMap.getWidth() - 1) {
-            x2Coordinate = mutableBitMap.getWidth() - 1;
-        }
-
-        if (y2Coordinate < 0) {
-            y2Coordinate = 0;
-        } else if (y2Coordinate > mutableBitMap.getHeight() - 1) {
-            y2Coordinate = mutableBitMap.getHeight() - 1;
-        }
-
- */
 
         Canvas tempCanvas = new Canvas(mutableBitMap);
         Paint paint = new Paint();
