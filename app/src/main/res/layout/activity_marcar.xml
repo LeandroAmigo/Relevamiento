@@ -89,8 +89,9 @@
         android:layout_width="112dp"
         android:layout_height="39dp"
         android:layout_marginBottom="5dp"
-        android:checked="false"
+        android:clickable="true"
         android:contentDescription="hf_use_description|Correcto"
+        android:onClick="switch_correcto"
         android:text="Correcto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_aceptar_marcar" />

@@ -6,31 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Planilla">
 
-    <Spinner
-        android:id="@+id/spinner_elem"
-        android:layout_width="223dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ListView
         android:id="@+id/lv_listaElem"
         android:layout_width="193dp"
         android:layout_height="288dp"
-        android:layout_marginStart="120dp"
-        app:layout_constraintStart_toEndOf="@+id/spinner_elem"
+        android:layout_marginStart="28dp"
+        app:layout_constraintStart_toEndOf="@+id/btn_plano"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_agegar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
         android:onClick="agregarElementos"
         android:text="Agregar"
         app:layout_constraintEnd_toStartOf="@+id/lv_listaElem"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toEndOf="@+id/spinner_elem"
+        app:layout_constraintStart_toEndOf="@+id/atv_nombreElementos"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -65,11 +57,10 @@
         android:id="@+id/btn_plano"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="56dp"
         android:text="Plano"
-        app:layout_constraintEnd_toStartOf="@+id/lv_listaElem"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toEndOf="@+id/spinner_elem"
+        app:layout_constraintStart_toEndOf="@+id/atv_nombreElementos"
         app:layout_constraintTop_toBottomOf="@+id/btn_agegar" />
 
     <Button
@@ -84,4 +75,14 @@
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_listaElem" />
+
+    <AutoCompleteTextView
+        android:id="@+id/atv_nombreElementos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:hint="Ingrese Nombre Elemento"
+        android:completionThreshold="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

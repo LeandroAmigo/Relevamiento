@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -42,7 +43,8 @@ public class Planilla extends AppCompatActivity {
     private ArrayAdapter<String> adapter, adapterSeleccion;
     private String pathAudio, pathFoto;
 
-    private Spinner spinner;
+ //   private Spinner spinner;
+    private AutoCompleteTextView atv_nombreElem;
     private ListView elementosSeleccionados;
 
 
@@ -51,7 +53,7 @@ public class Planilla extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planilla);
 
-        spinner = (Spinner) findViewById(R.id.spinner_elem);
+        atv_nombreElem = (AutoCompleteTextView) findViewById(R.id.atv_nombreElementos);
         elementosSeleccionados = (ListView) findViewById(R.id.lv_listaElem);
 
         repo = new Repositorio(this);
@@ -77,12 +79,13 @@ public class Planilla extends AppCompatActivity {
             nombreElementos.add(e.getNombre());
         }
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
-        spinner.setAdapter(adapter);
+        atv_nombreElem.setAdapter(adapter);
     }
 
 
     public void agregarElementos(View view){
-        String elem = spinner.getSelectedItem().toString();
+        String elem = atv_nombreElem.getText().toString();
+        atv_nombreElem.setText("");
         elem_seleccionados.add(elem);
         elementosSeleccionados.setAdapter(adapterSeleccion);
     }
@@ -134,6 +137,7 @@ public class Planilla extends AppCompatActivity {
     private boolean actualizarElementos() {
         boolean exito= false;
         for (String s: elem_seleccionados) {
+            /////// SI NO EXISTE EN DB CREARLO
             int elemId = repo.getIdElemento(s, proyId);
             exito = repo.actualizarElemento(elemId, formId);
             Log.e("EXITO ACTULIZAR ELEM", ""+exito);

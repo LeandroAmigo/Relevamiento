@@ -6,50 +6,56 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.relevamiento.R;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends ArrayAdapter<StatusAdapter> {
+public class MyAdapter extends BaseAdapter {
+
+    private ArrayList<StatusAdapter> status;
+    private Context context;
 
     public MyAdapter(Context context, ArrayList<StatusAdapter> records){
-        super(context, 0, records);
+        this.context = context;
+        status = records;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
-        if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_custom, parent, false);
-        }
+    @Override
+    public int getCount() {
+        return status.size();
+    }
 
-        TextView list_txt = (TextView) convertView.findViewById(R.id.List_txt);
-        final Button list_but = (Button) convertView.findViewById(R.id.List_but);
+    @Override
+    public StatusAdapter getItem(int position) {
+        return  status.get(position);
+    }
 
-        StatusAdapter item = getItem(position);
-        Log.e( "EN ADAPTER", "position: "+position+" nombre: "+item.getNombreElemento()+" correct: "+item.getCorrecto());
-        list_txt.setText(item.getNombreElemento());
-        int correctitud = item.getCorrecto();
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+    public View getView(int position, View view, ViewGroup parent){
+        Log.e("EN GETVIEW", "sss");
+        View view2 =  LayoutInflater.from(context).inflate(R.layout.listview_custom, null);
+
+        TextView name = (TextView) view2.findViewById(R.id.tv_viewholder);
+        name.setText(getItem(position).getNombreElemento());
+
+        int correctitud = getItem(position).getCorrecto();
         if (correctitud == 1){
-            list_txt.setBackgroundColor(Color.GREEN);
-        } else if (correctitud == 0) {
-            list_txt.setBackgroundColor(Color.RED);
-        }else{
-            list_txt.setBackgroundColor(Color.GRAY);
+            name.setTextColor(Color.GREEN);
+        }else if (correctitud == 0) {
+            name.setTextColor(Color.RED);
         }
-
-        list_but.setText(""+(position+1));
-        list_but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                list_but.setText("CLICKEADO");
-
-            }
-        });
-        return convertView;
+        Log.e( "EN ADAPTER", "position: "+position+" nombre: "+getItem(position).getNombreElemento()+" correct: "+getItem(position).getCorrecto());
+        return view2;
     }
+
 
 
 }

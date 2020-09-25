@@ -29,6 +29,8 @@ import com.example.relevamiento.repositorio.parsers.parser_marcas;
 import java.io.File;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Principal extends AppCompatActivity {
@@ -78,11 +80,12 @@ public class Principal extends AppCompatActivity {
 
     private void mostrarElementos() {
         ArrayList<Elemento> listaElementos = getElementos(proyectoSeleccionado.getId());
-        int correctitud = -1; //si no tiene formulario: correctitud es -1
+        int correctitud; //si no tiene formulario: correctitud es -1
         int formId;
         ArrayList<StatusAdapter> listaStatus = new ArrayList<>();
 
         for (Elemento e: listaElementos) {
+            correctitud = -1;
             formId = e.getFormId();
             if (formId != 0) { //tiene formulario asociado
                 correctitud = getCorrectitudFormulario(formId); // 1 o 0
@@ -93,9 +96,12 @@ public class Principal extends AppCompatActivity {
 
         MyAdapter adapter = new MyAdapter(this, listaStatus);
         lv_elementos.setAdapter(adapter);
-
-        //// ASIGNAR OYENTE A CADA ELEMENTO
     }
+
+
+
+
+
     private ArrayList<Elemento> getElementos(int proyId) { return repo.getElementos(proyId); }
 
     private int getCorrectitudFormulario(int formId) { return repo.getCorrectitudFormulario(formId); }
