@@ -55,7 +55,7 @@ public class CambiarDiagramas extends AppCompatActivity {
                 // resaltar seleccionado y obtener el string en ""pathDiagrama""
                 pathDiagrama = diagramas.get(position);
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra(Principal.DIAGRAMA, pathDiagrama);
+                returnIntent.putExtra(DiagramaCompleto.DIAGRAMA, pathDiagrama);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }

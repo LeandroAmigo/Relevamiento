@@ -37,10 +37,9 @@ public class Marcar extends AppCompatActivity {
     private String diagramaActual;
     private Proyecto proyectoSeleccionado;
     private Repositorio repo;
-    private Bitmap myBitmap, aux;
-    private int color;
+    private Bitmap myBitmap;
     private ArrayList<Integer> listaMarcas;
-    private ArrayList<Float> listaTouch;
+
 
     private TouchImageView iv_diagrama;
     private ImageView iv_zoomIn;
@@ -61,7 +60,6 @@ public class Marcar extends AppCompatActivity {
 
         repo = new Repositorio(this);
         listaMarcas = new ArrayList<>();
-        listaTouch = new ArrayList<>();
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -97,9 +95,7 @@ public class Marcar extends AppCompatActivity {
         File imgFile = new File(diagramaActual);
         if (imgFile.exists()) {
             myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            iv_diagrama.setImageBitmap(myBitmap); //setea el diagrama seleccionado
-
-           // mostrarFormularios(diagramaActual);
+            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
         }
     }
 
@@ -108,21 +104,11 @@ public class Marcar extends AppCompatActivity {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            listaTouch.add(motionEvent.getX());
-            listaTouch.add(motionEvent.getY());
             marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY());
-
-            if (listaMarcas.size() == 4) {
-                ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
-                marcarEnDiagrama(listaMarcas);
-                switch_correcto.setEnabled(true);
-            }
         }
         return true;
         }
     };
-
-
 
   /*  private void mostrarFormularios(String pathDiagrama){
         ArrayList<Formulario> formularios = repo.getFormularios(pathDiagrama, proyectoSeleccionado.getId());
@@ -132,35 +118,15 @@ public class Marcar extends AppCompatActivity {
     }*/
 
 
-    private void marcarEnDiagrama(ArrayList<Integer> marcas){
-
-        BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
-        Bitmap aux = drawable.getBitmap();
-        Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
-
-        Matrix invertMatrix = new Matrix();
-        iv_diagrama.getImageMatrix().invert(invertMatrix);
-
-        Canvas tempCanvas = new Canvas(mutableBitMap);
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(3);
-        tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
-
-        iv_diagrama.setImageBitmap(mutableBitMap);
-    }
-
 
     public void switch_correcto (View view){
         if (listaMarcas.size() == 4){
+            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
             if (switch_correcto.isChecked())
                 marcarEnDiagrama(listaMarcas, true);
             else
                 marcarEnDiagrama(listaMarcas, false);
         }
-        btn_aceptar.setEnabled(true);
     }
 
     private void marcarEnDiagrama(ArrayList<Integer> marcas, boolean correcto){
@@ -177,20 +143,24 @@ public class Marcar extends AppCompatActivity {
         Matrix invertMatrix = new Matrix();
         iv_diagrama.getImageMatrix().invert(invertMatrix);
 
-        Canvas tempCanvas = new Canvas(mutableBitMap);
         Paint paint = new Paint();
-        paint.setColor(color);
-        paint.setAlpha(50);
-        paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(3);
-        tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
+        Canvas tempCanvas = new Canvas(mutableBitMap);
 
+        if (marcas.size() == 4) {
+            paint.setColor(color);
+            paint.setAlpha(50);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setStrokeWidth(3);
+            tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
+
+        }else if (marcas.size() == 2) {
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.FILL);
+            tempCanvas.drawCircle(marcas.get(0), marcas.get(1), 12f, paint);
+        }
         iv_diagrama.setImageBitmap(mutableBitMap);
-
     }
-
-
 
     private void AsignarOyentesImageViewTouchable() {
         iv_diagrama.setOnTouchListener(handleTouch); //setea el oyente del click
@@ -208,7 +178,9 @@ public class Marcar extends AppCompatActivity {
         iv_zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.resetZoom();
+                float zm = iv_diagrama.getCurrentZoom()/ 5.5f;
+                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
+                //iv_diagrama.resetZoom();
             }
         });
 
@@ -242,12 +214,10 @@ public class Marcar extends AppCompatActivity {
 
     }
 
-
     private void marcarEnDiagramaNuevoFormulario(float x, float y) {
         //el bitmap actual se guarda en aux. se lo copia en mutableBitMap para modificarlo. se lo almacena en iv_imagen.. ciclo...
         BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
-        aux = drawable.getBitmap();
-
+        Bitmap aux = drawable.getBitmap();
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
 
         float [] eventXY = {x , y};
@@ -271,24 +241,25 @@ public class Marcar extends AppCompatActivity {
             yCoordinate = mutableBitMap.getHeight() - 1;
         }
 
-        //Create a new image bitmap and attach a brand new canvas to it
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.BLACK);
-        paint.setAntiAlias(true);
-
-        Canvas tempCanvas = new Canvas(mutableBitMap);
-        tempCanvas.drawCircle(  (float) xCoordinate, // cx
-                                (float) yCoordinate, // cy
-                                12F, // Radius
-                                paint // Paint
-        );
-
         listaMarcas.add(xCoordinate);
         listaMarcas.add(yCoordinate);
+        if (listaMarcas.size() == 4){
+            ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
+            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            btn_aceptar.setEnabled(true);
+            marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
 
-        iv_diagrama.setImageBitmap(mutableBitMap);
+        }else if (listaMarcas.size() == 2){
+            Paint paint = new Paint();
+            Canvas tempCanvas = new Canvas(mutableBitMap);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.BLACK);
+            paint.setAntiAlias(true);
+            tempCanvas.drawCircle((float) xCoordinate,(float) yCoordinate, 12F, paint);
+            iv_diagrama.setImageBitmap(mutableBitMap);
+        }
     }
+
 
     private void ordenarMarcas(){
         int aux;
@@ -303,7 +274,6 @@ public class Marcar extends AppCompatActivity {
             listaMarcas.set(3,aux);
         }
     }
-
 
     public void acpeptar(View view){
         //guardar diagramas, marcas y correctitud del Formulario en BD
@@ -324,15 +294,15 @@ public class Marcar extends AppCompatActivity {
         }
     }
 
-
-
-    public void cancelar (View view){ // borra la ultima marca
-        if (listaMarcas.size() == 2) {
-            listaMarcas.remove(listaMarcas.size() - 1); // y1
-            listaMarcas.remove(listaMarcas.size() - 1); // x1
-            iv_diagrama.setImageBitmap(aux);
+    public void cancelar (View view){
+        if (listaMarcas.size() >= 2) {
+            listaMarcas.remove(listaMarcas.size() - 1); // y2
+            listaMarcas.remove(listaMarcas.size() - 1); //x2
+            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            if (listaMarcas.size() == 2) {
+                marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
+            }
         }
-
     }
 
 

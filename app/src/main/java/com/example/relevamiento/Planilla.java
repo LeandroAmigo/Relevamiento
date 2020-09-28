@@ -43,9 +43,9 @@ public class Planilla extends AppCompatActivity {
     private ArrayAdapter<String> adapter, adapterSeleccion;
     private String pathAudio, pathFoto;
 
- //   private Spinner spinner;
     private AutoCompleteTextView atv_nombreElem;
     private ListView elementosSeleccionados;
+    private ArrayList<String> nombreElementos;
 
 
     @Override
@@ -55,6 +55,7 @@ public class Planilla extends AppCompatActivity {
 
         atv_nombreElem = (AutoCompleteTextView) findViewById(R.id.atv_nombreElementos);
         elementosSeleccionados = (ListView) findViewById(R.id.lv_listaElem);
+        nombreElementos = new ArrayList<String>();
 
         repo = new Repositorio(this);
         //inicializa lista
@@ -74,7 +75,6 @@ public class Planilla extends AppCompatActivity {
 
     private void mostrarListaElementos() {
         ArrayList<Elemento> listaElementos = repo.getElementos(proyId);
-        ArrayList<String> nombreElementos = new ArrayList<String>();
         for (Elemento e: listaElementos) {
             nombreElementos.add(e.getNombre());
         }
@@ -85,9 +85,17 @@ public class Planilla extends AppCompatActivity {
 
     public void agregarElementos(View view){
         String elem = atv_nombreElem.getText().toString();
-        atv_nombreElem.setText("");
-        elem_seleccionados.add(elem);
-        elementosSeleccionados.setAdapter(adapterSeleccion);
+        if (elem.isEmpty()) {
+            Toast.makeText(this, "Ingresar Elemento relevado", Toast.LENGTH_SHORT).show();
+        }else {
+            atv_nombreElem.setText("");
+            if ( !nombreElementos.contains(elem)){
+                repo.agregarNuevoElemento(proyId, elem);
+            }
+            //verificar si existe
+            elem_seleccionados.add(elem); //lista de elementos relevados
+            elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
+        }
     }
 
     public void agregarAudio(View view){
@@ -137,7 +145,6 @@ public class Planilla extends AppCompatActivity {
     private boolean actualizarElementos() {
         boolean exito= false;
         for (String s: elem_seleccionados) {
-            /////// SI NO EXISTE EN DB CREARLO
             int elemId = repo.getIdElemento(s, proyId);
             exito = repo.actualizarElemento(elemId, formId);
             Log.e("EXITO ACTULIZAR ELEM", ""+exito);

@@ -78,7 +78,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:background="#F43636"
         android:onClick="cancelar"
         android:text="Cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,13 +85,15 @@
 
     <Switch
         android:id="@+id/switch_marcar"
-        android:layout_width="112dp"
-        android:layout_height="39dp"
+        android:layout_width="125dp"
+        android:layout_height="37dp"
         android:layout_marginBottom="5dp"
-        android:clickable="true"
         android:contentDescription="hf_use_description|Correcto"
         android:onClick="switch_correcto"
         android:text="Correcto"
+        android:textStyle="bold"
+        android:thumb="@drawable/thumb"
+        android:track="@drawable/thumb_track"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_aceptar_marcar" />
 
@@ -100,7 +101,6 @@
         android:id="@+id/btn_aceptar_marcar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#4CAF50"
         android:enabled="false"
         android:onClick="acpeptar"
         android:text="Aceptar"

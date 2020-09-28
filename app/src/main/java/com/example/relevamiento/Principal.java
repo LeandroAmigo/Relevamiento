@@ -37,7 +37,6 @@ public class Principal extends AppCompatActivity {
 
     public static final String NOMBRE_PROYECTO = "proyecto_nombre";
     public static final String DIAGRAMA = "diagrama";
-    private static final int ACTIVITY_CAMBIAR_DIAGRAMA = 1;
 
     private String nombreProyecto;
     private String diagramaActual;
@@ -98,10 +97,6 @@ public class Principal extends AppCompatActivity {
         lv_elementos.setAdapter(adapter);
     }
 
-
-
-
-
     private ArrayList<Elemento> getElementos(int proyId) { return repo.getElementos(proyId); }
 
     private int getCorrectitudFormulario(int formId) { return repo.getCorrectitudFormulario(formId); }
@@ -145,7 +140,6 @@ public class Principal extends AppCompatActivity {
         paint.setAlpha(50);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
-        //paint.setStrokeWidth(3);
         tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
 
         iv_diagrama.setImageBitmap(mutableBitMap);
@@ -154,20 +148,11 @@ public class Principal extends AppCompatActivity {
 
     public void cambiarDiagramas(View view){
         //   https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
-        Intent i = new Intent(this, CambiarDiagramas.class);
-        i.putExtra(CambiarDiagramas.NOMBRE_PROYECTO, nombreProyecto);
-        startActivityForResult(i, ACTIVITY_CAMBIAR_DIAGRAMA);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ACTIVITY_CAMBIAR_DIAGRAMA) {
-            if (resultCode == Activity.RESULT_OK) {
-                diagramaActual = data.getStringExtra(DIAGRAMA);
-                mostrarDiagrama();
-            }
-        }
+        Intent i = new Intent(this, DiagramaCompleto.class);
+        i.putExtra(DiagramaCompleto.NOMBRE_PROYECTO, nombreProyecto);
+        i.putExtra(DiagramaCompleto.DIAGRAMA, diagramaActual);
+        startActivity(i);
+        finish();
     }
 
     public void marcarFormulario(View view){
@@ -176,6 +161,9 @@ public class Principal extends AppCompatActivity {
         i.putExtra(Marcar.DIAGRAMA, diagramaActual);
         startActivity(i);
         finish();
+    }
+
+    public void editarFormulario(View view){
 
 
     }

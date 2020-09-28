@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".DiagramaCompleto">
 
+    <FrameLayout
+        android:layout_width="852dp"
+        android:layout_height="478dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/diagrama"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <Button
+            android:id="@+id/btn_aceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="300dp"
+            android:onClick="aceptarDiagrama"
+            android:text="Aceptar" />
+
+        <Button
+            android:id="@+id/btn_cambiarDiagrama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="200dp"
+            android:onClick="cambiarDiagramas"
+            android:text="Cambiar Diagrama" />
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

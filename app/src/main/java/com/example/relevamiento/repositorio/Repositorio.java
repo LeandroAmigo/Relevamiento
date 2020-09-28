@@ -174,6 +174,18 @@ public class Repositorio {
         close();
     }
 
+    public void agregarNuevoElemento(int proyId, String nombre){
+        ContentValues cv = new ContentValues();
+        open();
+            cv.put("elemento_nombre", nombre);
+            cv.put("proyecto_id", proyId);
+            BaseDeDatos.insert("elementos", null, cv);
+
+            Log.e("AGRGANDO ELEMENTO", nombre+" AL PROYECTO "+ proyId );
+
+        close();
+    }
+
     public ArrayList<Elemento> getElementos (int proyId){
         ArrayList<Elemento> salida = new ArrayList<Elemento>();
         open();

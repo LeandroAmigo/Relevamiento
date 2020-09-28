@@ -53,12 +53,11 @@
             android:weightSum="2">
 
             <Button
-                android:id="@+id/btn_diagramas"
+                android:id="@+id/btn_editar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:onClick="cambiarDiagramas"
-                android:text="Diagramas" />
+                android:text="Editar" />
 
             <Button
                 android:id="@+id/btn_marcar"
@@ -68,6 +67,14 @@
                 android:onClick="marcarFormulario"
                 android:text="Marcar" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_diagramas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:onClick="cambiarDiagramas"
+            android:text="Diagramas" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,6 @@ public class MyAdapter extends BaseAdapter {
 
 
     public View getView(int position, View view, ViewGroup parent){
-        Log.e("EN GETVIEW", "sss");
         View view2 =  LayoutInflater.from(context).inflate(R.layout.listview_custom, null);
 
         TextView name = (TextView) view2.findViewById(R.id.tv_viewholder);
@@ -52,7 +51,6 @@ public class MyAdapter extends BaseAdapter {
         }else if (correctitud == 0) {
             name.setTextColor(Color.RED);
         }
-        Log.e( "EN ADAPTER", "position: "+position+" nombre: "+getItem(position).getNombreElemento()+" correct: "+getItem(position).getCorrecto());
         return view2;
     }
 
