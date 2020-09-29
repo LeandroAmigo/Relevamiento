@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.modelos.Formulario;
@@ -45,14 +46,17 @@ public class Principal extends AppCompatActivity {
     private ImageView iv_diagrama;
     private Bitmap myBitmap;
     private ListView lv_elementos;
+    private TextView tv_avance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+
         iv_diagrama = (ImageView) findViewById(R.id.diagrama);
         lv_elementos = (ListView) findViewById(R.id.listaElem);
+        tv_avance = (TextView) findViewById(R.id.tv_avance);
 
         repo = new Repositorio(this);
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
@@ -78,6 +82,7 @@ public class Principal extends AppCompatActivity {
     }
 
     private void mostrarElementos() {
+        int cant = 0;
         ArrayList<Elemento> listaElementos = getElementos(proyectoSeleccionado.getId());
         int correctitud; //si no tiene formulario: correctitud es -1
         int formId;
@@ -88,6 +93,7 @@ public class Principal extends AppCompatActivity {
             formId = e.getFormId();
             if (formId != 0) { //tiene formulario asociado
                 correctitud = getCorrectitudFormulario(formId); // 1 o 0
+                cant++; // para porcentaje
             }
             listaStatus.add(new StatusAdapter (e.getNombre(), correctitud ));
             Log.e("STATUS", "nombre: "+e.getNombre()+" correctitud: "+correctitud);
@@ -95,6 +101,9 @@ public class Principal extends AppCompatActivity {
 
         MyAdapter adapter = new MyAdapter(this, listaStatus);
         lv_elementos.setAdapter(adapter);
+        //actualizar avance
+        tv_avance.setText("Completado: " +((cant*100)/listaElementos.size())+ "% ");
+        Log.e("sda", "Completado: " +((cant*100)/listaElementos.size())+ "% ");
     }
 
     private ArrayList<Elemento> getElementos(int proyId) { return repo.getElementos(proyId); }
@@ -155,8 +164,8 @@ public class Principal extends AppCompatActivity {
         finish();
     }
 
-    public void marcarFormulario(View view){
-        Intent i = new Intent(this, Marcar.class);
+    public void nuevoFormulario(View view){
+        Intent i = new Intent(this, Planilla.class);
         i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
         i.putExtra(Marcar.DIAGRAMA, diagramaActual);
         startActivity(i);
@@ -164,8 +173,7 @@ public class Principal extends AppCompatActivity {
     }
 
     public void editarFormulario(View view){
-
-
+      //PlanillaEditar.class
     }
 
 

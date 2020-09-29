@@ -24,28 +24,29 @@ import java.util.ArrayList;
 
 public class Planilla extends AppCompatActivity {
 
-    public static final String ID_PROYECTO = "proyecto_id";
-    public static final String ID_FORMULARIO = "formulario_id";
     public static final String NOMBRE_PROYECTO = "proyecto_nombre";
     public static final String DIAGRAMA = "diagrama";
+    public static final String MARCAS = "marcas";
+    public static final String SWITCH = "switch";
 
     public static final String AUDIO = "audio";
     public static final String FOTO = "foto";
 
     private static final int ACTIVITY_GRABAR_AUDIO = 1;
     private static final int ACTIVITY_FOTO = 2;
-    private static final int ACTIVITY_PLANO = 3;
+    private static final int ACTIVITY_PLANO = 33;
 
 
     private Repositorio repo;
-    private int proyId, formId;
-    private ArrayList<String> elem_seleccionados;
+    private int proyId;
+    private ArrayList<String> elem_seleccionados, nombreElementos;
     private ArrayAdapter<String> adapter, adapterSeleccion;
-    private String pathAudio, pathFoto;
+    private String pathAudio, pathFoto, nombreProyecto, diagramaActual;
 
     private AutoCompleteTextView atv_nombreElem;
     private ListView elementosSeleccionados;
-    private ArrayList<String> nombreElementos;
+    private ArrayList<Integer> listaMarcas;
+    private boolean correcto;
 
 
     @Override
@@ -55,22 +56,25 @@ public class Planilla extends AppCompatActivity {
 
         atv_nombreElem = (AutoCompleteTextView) findViewById(R.id.atv_nombreElementos);
         elementosSeleccionados = (ListView) findViewById(R.id.lv_listaElem);
+
         nombreElementos = new ArrayList<String>();
+        listaMarcas = new ArrayList<Integer>();
 
         repo = new Repositorio(this);
         //inicializa lista
         elem_seleccionados = new ArrayList<String>();
         adapterSeleccion = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
 
-        if (getIntent().hasExtra(ID_PROYECTO) && getIntent().hasExtra(ID_FORMULARIO)) {
-            proyId = getIntent().getIntExtra(ID_PROYECTO,-1);
-            formId = getIntent().getIntExtra(ID_FORMULARIO, -1);
+        if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
+            nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
+            proyId = repo.getIdProyecto(nombreProyecto);
+        }
+        if (getIntent().hasExtra(DIAGRAMA)) {
+            diagramaActual = getIntent().getStringExtra(DIAGRAMA);
         }
 
-        if ( (proyId != -1) && (formId != -1) ){
-            mostrarListaElementos();
-        }
 
+        mostrarListaElementos();
     }
 
     private void mostrarListaElementos() {
@@ -82,7 +86,6 @@ public class Planilla extends AppCompatActivity {
         atv_nombreElem.setAdapter(adapter);
     }
 
-
     public void agregarElementos(View view){
         String elem = atv_nombreElem.getText().toString();
         if (elem.isEmpty()) {
@@ -92,7 +95,6 @@ public class Planilla extends AppCompatActivity {
             if ( !nombreElementos.contains(elem)){
                 repo.agregarNuevoElemento(proyId, elem);
             }
-            //verificar si existe
             elem_seleccionados.add(elem); //lista de elementos relevados
             elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
         }
@@ -105,10 +107,14 @@ public class Planilla extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == ACTIVITY_GRABAR_AUDIO) {
             if (resultCode == Activity.RESULT_OK) {
                 pathAudio = data.getStringExtra(AUDIO);
+            }
+        } else if (requestCode == ACTIVITY_PLANO){
+            if (resultCode == Activity.RESULT_OK) {
+                listaMarcas = data.getIntegerArrayListExtra(MARCAS);
+                correcto = data.getBooleanExtra(SWITCH, true);
             }
         }
     }
@@ -119,30 +125,39 @@ public class Planilla extends AppCompatActivity {
     }
 
     public void verPlano(View view) {
-        Intent i = new Intent(this, AyudaPlanilla.class);
+        Intent i = new Intent(this, Marcar.class);
+        i.putExtra(Marcar.DIAGRAMA, diagramaActual);
+        i.putExtra(Marcar.MARCAS, listaMarcas);
+        i.putExtra(Marcar.SWITCH, correcto);
         startActivityForResult(i, ACTIVITY_PLANO);
     }
 
 
-    public void guardarFormulario(View view){
-        boolean exito;
-        if (!actualizarElementos()) {
-            Toast.makeText(this, "Ningun elemento seleccionado", Toast.LENGTH_SHORT).show();
-        }else {
-            /////solo guarda AUDIO para probar
-            exito = repo.agregarDatosFormulario(formId, pathAudio);
 
-            if (exito) {
-                Intent intent = new Intent(this, Principal.class);
-                intent.putExtra(Principal.NOMBRE_PROYECTO, getIntent().getStringExtra(NOMBRE_PROYECTO));
-                intent.putExtra(Principal.DIAGRAMA, getIntent().getStringExtra(DIAGRAMA));
-                startActivity(intent);
+    public void guardarFormulario(View view){
+        if (listaMarcas.size() < 4) {
+            Toast.makeText(this, "Marcar region relevada", Toast.LENGTH_SHORT).show();
+        }else{  //crear Formulario en BD
+            boolean exito;
+            int formId = repo.crearFormulario(proyId, diagramaActual, listaMarcas, correcto);
+
+            if (formId != -1){ //correcto
+                exito = actualizarElementos(formId);
+                Intent i = new Intent(this, Principal.class);
+                i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
+                i.putExtra(Planilla.DIAGRAMA, diagramaActual);
+                startActivity(i);
                 finish();
             }
+            /////solo guarda AUDIO para probar
+           // exito = repo.agregarDatosFormulario(formId, pathAudio);
+
         }
     }
 
-    private boolean actualizarElementos() {
+
+
+    private boolean actualizarElementos(int formId) {
         boolean exito= false;
         for (String s: elem_seleccionados) {
             int elemId = repo.getIdElemento(s, proyId);

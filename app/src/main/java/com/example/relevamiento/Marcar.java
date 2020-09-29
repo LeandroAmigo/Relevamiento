@@ -2,6 +2,7 @@ package com.example.relevamiento;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,14 +33,12 @@ public class Marcar extends AppCompatActivity {
 
     public static final String NOMBRE_PROYECTO = "proyecto_nombre";
     public static final String DIAGRAMA = "diagrama";
+    public static final String MARCAS = "marcas";
+    public static final String SWITCH = "switch";
 
-    private String nombreProyecto;
     private String diagramaActual;
-    private Proyecto proyectoSeleccionado;
-    private Repositorio repo;
-    private Bitmap myBitmap;
     private ArrayList<Integer> listaMarcas;
-
+    private Switch switch_correcto;
 
     private TouchImageView iv_diagrama;
     private ImageView iv_zoomIn;
@@ -48,9 +47,11 @@ public class Marcar extends AppCompatActivity {
     private ImageView iv_right;
     private ImageView iv_up;
     private ImageView iv_down;
-    private Switch switch_correcto;
+    private Bitmap myBitmap;
+
     private Button btn_aceptar;
     private Button btn_cancelar;
+    private boolean correcto = true;
 
 
     @Override
@@ -58,13 +59,14 @@ public class Marcar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marcar);
 
-        repo = new Repositorio(this);
         listaMarcas = new ArrayList<>();
 
-        if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
-            nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
+        if (getIntent().hasExtra(DIAGRAMA)) {
             diagramaActual = getIntent().getStringExtra(DIAGRAMA);
-            proyectoSeleccionado = repo.getProyecto(nombreProyecto);
+        }
+        if (getIntent().hasExtra(MARCAS)){
+            listaMarcas = getIntent().getIntegerArrayListExtra(MARCAS);
+            correcto = getIntent().getBooleanExtra(SWITCH, true);
         }
 
         btn_aceptar = (Button) findViewById(R.id.btn_aceptar_marcar);
@@ -77,8 +79,17 @@ public class Marcar extends AppCompatActivity {
         iv_right = (ImageView) findViewById(R.id.right);
         iv_up = (ImageView) findViewById(R.id.up);
         iv_down = (ImageView) findViewById(R.id.down);
-
         mostrarDiagrama();
+
+        if (correcto)
+            switch_correcto.setChecked(true);
+        else
+            switch_correcto.setChecked(false);
+
+        if (listaMarcas.size()==4){
+            btn_aceptar.setEnabled(true);
+        }
+        marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
 
         //asigna los oyentes a las imagenes invisibles
         AsignarOyentesImageViewTouchable();
@@ -87,7 +98,6 @@ public class Marcar extends AppCompatActivity {
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", true);
         sendBroadcast(intent);
-
     }
 
 
@@ -103,10 +113,15 @@ public class Marcar extends AppCompatActivity {
     private View.OnTouchListener handleTouch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY());
-        }
-        return true;
+            boolean salida = true;
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (listaMarcas.size()<4) {
+                    marcarEnDiagramaNuevoFormulario(motionEvent.getX(), motionEvent.getY());
+                }
+                else
+                    salida =false;
+            }
+            return salida;
         }
     };
 
@@ -276,22 +291,11 @@ public class Marcar extends AppCompatActivity {
     }
 
     public void acpeptar(View view){
-        //guardar diagramas, marcas y correctitud del Formulario en BD
-        int formId = repo.crearFormulario(proyectoSeleccionado.getId(), diagramaActual, listaMarcas, switch_correcto.isChecked());
-        //deshabilitar MOUSE
-        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
-        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_DISABLED", true);
-        sendBroadcast(intent);
-
-        if (formId != -1){
-            Intent i = new Intent(this, Planilla.class);
-            i.putExtra(Planilla.ID_PROYECTO, proyectoSeleccionado.getId());
-            i.putExtra(Planilla.ID_FORMULARIO, formId);
-            i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
-            i.putExtra(Planilla.DIAGRAMA, diagramaActual);
-            startActivity(i);
-            finish();
-        }
+        Intent i = new Intent();
+        i.putIntegerArrayListExtra(MARCAS, (ArrayList<Integer>) listaMarcas);
+        i.putExtra(SWITCH, switch_correcto.isChecked());
+        setResult(Activity.RESULT_OK,i);
+        finish();
     }
 
     public void cancelar (View view){
@@ -299,7 +303,7 @@ public class Marcar extends AppCompatActivity {
             listaMarcas.remove(listaMarcas.size() - 1); // y2
             listaMarcas.remove(listaMarcas.size() - 1); //x2
             iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
-            if (listaMarcas.size() == 2) {
+            if (listaMarcas.size() == 2) { // dibuja las marcas restantes
                 marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
             }
         }
