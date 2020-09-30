@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:contentDescription="hf_use_description|Zoom In"
+            android:contentDescription="hf_use_description|Acercar"
             app:srcCompat="@android:drawable/screen_background_dark_transparent" />
 
         <ImageView
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:contentDescription="hf_use_description|Zoom Out"
+            android:contentDescription="hf_use_description|Alejar"
             app:srcCompat="@android:drawable/screen_background_dark_transparent" />
 
         <ImageView

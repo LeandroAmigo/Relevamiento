@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Proyecto {
     private int id;
     private String nombre;
-    private ArrayList<String> diagramas; //lista de direcciones a memoria del dispositivo
+    private ArrayList<String> diagramas; //lista de rutas a memoria del dispositivo
     private boolean permite_fotos;
 
     public Proyecto(int id, String n, ArrayList<String> d, boolean pf) {

@@ -102,8 +102,10 @@ public class Principal extends AppCompatActivity {
         MyAdapter adapter = new MyAdapter(this, listaStatus);
         lv_elementos.setAdapter(adapter);
         //actualizar avance
-        tv_avance.setText("Completado: " +((cant*100)/listaElementos.size())+ "% ");
-        Log.e("sda", "Completado: " +((cant*100)/listaElementos.size())+ "% ");
+        if (listaElementos.size()>0) {
+            tv_avance.setText("Completado: " + ((cant * 100) / listaElementos.size()) + "% ");
+            Log.e("sda", "Completado: " + ((cant * 100) / listaElementos.size()) + "% ");
+        }
     }
 
     private ArrayList<Elemento> getElementos(int proyId) { return repo.getElementos(proyId); }
@@ -161,7 +163,7 @@ public class Principal extends AppCompatActivity {
         i.putExtra(DiagramaCompleto.NOMBRE_PROYECTO, nombreProyecto);
         i.putExtra(DiagramaCompleto.DIAGRAMA, diagramaActual);
         startActivity(i);
-        finish();
+        //finish();
     }
 
     public void nuevoFormulario(View view){
@@ -169,7 +171,7 @@ public class Principal extends AppCompatActivity {
         i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
         i.putExtra(Marcar.DIAGRAMA, diagramaActual);
         startActivity(i);
-        finish();
+        //finish();
     }
 
     public void editarFormulario(View view){

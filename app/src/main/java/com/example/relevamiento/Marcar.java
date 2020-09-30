@@ -93,6 +93,8 @@ public class Marcar extends AppCompatActivity {
 
         //asigna los oyentes a las imagenes invisibles
         AsignarOyentesImageViewTouchable();
+        //setea el oyente del click
+        iv_diagrama.setOnTouchListener(handleTouch);
 
         //activar MOUSE
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
@@ -178,8 +180,6 @@ public class Marcar extends AppCompatActivity {
     }
 
     private void AsignarOyentesImageViewTouchable() {
-        iv_diagrama.setOnTouchListener(handleTouch); //setea el oyente del click
-
         iv_zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -8,9 +8,12 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="661dp"
-        android:layout_height="418dp"
+        android:layout_width="525dp"
+        android:layout_height="478dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,19 +28,24 @@
     <View
         android:id="@+id/view"
         android:layout_width="1dp"
-        android:layout_height="fill_parent"
+        android:layout_height="478dp"
         android:background="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/frameLayout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="189dp"
-        android:layout_height="468dp"
+        android:layout_width="216dp"
+        android:layout_height="417dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -48,14 +56,14 @@
         <LinearLayout
             android:id="@+id/layoutElem"
             android:layout_width="match_parent"
-            android:layout_height="338dp"
+            android:layout_height="296dp"
             android:layout_weight="0.1"
             android:orientation="vertical">
 
             <ListView
                 android:id="@+id/listaElem"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:dividerHeight="1dp" />
         </LinearLayout>
 
@@ -74,8 +82,8 @@
 
             <Button
                 android:id="@+id/btn_marcar"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="nuevoFormulario"
                 android:text="Marcar" />
@@ -84,12 +92,11 @@
         <Button
             android:id="@+id/btn_diagramas"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:onClick="cambiarDiagramas"
             android:text="Diagramas" />
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

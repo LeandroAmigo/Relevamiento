@@ -7,21 +7,68 @@
     tools:context=".DiagramaCompleto">
 
     <FrameLayout
-        android:layout_width="852dp"
-        android:layout_height="478dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="821dp"
+        android:layout_height="430dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <ImageView
-            android:id="@+id/diagrama"
+        <com.ortiz.touchview.TouchImageView
+            android:id="@+id/iv_diagrama"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <ImageView
+            android:id="@+id/zoomIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Acercar"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/zoomOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Alejar"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Izquierda"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Derecha"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Arriba"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
+
+        <ImageView
+            android:id="@+id/down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="hf_use_description|Abajo"
+            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
 
         <Button
             android:id="@+id/btn_aceptar"
@@ -42,4 +89,9 @@
             android:text="Cambiar Diagrama" />
 
     </FrameLayout>
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

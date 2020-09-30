@@ -9,9 +9,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.Repositorio;
+import com.ortiz.touchview.TouchImageView;
 
 import java.io.File;
 
@@ -25,7 +27,14 @@ public class DiagramaCompleto extends AppCompatActivity {
     private String nombreProyecto;
     private String diagramaActual;
 
-    private ImageView iv_diagrama;
+    private TouchImageView iv_diagrama;
+    private ImageView iv_zoomIn;
+    private ImageView iv_zoomOut;
+    private ImageView iv_left;
+    private ImageView iv_right;
+    private ImageView iv_up;
+    private ImageView iv_down;
+
     private Bitmap myBitmap;
 
     @Override
@@ -33,7 +42,16 @@ public class DiagramaCompleto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diagrama_completo);
 
-        iv_diagrama = (ImageView) findViewById(R.id.diagrama);
+        iv_diagrama = (TouchImageView) findViewById(R.id.iv_diagrama);
+        iv_zoomIn = (ImageView) findViewById(R.id.zoomIn);
+        iv_zoomOut = (ImageView) findViewById(R.id.zoomOut);
+        iv_left = (ImageView) findViewById(R.id.left);
+        iv_right = (ImageView) findViewById(R.id.right);
+        iv_up = (ImageView) findViewById(R.id.up);
+        iv_down = (ImageView) findViewById(R.id.down);
+
+        //asigna los oyentes a las imagenes invisibles
+        AsignarOyentesImageViewTouchable();
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -42,14 +60,67 @@ public class DiagramaCompleto extends AppCompatActivity {
             diagramaActual = getIntent().getStringExtra(DIAGRAMA);
             mostrarDiagrama();
         }
+
+
     }
 
     private void mostrarDiagrama() {
         File imgFile = new File(diagramaActual);
         if (imgFile.exists()) {
             myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            iv_diagrama.setImageBitmap(myBitmap); //setea el diagrama seleccionado
+            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
         }
+    }
+
+
+    private void AsignarOyentesImageViewTouchable() {
+        iv_zoomIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_diagrama.setMaxZoom(12);
+                float zm = iv_diagrama.getCurrentZoom()* 5.5f;
+                Toast.makeText(getApplicationContext(),"CURRENT ZOOM:  "+zm, Toast.LENGTH_SHORT).show();
+                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
+            }
+        });
+
+        iv_zoomOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float zm = iv_diagrama.getCurrentZoom()/ 2.5f;
+                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
+                //iv_diagrama.resetZoom();
+            }
+        });
+
+        iv_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y - 0.1F);
+            }
+        });
+
+        iv_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y + 0.1F);
+            }
+        });
+
+        iv_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x - 0.1F, iv_diagrama.getScrollPosition().y);
+            }
+        });
+
+        iv_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x + 0.1F, iv_diagrama.getScrollPosition().y);
+            }
+        });
+
     }
 
 
