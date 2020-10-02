@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.relevamiento.db.DataBaseHelper;
@@ -14,8 +16,14 @@ import com.example.relevamiento.repositorio.parsers.parser_diagramas;
 import com.example.relevamiento.repositorio.parsers.parser_elementos;
 import com.example.relevamiento.repositorio.parsers.parser_marcas;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 
 public class Repositorio {
@@ -301,6 +309,29 @@ public class Repositorio {
 
         Log.e("agregar al FORMULARIO", " ID: "+formId +" pathAudio: "+pathAudio);
         return exito;
+    }
+
+    public void exportarDiagrama(Bitmap finalBitmap) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/Diagramas_Relevados");
+        if (!myDir.exists()) {
+            myDir.mkdirs();
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        String fname = "Image-"+ currentDateandTime +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ())
+            file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

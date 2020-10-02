@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,8 +42,9 @@ public class GrabadoraAudio extends AppCompatActivity {
             // archivoSalida = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Grabacion.mp3";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
             String currentDateandTime = sdf.format(new Date());
-            archivoSalida = "mnt/sdcard/Music/Audio/Grabacion - " +currentDateandTime+ ".mp3";
+           // archivoSalida = "mnt/sdcard/Music/Audio/Grabacion - " +currentDateandTime+ ".mp3";
             /////   archivoSalida = "/sdcard/Documents/Grabacion - " +currentDateandTime+ ".mp3";
+            archivoSalida = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/Audio/Grabacion - " +currentDateandTime+ ".mp3";
             Log.e("PATH", archivoSalida);
             grabacion = new MediaRecorder();
             grabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -54,6 +56,8 @@ public class GrabadoraAudio extends AppCompatActivity {
                 grabacion.prepare();
                 grabacion.start();
             } catch (IOException e){
+                Toast.makeText(getApplicationContext(), "ERRROORRR: CATCH", Toast.LENGTH_SHORT).show();
+
             }
 
             Toast.makeText(getApplicationContext(), "Grabando...", Toast.LENGTH_SHORT).show();

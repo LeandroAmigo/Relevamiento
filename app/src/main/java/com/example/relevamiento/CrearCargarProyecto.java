@@ -31,7 +31,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
     private EditText et_nombre;
     private CheckBox checkBox_fotos;
     private ListView lv_diagramas;
-    //private TextView tv_elementos;
+    private TextView tv_elementos;
 
     private DialogProperties properties;
     private String[] pathDiagramas = null;
@@ -50,7 +50,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
         et_nombre = (EditText) findViewById(R.id.et_nombre);
         checkBox_fotos = (CheckBox) findViewById(R.id.checkBox_fotos);
         lv_diagramas = (ListView) findViewById(R.id.lv_diagramas);
-       // tv_elementos = (TextView) findViewById(R.id.tv_elemento);
+        tv_elementos = (TextView) findViewById(R.id.tv_elemento);
 
         properties = new DialogProperties();
 
@@ -116,6 +116,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
                 //files is the array of the paths of files selected by the Application User.
                 if (files.length == 1) {
                     pathElementos = files[0];
+                    mostrarElementosCargados(pathElementos); //actualiza gridview
                 }
             }
         });
@@ -172,6 +173,11 @@ public class CrearCargarProyecto extends AppCompatActivity {
         }
         ArrayAdapter<String> arrayadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nombrediagramas);
         lv_diagramas.setAdapter(arrayadapter);
+
+    }
+    private void mostrarElementosCargados(String pathElementos) {
+        String substring = pathElementos.substring(22, pathElementos.length()-4); //elimina ""mnt/sdcard/Pictures/"" y tambien el "".jpg""
+        tv_elementos.setText(substring);
 
     }
 

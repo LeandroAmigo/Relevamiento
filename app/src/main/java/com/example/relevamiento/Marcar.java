@@ -10,10 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +19,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.relevamiento.modelos.Formulario;
-import com.example.relevamiento.modelos.Proyecto;
-import com.example.relevamiento.repositorio.Repositorio;
 import com.ortiz.touchview.TouchImageView;
 
 import java.io.File;
@@ -48,9 +43,9 @@ public class Marcar extends AppCompatActivity {
     private ImageView iv_up;
     private ImageView iv_down;
     private Bitmap myBitmap;
+    private static Bitmap salida;
 
     private Button btn_aceptar;
-    private Button btn_cancelar;
     private boolean correcto = true;
 
 
@@ -69,16 +64,16 @@ public class Marcar extends AppCompatActivity {
             correcto = getIntent().getBooleanExtra(SWITCH, true);
         }
 
-        btn_aceptar = (Button) findViewById(R.id.btn_aceptar_marcar);
-        btn_cancelar = (Button) findViewById(R.id.btn_cancelar_marcar);
-        switch_correcto = (Switch) findViewById(R.id.switch_marcar);
-        iv_diagrama = (TouchImageView) findViewById(R.id.iv_diagrama);
-        iv_zoomIn = (ImageView) findViewById(R.id.zoomIn);
-        iv_zoomOut = (ImageView) findViewById(R.id.zoomOut);
-        iv_left = (ImageView) findViewById(R.id.left);
-        iv_right = (ImageView) findViewById(R.id.right);
-        iv_up = (ImageView) findViewById(R.id.up);
-        iv_down = (ImageView) findViewById(R.id.down);
+        btn_aceptar =  findViewById(R.id.btn_aceptar_marcar);
+        //btn_cancelar =  findViewById(R.id.btn_cancelar_marcar);
+        switch_correcto =  findViewById(R.id.switch_marcar);
+        iv_diagrama = findViewById(R.id.iv_diagrama);
+        iv_zoomIn =  findViewById(R.id.zoomIn);
+        iv_zoomOut =  findViewById(R.id.zoomOut);
+        iv_left =  findViewById(R.id.left);
+        iv_right =  findViewById(R.id.right);
+        iv_up =  findViewById(R.id.up);
+        iv_down =  findViewById(R.id.down);
         mostrarDiagrama();
 
         if (correcto)
@@ -107,7 +102,7 @@ public class Marcar extends AppCompatActivity {
         File imgFile = new File(diagramaActual);
         if (imgFile.exists()) {
             myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            cargarDiagramaEnBlanco(); // carga la imagen
         }
     }
 
@@ -138,7 +133,7 @@ public class Marcar extends AppCompatActivity {
 
     public void switch_correcto (View view){
         if (listaMarcas.size() == 4){
-            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            cargarDiagramaEnBlanco(); // carga la imagen
             if (switch_correcto.isChecked())
                 marcarEnDiagrama(listaMarcas, true);
             else
@@ -177,6 +172,7 @@ public class Marcar extends AppCompatActivity {
             tempCanvas.drawCircle(marcas.get(0), marcas.get(1), 12f, paint);
         }
         iv_diagrama.setImageBitmap(mutableBitMap);
+        salida = mutableBitMap; //carga el bitmap que se exporta
     }
 
     private void AsignarOyentesImageViewTouchable() {
@@ -260,7 +256,7 @@ public class Marcar extends AppCompatActivity {
         listaMarcas.add(yCoordinate);
         if (listaMarcas.size() == 4){
             ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
-            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            cargarDiagramaEnBlanco(); // carga la imagen
             btn_aceptar.setEnabled(true);
             marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
 
@@ -302,12 +298,22 @@ public class Marcar extends AppCompatActivity {
         if (listaMarcas.size() >= 2) {
             listaMarcas.remove(listaMarcas.size() - 1); // y2
             listaMarcas.remove(listaMarcas.size() - 1); //x2
-            iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            cargarDiagramaEnBlanco(); // carga la imagen
             if (listaMarcas.size() == 2) { // dibuja las marcas restantes
                 marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
             }
         }
     }
+
+    private void cargarDiagramaEnBlanco(){
+        iv_diagrama.setImageBitmap(myBitmap);
+    }
+
+    public static Bitmap getBitMap(){
+        return salida;
+    }
+
+
 
 
 }

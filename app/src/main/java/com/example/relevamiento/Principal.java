@@ -2,7 +2,6 @@ package com.example.relevamiento;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +13,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,14 +23,10 @@ import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.Repositorio;
 import com.example.relevamiento.repositorio.parsers.MyAdapter;
 import com.example.relevamiento.repositorio.parsers.StatusAdapter;
-import com.example.relevamiento.repositorio.parsers.parser_marcas;
 
 import java.io.File;
-import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 public class Principal extends AppCompatActivity {
 
@@ -54,9 +48,9 @@ public class Principal extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
 
-        iv_diagrama = (ImageView) findViewById(R.id.diagrama);
-        lv_elementos = (ListView) findViewById(R.id.listaElem);
-        tv_avance = (TextView) findViewById(R.id.tv_avance);
+        iv_diagrama =  findViewById(R.id.diagrama);
+        lv_elementos =  findViewById(R.id.listaElem);
+        tv_avance =  findViewById(R.id.tv_avance);
 
         repo = new Repositorio(this);
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
@@ -176,6 +170,14 @@ public class Principal extends AppCompatActivity {
 
     public void editarFormulario(View view){
       //PlanillaEditar.class
+    }
+
+    @Override
+    public void onBackPressed (){
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
+
     }
 
 
