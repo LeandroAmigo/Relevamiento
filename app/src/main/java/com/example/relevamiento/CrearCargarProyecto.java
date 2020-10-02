@@ -2,7 +2,10 @@ package com.example.relevamiento;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,8 +33,8 @@ public class CrearCargarProyecto extends AppCompatActivity {
 
     private EditText et_nombre;
     private CheckBox checkBox_fotos;
-    private ListView lv_diagramas;
-    private TextView tv_elementos;
+    private ListView lv_diagramas; //lista de nombres de diagramas
+    private TextView tv_elementos; //nombre de archivo de elementos
 
     private DialogProperties properties;
     private String[] pathDiagramas = null;
@@ -47,10 +50,10 @@ public class CrearCargarProyecto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_cargar_proyecto);
 
-        et_nombre = (EditText) findViewById(R.id.et_nombre);
-        checkBox_fotos = (CheckBox) findViewById(R.id.checkBox_fotos);
-        lv_diagramas = (ListView) findViewById(R.id.lv_diagramas);
-        tv_elementos = (TextView) findViewById(R.id.tv_elemento);
+        et_nombre =  findViewById(R.id.et_nombre);
+        checkBox_fotos =  findViewById(R.id.checkBox_fotos);
+        lv_diagramas =  findViewById(R.id.lv_diagramas);
+        tv_elementos =  findViewById(R.id.tv_elemento);
 
         properties = new DialogProperties();
 
@@ -90,7 +93,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
                 if (files.length > 0) {
                     pathDiagramas = files;
                     ArrayList<String> listaDiagramas = new ArrayList<String>(Arrays.asList(pathDiagramas));
-                    mostrarNombreDiagramas(listaDiagramas); //actualiza gridview
+                    mostrarNombreDiagramas(listaDiagramas); //actualiza listview
                 }
             }
         });
@@ -116,7 +119,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
                 //files is the array of the paths of files selected by the Application User.
                 if (files.length == 1) {
                     pathElementos = files[0];
-                    mostrarElementosCargados(pathElementos); //actualiza gridview
+                    mostrarNuevosElementosCargados(pathElementos); //actualiza textview
                 }
             }
         });
@@ -155,7 +158,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
             }
         }
 
-        if (exito == true) {
+        if (exito) {
             Toast.makeText(this, "Proyecto guardado", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, Principal.class);
@@ -166,20 +169,19 @@ public class CrearCargarProyecto extends AppCompatActivity {
     }
 
     private void mostrarNombreDiagramas( ArrayList<String> diagramas){
-        ArrayList<String> nombrediagramas = new ArrayList<>();
-        for (String s: diagramas) {
-            String substring = s.substring(21, s.length()-4); //elimina ""mnt/sdcard/Pictures/"" y tambien el "".jpg""
-            nombrediagramas.add(substring);
-        }
-        ArrayAdapter<String> arrayadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nombrediagramas);
-        lv_diagramas.setAdapter(arrayadapter);
+            ArrayList<String> nombrediagramas = new ArrayList<>();
+            for (String s : diagramas) {
+                String substring = s.substring(21, s.length() - 4); //elimina ""mnt/sdcard/Pictures/"" y tambien el "".jpg""
+                nombrediagramas.add(substring);
+            }
+            ArrayAdapter<String> arrayadapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nombrediagramas);
+            lv_diagramas.setAdapter(arrayadapter);
 
     }
-    private void mostrarElementosCargados(String pathElementos) {
-        String substring = pathElementos.substring(22, pathElementos.length()-4); //elimina ""mnt/sdcard/Pictures/"" y tambien el "".jpg""
+
+    private void mostrarNuevosElementosCargados(String pathElementos) {
+        String substring = pathElementos.substring(22, pathElementos.length()-4); //elimina ""mnt/sdcard/Documents/"" y tambien el "".csv""
         tv_elementos.setText(substring);
-
     }
-
 
 }
