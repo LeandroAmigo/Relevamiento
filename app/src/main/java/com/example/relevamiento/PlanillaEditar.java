@@ -7,27 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.relevamiento.modelos.Elemento;
-import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.repositorio.Repositorio;
-import com.example.relevamiento.repositorio.parsers.MyAdapter;
-import com.example.relevamiento.repositorio.parsers.StatusAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class Planilla extends AppCompatActivity {
+public class PlanillaEditar extends AppCompatActivity {
 
     public static final String NOMBRE_PROYECTO = "proyecto_nombre";
     public static final String DIAGRAMA = "diagrama";
@@ -38,19 +29,18 @@ public class Planilla extends AppCompatActivity {
     public static final String FOTO = "foto";
 
     private static final int ACTIVITY_GRABAR_AUDIO = 1;
-    private static final int BASIC_CAMERA_REQUEST_CODE = 1889;
-    private static final int CAMERA_REQUEST_URI = 1888;
+    private static final int ACTIVITY_FOTO = 2;
     private static final int ACTIVITY_PLANO = 33;
 
 
     private Repositorio repo;
-    private int proyId;
+    private int proyId, formId;
     private ArrayList<String> elem_seleccionados, nombreElementos;
     private ArrayAdapter<String> adapter, adapterSeleccion;
     private String pathAudio, pathFoto, nombreProyecto, diagramaActual;
 
     private AutoCompleteTextView atv_nombreElem;
-    private ListView elementosSeleccionados;
+    private ListView lv_elementosSeleccionados;
     private ArrayList<Integer> listaMarcas;
     private boolean correcto;
 
@@ -60,16 +50,18 @@ public class Planilla extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planilla);
 
-        atv_nombreElem = (AutoCompleteTextView) findViewById(R.id.atv_nombreElementos);
-        elementosSeleccionados = (ListView) findViewById(R.id.lv_listaElem);
 
-        nombreElementos = new ArrayList<String>();
-        listaMarcas = new ArrayList<Integer>();
+        atv_nombreElem =  findViewById(R.id.atv_nombreElementos);
+        lv_elementosSeleccionados = findViewById(R.id.lv_listaElem);
+
+        nombreElementos = new ArrayList<>();
+        listaMarcas = new ArrayList<>();
 
         repo = new Repositorio(this);
+
         //inicializa lista
-        elem_seleccionados = new ArrayList<String>();
-        adapterSeleccion = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
+        elem_seleccionados = new ArrayList<>();
+        adapterSeleccion = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -79,14 +71,16 @@ public class Planilla extends AppCompatActivity {
             diagramaActual = getIntent().getStringExtra(DIAGRAMA);
         }
 
-
         mostrarListaElementos();
     }
 
     private void mostrarListaElementos() {
+        int formId;
         ArrayList<Elemento> listaElementos = repo.getElementos(proyId);
         for (Elemento e: listaElementos) {
-            nombreElementos.add(e.getNombre());
+            formId = e.getFormId();
+            if (formId != 0) //tiene formulario asociado
+                nombreElementos.add(e.getNombre());
         }
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
         atv_nombreElem.setAdapter(adapter);
@@ -98,12 +92,19 @@ public class Planilla extends AppCompatActivity {
             Toast.makeText(this, "Ingresar Elemento relevado", Toast.LENGTH_SHORT).show();
         }else {
             atv_nombreElem.setText("");
-            if ( !nombreElementos.contains(elem)){
-                repo.agregarNuevoElemento(proyId, elem);
-            }
-            elem_seleccionados.add(elem); //lista de elementos relevados
-            elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
+            atv_nombreElem.setFocusable(false);
+            atv_nombreElem.setEnabled(false);
+            mostrarElementosMismoFormulario(elem, proyId);
         }
+    }
+
+    private void mostrarElementosMismoFormulario(String elem, int proyId) {
+        formId= repo.getFormId(elem, proyId);
+        ArrayList<String> elementosFormulario = repo.getElementosMismoFormulario(proyId, formId);  //lista de elementos mismo formulario
+        for (String s: elementosFormulario) {
+            elem_seleccionados.add(s);
+        }
+        lv_elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
     }
 
     public void agregarAudio(View view){
@@ -113,36 +114,21 @@ public class Planilla extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            switch (requestCode) {
-                case ACTIVITY_GRABAR_AUDIO:
-                    pathAudio = data.getStringExtra(AUDIO);
-                    break;
-
-                case ACTIVITY_PLANO:
-                    listaMarcas = data.getIntegerArrayListExtra(MARCAS);
-                    correcto = data.getBooleanExtra(SWITCH, true);
-                    break;
-
-                case CAMERA_REQUEST_URI:
-                    //Bitmap photo = data.getExtras().getParcelable(EXTRA_RESULT);
-                    //mImageView.setImageBitmap(photo);
-                    break;
+        if (requestCode == ACTIVITY_GRABAR_AUDIO) {
+            if (resultCode == Activity.RESULT_OK) {
+                pathAudio = data.getStringExtra(AUDIO);
+            }
+        } else if (requestCode == ACTIVITY_PLANO){
+            if (resultCode == Activity.RESULT_OK) {
+                listaMarcas = data.getIntegerArrayListExtra(MARCAS);
+                correcto = data.getBooleanExtra(SWITCH, true);
             }
         }
     }
 
     public void agregarFoto(View view) {
-        String nombreCarpeta = "FotosRelevamiento";
-        File f = new File(Environment.getExternalStorageDirectory(), nombreCarpeta);
-        if (!f.exists()) {
-            boolean salida = f.mkdirs();
-        }
-        String pathFoto = f.toString() + "/" + "proyecto-"+proyId+".jpg";
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); // OR ACTION_VIDEO_CAPTURE
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, pathFoto);
-        startActivityForResult(intent, CAMERA_REQUEST_URI);
+        Intent i = new Intent(this, GrabadoraAudio.class);
+        startActivityForResult(i, ACTIVITY_FOTO);
     }
 
     public void verPlano(View view) {
@@ -158,14 +144,17 @@ public class Planilla extends AppCompatActivity {
     public void guardarFormulario(View view){
         if (listaMarcas.size() < 4) {
             Toast.makeText(this, "Marcar region relevada", Toast.LENGTH_SHORT).show();
-        }else{  //crear Formulario en BD
+        }else{  //actualizar Formulario en BD... marcas - correctitud - audio - foto -
+
+
             boolean exito;
-            int formId = repo.crearFormulario(proyId, diagramaActual, listaMarcas, correcto);
+            //int formId = repo.crearFormulario(proyId, diagramaActual, listaMarcas, correcto);
 
             if (formId != -1){ //correcto
-                exito = actualizarElementos(formId);
+                //exito = actualizarElementos(formId);
 
                 restaurarPreferencias();
+
                 Intent i = new Intent(this, Principal.class);
                 i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
                 i.putExtra(Planilla.DIAGRAMA, diagramaActual);
@@ -173,12 +162,12 @@ public class Planilla extends AppCompatActivity {
                 finish();
             }
             /////solo guarda AUDIO para probar
-           // exito = repo.agregarDatosFormulario(formId, pathAudio);
+            // exito = repo.agregarDatosFormulario(formId, pathAudio);
 
         }
     }
 
-    private boolean actualizarElementos(int formId) {
+   /* private boolean actualizarElementos(int formId) {
         boolean exito= false;
         for (String s: elem_seleccionados) {
             int elemId = repo.getIdElemento(s, proyId);
@@ -186,9 +175,9 @@ public class Planilla extends AppCompatActivity {
             Log.e("EXITO ACTULIZAR ELEM", ""+exito);
         }
         return exito;
-    }
+    }*/
 
-    private void restaurarPreferencias(){ // el boton guardar lo invoca!!!
+    private void restaurarPreferencias(){
         SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear().apply();

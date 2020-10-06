@@ -13,16 +13,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GrabadoraAudio" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".AyudaPlanilla" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".CambiarDiagramas" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".DiagramaCompleto" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".Planilla" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".Marcar" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".Principal" android:configChanges="screenSize|orientation"></activity>
-        <activity android:name=".CrearCargarProyecto" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".ListadoProyectos" android:configChanges="screenSize|orientation" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".MainActivity" android:configChanges="screenSize|orientation" >
+        <activity android:name=".PlanillaEditar"></activity>
+        <activity
+            android:name=".GrabadoraAudio"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".AyudaPlanilla"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".CambiarDiagramas"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".DiagramaCompleto"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Planilla"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Marcar"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Principal"
+            android:configChanges="screenSize|orientation" />
+        <activity
+            android:name=".CrearCargarProyecto"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ListadoProyectos"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="screenSize|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

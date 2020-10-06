@@ -169,7 +169,10 @@ public class Principal extends AppCompatActivity {
     }
 
     public void editarFormulario(View view){
-      //PlanillaEditar.class
+        Intent i = new Intent(this, PlanillaEditar.class);
+        i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
+        i.putExtra(Marcar.DIAGRAMA, diagramaActual);
+        startActivity(i);
     }
 
     @Override

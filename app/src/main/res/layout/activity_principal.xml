@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="1"
+                android:onClick="editarFormulario"
                 android:text="Editar" />
 
             <Button

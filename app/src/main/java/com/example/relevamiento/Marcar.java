@@ -3,7 +3,9 @@ package com.example.relevamiento;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,6 +14,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -43,10 +46,10 @@ public class Marcar extends AppCompatActivity {
     private ImageView iv_up;
     private ImageView iv_down;
     private Bitmap myBitmap;
-    private static Bitmap salida;
 
     private Button btn_aceptar;
     private boolean correcto = true;
+    private float zoom, x, y;
 
 
     @Override
@@ -65,7 +68,6 @@ public class Marcar extends AppCompatActivity {
         }
 
         btn_aceptar =  findViewById(R.id.btn_aceptar_marcar);
-        //btn_cancelar =  findViewById(R.id.btn_cancelar_marcar);
         switch_correcto =  findViewById(R.id.switch_marcar);
         iv_diagrama = findViewById(R.id.iv_diagrama);
         iv_zoomIn =  findViewById(R.id.zoomIn);
@@ -95,6 +97,15 @@ public class Marcar extends AppCompatActivity {
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", true);
         sendBroadcast(intent);
+
+        cargarPreferencias(); //zoom y coords
+    }
+
+    private void cargarPreferencias() {
+        SharedPreferences preferences = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+        zoom = preferences.getFloat("zoom", iv_diagrama.getCurrentZoom());
+        x = preferences.getFloat("coordX", iv_diagrama.getScrollPosition().x);
+        y = preferences.getFloat("coordY", iv_diagrama.getScrollPosition().y);
     }
 
 
@@ -121,14 +132,6 @@ public class Marcar extends AppCompatActivity {
             return salida;
         }
     };
-
-  /*  private void mostrarFormularios(String pathDiagrama){
-        ArrayList<Formulario> formularios = repo.getFormularios(pathDiagrama, proyectoSeleccionado.getId());
-        for (Formulario form: formularios) {
-            marcarEnDiagrama(form.getMarcas(), form.isEsCorrecto());
-        }
-    }*/
-
 
 
     public void switch_correcto (View view){
@@ -172,7 +175,6 @@ public class Marcar extends AppCompatActivity {
             tempCanvas.drawCircle(marcas.get(0), marcas.get(1), 12f, paint);
         }
         iv_diagrama.setImageBitmap(mutableBitMap);
-        salida = mutableBitMap; //carga el bitmap que se exporta
     }
 
     private void AsignarOyentesImageViewTouchable() {
@@ -180,46 +182,74 @@ public class Marcar extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 iv_diagrama.setMaxZoom(12);
-                float zm = iv_diagrama.getCurrentZoom()* 5.5f;
+                float zm = zoom* 5.5f;
                 Toast.makeText(getApplicationContext(),"CURRENT ZOOM:  "+zm, Toast.LENGTH_SHORT).show();
-                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
+                iv_diagrama.setZoom(zm, x, y);
+                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putFloat("zoom", zm);
+                editor.commit();
             }
         });
 
         iv_zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float zm = iv_diagrama.getCurrentZoom()/ 5.5f;
-                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
+                float zm = zoom/ 5.5f;
+                iv_diagrama.setZoom(zm, x, y);
                 //iv_diagrama.resetZoom();
+                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putFloat("zoom", zm);
+                editor.commit();
             }
         });
 
         iv_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y - 0.1F);
+                iv_diagrama.setScrollPosition(x, y - 0.1F);
+                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putFloat("coordY", y - 0.1F);
+                editor.commit();
             }
         });
 
         iv_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y + 0.1F);
+                iv_diagrama.setScrollPosition(x, y + 0.1F);
+                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putFloat("coordY", y + 0.1F);
+                editor.commit();
             }
         });
 
         iv_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x - 0.1F, iv_diagrama.getScrollPosition().y);
+                iv_diagrama.setScrollPosition(x - 0.1F, y);
+                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putFloat("coordX", x - 0.1F);
+                editor.commit();
             }
         });
 
         iv_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x + 0.1F, iv_diagrama.getScrollPosition().y);
+                Log.e("ANTES", ""+x);
+                iv_diagrama.setScrollPosition(x + 0.1F, y);
+                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putFloat("coordX", x + 0.1F);
+                editor.commit();
+                SharedPreferences preferences = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
+                x = preferences.getFloat("coordX", iv_diagrama.getScrollPosition().x);
+                Log.e("DESPUES" , ""+x);
             }
         });
 
@@ -309,9 +339,6 @@ public class Marcar extends AppCompatActivity {
         iv_diagrama.setImageBitmap(myBitmap);
     }
 
-    public static Bitmap getBitMap(){
-        return salida;
-    }
 
 
 

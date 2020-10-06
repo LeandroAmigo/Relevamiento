@@ -89,7 +89,7 @@
         android:layout_width="241dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:hint="Lista de lementos a cargar"
+        android:hint="Lista de elementos a cargar"
         app:layout_constraintStart_toStartOf="@+id/btn_cargarElementos"
         app:layout_constraintTop_toBottomOf="@+id/btn_cargarElementos" />
 

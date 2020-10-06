@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="auto"
     tools:context=".Planilla">
 
     <ListView
@@ -77,14 +78,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_listaElem" />
 
-    <AutoCompleteTextView
+    <com.example.relevamiento.repositorio.parsers.InstantAutoComplete
         android:id="@+id/atv_nombreElementos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:hint="Ingrese Nombre Elemento"
-        android:dropDownHeight="300dp"
         android:completionThreshold="1"
+        android:dropDownHeight="300dp"
+        android:hint="Ingrese Nombre Elemento"
+        android:contentDescription="hf_use_description|lista"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

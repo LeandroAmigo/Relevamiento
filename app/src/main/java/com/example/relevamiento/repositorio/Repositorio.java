@@ -102,7 +102,7 @@ public class Repositorio {
     public boolean crearProyecto(String nombreProyecto, String[] pathDiagramas, String pathElementos, boolean permiteFoto){
         String diagramas = parser_diagramas.convertArrayToString(pathDiagramas);
         int permite_fotos = 0;
-        if (permiteFoto == true) {
+        if (permiteFoto) {
             permite_fotos = 1;
         }
         ContentValues cv = new ContentValues();
@@ -130,7 +130,7 @@ public class Repositorio {
     public boolean actualizarPermiteFotosProyecto(int proyId, boolean permiteFoto) {
         boolean exito = false;
         int pf = 0;
-        if (permiteFoto == true)
+        if (permiteFoto)
             pf = 1;
         ContentValues cv = new ContentValues();
         cv.put("proyecto_permiteFotos", pf);
@@ -194,7 +194,7 @@ public class Repositorio {
     }
 
     public ArrayList<Elemento> getElementos (int proyId){
-        ArrayList<Elemento> salida = new ArrayList<Elemento>();
+        ArrayList<Elemento> salida = new ArrayList<>();
         open();
         Cursor c = BaseDeDatos.rawQuery("select elemento_id, elemento_nombre, formulario_id from elementos where proyecto_id =" + proyId, null);
         if (c.moveToFirst()) {
@@ -278,7 +278,7 @@ public class Repositorio {
     public int crearFormulario(int proyId, String diagrama, ArrayList<Integer> listaMarcas, boolean correctitud){
         String marcas = parser_marcas.convertListToString(listaMarcas);
         int formulario_correcto = 0;
-        if (correctitud == true) {
+        if (correctitud) {
             formulario_correcto = 1;
         }
         ContentValues cv = new ContentValues();
@@ -334,5 +334,28 @@ public class Repositorio {
     }
 
 
+    public int getFormId(String elem, int proyId) {
+        int salida = -1;
+        open();
+        Cursor c = BaseDeDatos.rawQuery
+                ("select formulario_id from elementos where elemento_nombre = '" + elem + "' and proyecto_id = "+proyId, null);
+        if (c.moveToFirst()) {
+            salida = (c.getInt(0)); //"select 0,1,2,3... from .."
+        }
+        close();
+        return salida;
+    }
 
+    public ArrayList<String> getElementosMismoFormulario(int proyId, int formId) {
+        ArrayList<String> salida = new ArrayList<>();
+        open();
+        Cursor c = BaseDeDatos.rawQuery("select elemento_nombre from elementos where proyecto_id =" + proyId +" and formulario_id = " +formId, null);
+        if (c.moveToFirst()) {
+            do {
+                salida.add (c.getString(0));
+            } while (c.moveToNext());
+        }
+        close();
+        return salida;
+    }
 }

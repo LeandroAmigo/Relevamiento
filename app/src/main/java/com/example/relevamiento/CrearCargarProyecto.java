@@ -131,15 +131,17 @@ public class CrearCargarProyecto extends AppCompatActivity {
         boolean permiteFoto = checkBox_fotos.isChecked();
 
         if (proyectoSeleccionado == null){  //crear proyecto
-            if (pathDiagramas != null && !nombreProyecto.isEmpty()) {
+            if (pathDiagramas != null && !nombreProyecto.isEmpty() && !existeNombre(nombreProyecto)) {
                 Log.e("CREAR PROY", nombreProyecto + " - " + pathDiagramas + " - " + pathElementos + " - " + permiteFoto);
                 exito = repo.crearProyecto(nombreProyecto, pathDiagramas, pathElementos, permiteFoto); //guarda BD
             }else if (nombreProyecto.isEmpty()) {
                     Toast.makeText(this, "Ingresar nombre ", Toast.LENGTH_SHORT).show();
-                }else{
+                }else if (pathDiagramas == null){
                     Toast.makeText(this, "Seleccionar al menos un diagrama", Toast.LENGTH_SHORT).show();
-                    }
-        }else {
+                    }else {
+                Toast.makeText(this, "Nombre ya registrado!", Toast.LENGTH_SHORT).show();
+            }
+        }else { //editar
             int proyId = proyectoSeleccionado.getId();
             if (!nombreProyecto.equals(proyectoSeleccionado.getNombre())) {
                 Log.e("EDITANDO NOMBRE", nombreProyecto + " -- " + proyectoSeleccionado.getNombre());
@@ -166,6 +168,15 @@ public class CrearCargarProyecto extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private boolean existeNombre(String nombreProyecto) {
+        boolean existe = false;
+        ArrayList<String> nombres = repo.getProyectos();
+        for (int i=0; i<nombres.size() && !existe; i++){
+            existe = nombres.get(i).equals(nombreProyecto);
+        }
+        return existe;
     }
 
     private void mostrarNombreDiagramas( ArrayList<String> diagramas){

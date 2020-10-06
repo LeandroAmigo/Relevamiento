@@ -40,12 +40,13 @@ public class ListadoProyectos extends AppCompatActivity {
 
 
     public void abrirProyecto(View view){
-        seleccion = spinner.getSelectedItem().toString();
-        intent = new Intent(this, Principal.class );
-        intent.putExtra(Principal.NOMBRE_PROYECTO, seleccion);
-        startActivity(intent);
-        finish();
-
+        if (spinner.getSelectedItem() != null ) {
+            seleccion = spinner.getSelectedItem().toString();
+            intent = new Intent(this, Principal.class);
+            intent.putExtra(Principal.NOMBRE_PROYECTO, seleccion);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void editarProyecto(View view){
