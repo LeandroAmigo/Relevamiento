@@ -10,19 +10,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.relevamiento.modelos.Elemento;
-import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.repositorio.Repositorio;
-import com.example.relevamiento.repositorio.parsers.MyAdapter;
-import com.example.relevamiento.repositorio.parsers.StatusAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class Planilla extends AppCompatActivity {
         repo = new Repositorio(this);
         //inicializa lista
         elem_seleccionados = new ArrayList<String>();
-        adapterSeleccion = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
+        adapterSeleccion = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, elem_seleccionados);
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -79,8 +78,22 @@ public class Planilla extends AppCompatActivity {
             diagramaActual = getIntent().getStringExtra(DIAGRAMA);
         }
 
-
         mostrarListaElementos();
+
+        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+        sendBroadcast(intent);
+
+        atv_nombreElem.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
     }
 
     private void mostrarListaElementos() {
@@ -133,16 +146,13 @@ public class Planilla extends AppCompatActivity {
     }
 
     public void agregarFoto(View view) {
-        String nombreCarpeta = "FotosRelevamiento";
-        File f = new File(Environment.getExternalStorageDirectory(), nombreCarpeta);
-        if (!f.exists()) {
-            boolean salida = f.mkdirs();
-        }
-        String pathFoto = f.toString() + "/" + "proyecto-"+proyId+".jpg";
+     Intent i = new Intent(this, Camara.class);
+     startActivity(i);
+    }
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); // OR ACTION_VIDEO_CAPTURE
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, pathFoto);
-        startActivityForResult(intent, CAMERA_REQUEST_URI);
+    public void verDocumento(View view) {
+        Intent i = new Intent(this, Documentos.class);
+        startActivity(i);
     }
 
     public void verPlano(View view) {

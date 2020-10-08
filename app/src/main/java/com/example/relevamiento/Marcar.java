@@ -26,6 +26,7 @@ import com.ortiz.touchview.TouchImageView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Marcar extends AppCompatActivity {
 
@@ -86,7 +87,9 @@ public class Marcar extends AppCompatActivity {
         if (listaMarcas.size()==4){
             btn_aceptar.setEnabled(true);
         }
-        marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
+
+        if (!listaMarcas.isEmpty())
+            marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
 
         //asigna los oyentes a las imagenes invisibles
         AsignarOyentesImageViewTouchable();
@@ -97,8 +100,8 @@ public class Marcar extends AppCompatActivity {
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", true);
         sendBroadcast(intent);
-
-        cargarPreferencias(); //zoom y coords
+        //no andaba
+       // cargarPreferencias(); //zoom y coords
     }
 
     private void cargarPreferencias() {
@@ -167,7 +170,8 @@ public class Marcar extends AppCompatActivity {
             paint.setAlpha(50);
             paint.setStyle(Paint.Style.FILL);
             paint.setStrokeWidth(3);
-            tempCanvas.drawRect(marcas.get(0), marcas.get(1), marcas.get(2), marcas.get(3), paint);
+            ArrayList<Integer> marcasOrdenadas = ordenarMarcas(marcas); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
+            tempCanvas.drawRect(marcasOrdenadas.get(0), marcasOrdenadas.get(1), marcasOrdenadas.get(2), marcasOrdenadas.get(3), paint);
 
         }else if (marcas.size() == 2) {
             paint.setColor(Color.BLACK);
@@ -182,74 +186,46 @@ public class Marcar extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 iv_diagrama.setMaxZoom(12);
-                float zm = zoom* 5.5f;
+                float zm = iv_diagrama.getCurrentZoom()* 5.5f;
                 Toast.makeText(getApplicationContext(),"CURRENT ZOOM:  "+zm, Toast.LENGTH_SHORT).show();
-                iv_diagrama.setZoom(zm, x, y);
-                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putFloat("zoom", zm);
-                editor.commit();
+                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
             }
         });
 
         iv_zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float zm = zoom/ 5.5f;
-                iv_diagrama.setZoom(zm, x, y);
+                float zm = iv_diagrama.getCurrentZoom()/ 5.5f;
+                iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
                 //iv_diagrama.resetZoom();
-                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putFloat("zoom", zm);
-                editor.commit();
             }
         });
 
         iv_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(x, y - 0.1F);
-                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putFloat("coordY", y - 0.1F);
-                editor.commit();
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y - 0.1F);
             }
         });
 
         iv_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(x, y + 0.1F);
-                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putFloat("coordY", y + 0.1F);
-                editor.commit();
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y + 0.1F);
             }
         });
 
         iv_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setScrollPosition(x - 0.1F, y);
-                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putFloat("coordX", x - 0.1F);
-                editor.commit();
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x - 0.1F, iv_diagrama.getScrollPosition().y);
             }
         });
 
         iv_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("ANTES", ""+x);
-                iv_diagrama.setScrollPosition(x + 0.1F, y);
-                SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putFloat("coordX", x + 0.1F);
-                editor.commit();
-                SharedPreferences preferences = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-                x = preferences.getFloat("coordX", iv_diagrama.getScrollPosition().x);
-                Log.e("DESPUES" , ""+x);
+                iv_diagrama.setScrollPosition(iv_diagrama.getScrollPosition().x + 0.1F, iv_diagrama.getScrollPosition().y);
             }
         });
 
@@ -285,7 +261,6 @@ public class Marcar extends AppCompatActivity {
         listaMarcas.add(xCoordinate);
         listaMarcas.add(yCoordinate);
         if (listaMarcas.size() == 4){
-            ordenarMarcas(); // x1, y1, x2, y2   siendo x1 < x2 && y1 < y2
             cargarDiagramaEnBlanco(); // carga la imagen
             btn_aceptar.setEnabled(true);
             marcarEnDiagrama(listaMarcas, switch_correcto.isChecked());
@@ -302,21 +277,24 @@ public class Marcar extends AppCompatActivity {
     }
 
 
-    private void ordenarMarcas(){
-        int aux;
-        if (listaMarcas.get(0) > listaMarcas.get(2)){
-            aux = listaMarcas.get(0);
-            listaMarcas.set(0, listaMarcas.get(2));
-            listaMarcas.set(2,aux);
+    private ArrayList<Integer> ordenarMarcas (ArrayList<Integer> listaDeMarcas){
+        ArrayList<Integer> salida = new ArrayList<>(listaDeMarcas);
+        Collections.copy(salida,listaDeMarcas);
+        if (listaDeMarcas.get(0) > listaDeMarcas.get(2)){
+            salida.set(0, listaDeMarcas.get(2));
+            salida.set(2,listaDeMarcas.get(0));
         }
-        if (listaMarcas.get(1) > listaMarcas.get(3)){
-            aux = listaMarcas.get(1);
-            listaMarcas.set(1, listaMarcas.get(3));
-            listaMarcas.set(3,aux);
+        if (listaDeMarcas.get(1) > listaDeMarcas.get(3)){ ;
+            salida.set(1, listaDeMarcas.get(3));
+            salida.set(3, listaDeMarcas.get(1));
         }
+        return salida;
     }
 
     public void acpeptar(View view){
+        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+        sendBroadcast(intent);
         Intent i = new Intent();
         i.putIntegerArrayListExtra(MARCAS, (ArrayList<Integer>) listaMarcas);
         i.putExtra(SWITCH, switch_correcto.isChecked());

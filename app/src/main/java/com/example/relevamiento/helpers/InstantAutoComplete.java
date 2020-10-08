@@ -1,13 +1,13 @@
-package com.example.relevamiento.repositorio.parsers;
+package com.example.relevamiento.helpers;
 
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
-
 public class InstantAutoComplete extends androidx.appcompat.widget.AppCompatAutoCompleteTextView {
 
-    public InstantAutoComplete(Context context) {
+
+public InstantAutoComplete(Context context) {
         super(context);
     }
 
@@ -32,5 +32,6 @@ public class InstantAutoComplete extends androidx.appcompat.widget.AppCompatAuto
             performFiltering(getText(), 0);
         }
     }
+
 
 }

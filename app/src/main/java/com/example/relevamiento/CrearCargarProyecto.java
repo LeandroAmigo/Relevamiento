@@ -148,8 +148,9 @@ public class CrearCargarProyecto extends AppCompatActivity {
                 exito = repo.actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
             }
             if (pathDiagramas != null) {
+                //se agregan los nuevos diagramas de pathDiagramas (se verifica que no esten duplicados)
                 Log.e("EDITANDO DIAGRAMAS", pathDiagramas + " -- " + proyectoSeleccionado.getDiagramas());
-                exito =  repo.actualizarDiagramasProyecto(proyId, pathDiagramas); //sobreescribe
+                exito =  repo.actualizarDiagramasProyecto(proyId, proyectoSeleccionado.getDiagramas(), pathDiagramas); //agrega
             }
             if (permiteFoto != proyectoSeleccionado.permite_fotos()) {
                 exito = repo.actualizarPermiteFotosProyecto(proyId, permiteFoto); //sobreescribe

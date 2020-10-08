@@ -1,5 +1,6 @@
 package com.example.relevamiento;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -39,27 +41,28 @@ public class GrabadoraAudio extends AppCompatActivity {
 
     }
 
-    public void Recorder(View view){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void Recorder(View view){  /// asi no esta andando 
         if(grabacion == null){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-            String currentDateandTime = sdf.format(new Date());
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+            //String currentDateandTime = sdf.format(new Date());
 
             String root = Environment.getExternalStorageDirectory().toString();
             File myDir = new File(root + "/Grabaciones_relevamiento");
             if (!myDir.exists()) {
                 myDir.mkdirs();
             }
-            String archivoSalida = currentDateandTime + ".mp3";
+            archivoSalida = myDir + "/grabacion_" + System.currentTimeMillis() + ".mp3";
             File file = new File (myDir, archivoSalida);
-            if (file.exists ()) {
-                file.delete();
-            }
-            Log.e("PATH", archivoSalida);
+            //if (file.exists ()) {
+            //    file.delete();
+            //}
+            //Log.e("PATH", archivoSalida);
             grabacion = new MediaRecorder();
             grabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
             grabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             grabacion.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-            grabacion.setOutputFile(archivoSalida);
+            grabacion.setOutputFile(file);
 
             try{
                 grabacion.prepare();

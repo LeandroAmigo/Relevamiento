@@ -142,9 +142,17 @@ public class Repositorio {
         return exito;
     }
 
-    public boolean actualizarDiagramasProyecto(int proyId, String[] pathDiagramas) {
+    public boolean actualizarDiagramasProyecto(int proyId, ArrayList<String> existentes, String[] pathDiagramasParaAgregar) {
         boolean exito = false;
-        String diagramas = parser_diagramas.convertArrayToString(pathDiagramas);
+        //controlar que no haya repetidos
+        for (String s: pathDiagramasParaAgregar){
+             if (!existentes.contains(s)){
+                 existentes.add(s);
+             }
+        }
+        //convertir lista actualizada a arreglo
+        String[] diagramasActualizados = existentes.toArray(new String[0]);
+        String diagramas = parser_diagramas.convertArrayToString(diagramasActualizados);
         ContentValues cv = new ContentValues();
         cv.put("proyecto_diagramas", diagramas);
         open();

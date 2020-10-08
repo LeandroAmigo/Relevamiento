@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".Planilla">
 
     <ListView
@@ -45,13 +46,15 @@
             android:id="@+id/btn_foto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="agregarFoto"
             android:text="Foto" />
 
         <Button
             android:id="@+id/btn_imagen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Imagen" />
+            android:onClick="verDocumento"
+            android:text="ver PDF" />
     </LinearLayout>
 
     <Button
@@ -78,16 +81,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_listaElem" />
 
-    <com.example.relevamiento.repositorio.parsers.InstantAutoComplete
-        android:id="@+id/atv_nombreElementos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:completionThreshold="1"
-        android:dropDownHeight="300dp"
-        android:hint="Ingrese Nombre Elemento"
-        android:contentDescription="hf_use_description|lista"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+   <!-- <com.example.relevamiento.repositorio.parsers.InstantAutoComplete -->
+    <com.example.relevamiento.helpers.InstantAutoComplete
+       android:id="@+id/atv_nombreElementos"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginStart="10dp"
+       android:completionThreshold="1"
+       android:dropDownHeight="wrap_content"
+       android:hint="Ingrese Nombre Elemento"
+       android:contentDescription="hf_use_description|lista | hf_scroll_vertical | hf_overlay_number | hf_yes_number "
+       android:nextFocusUp="@id/atv_nombreElementos"
+       android:nextFocusLeft="@id/atv_nombreElementos"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

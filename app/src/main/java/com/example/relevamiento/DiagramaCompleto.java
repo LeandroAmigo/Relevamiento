@@ -69,6 +69,7 @@ public class DiagramaCompleto extends AppCompatActivity {
         if (imgFile.exists()) {
             myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             iv_diagrama.setImageBitmap(myBitmap); // carga la imagen
+            iv_diagrama.resetZoom();
         }
     }
 
@@ -77,8 +78,8 @@ public class DiagramaCompleto extends AppCompatActivity {
         iv_zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_diagrama.setMaxZoom(12);
-                float zm = iv_diagrama.getCurrentZoom()* 5.5f;
+                iv_diagrama.setMaxZoom(10);
+                float zm = iv_diagrama.getCurrentZoom()* 2.0f;
                 Toast.makeText(getApplicationContext(),"CURRENT ZOOM:  "+zm, Toast.LENGTH_SHORT).show();
                 iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
             }
@@ -87,7 +88,7 @@ public class DiagramaCompleto extends AppCompatActivity {
         iv_zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float zm = iv_diagrama.getCurrentZoom()/ 2.5f;
+                float zm = iv_diagrama.getCurrentZoom()/ 2.0f;
                 iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
                 //iv_diagrama.resetZoom();
             }
