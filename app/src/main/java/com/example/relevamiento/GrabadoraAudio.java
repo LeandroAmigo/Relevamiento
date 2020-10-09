@@ -42,10 +42,9 @@ public class GrabadoraAudio extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void Recorder(View view){  /// asi no esta andando 
+    public void Recorder(View view){
+
         if(grabacion == null){
-            //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-            //String currentDateandTime = sdf.format(new Date());
 
             String root = Environment.getExternalStorageDirectory().toString();
             File myDir = new File(root + "/Grabaciones_relevamiento");
@@ -53,16 +52,18 @@ public class GrabadoraAudio extends AppCompatActivity {
                 myDir.mkdirs();
             }
             archivoSalida = myDir + "/grabacion_" + System.currentTimeMillis() + ".mp3";
-            File file = new File (myDir, archivoSalida);
+            File file = new File (archivoSalida);
             //if (file.exists ()) {
             //    file.delete();
             //}
-            //Log.e("PATH", archivoSalida);
+            Log.e("Archivo salida (String)", archivoSalida);
+            //Log.e("Archivo salida (file)", ""+file);
+
             grabacion = new MediaRecorder();
             grabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
             grabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             grabacion.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-            grabacion.setOutputFile(file);
+            grabacion.setOutputFile(archivoSalida);
 
             try{
                 grabacion.prepare();
@@ -96,7 +97,7 @@ public class GrabadoraAudio extends AppCompatActivity {
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
-
+    
 
 
 

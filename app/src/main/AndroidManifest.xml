@@ -20,10 +20,6 @@
             android:name=".GrabadoraAudio"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".AyudaPlanilla"
-            android:configChanges="screenSize|orientation"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".CambiarDiagramas"
             android:configChanges="screenSize|orientation"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

@@ -1,15 +1,15 @@
 package com.example.relevamiento;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,8 +39,9 @@ public class PlanillaEditar extends AppCompatActivity {
     private ArrayAdapter<String> adapter, adapterSeleccion;
     private String pathAudio, pathFoto, nombreProyecto, diagramaActual;
 
-    private AutoCompleteTextView atv_nombreElem;
-    private ListView lv_elementosSeleccionados;
+    private androidx.appcompat.widget.SearchView searchView;
+    private ListView lv_elementosSeleccionados, lv_todosElementos;
+    private Button btn_agregar;
     private ArrayList<Integer> listaMarcas;
     private boolean correcto;
 
@@ -51,8 +52,10 @@ public class PlanillaEditar extends AppCompatActivity {
         setContentView(R.layout.activity_planilla);
 
 
-        atv_nombreElem =  findViewById(R.id.atv_nombreElementos);
+        searchView = findViewById(R.id.search_bar);
         lv_elementosSeleccionados = findViewById(R.id.lv_listaElem);
+        lv_todosElementos = findViewById(R.id.lv_todosElementos);
+        btn_agregar = findViewById(R.id.btn_agregar);
 
         nombreElementos = new ArrayList<>();
         listaMarcas = new ArrayList<>();
@@ -83,18 +86,39 @@ public class PlanillaEditar extends AppCompatActivity {
                 nombreElementos.add(e.getNombre());
         }
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
-        atv_nombreElem.setAdapter(adapter);
+        lv_todosElementos.setAdapter(adapter);
+
+        lv_todosElementos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                searchView.setQuery(parent.getItemAtPosition(position).toString(), false);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     public void agregarElementos(View view){
-        String elem = atv_nombreElem.getText().toString();
+        String elem = searchView.getQuery().toString();
         if (elem.isEmpty()) {
             Toast.makeText(this, "Ingresar Elemento relevado", Toast.LENGTH_SHORT).show();
         }else {
-            atv_nombreElem.setText("");
-            atv_nombreElem.setFocusable(false);
-            atv_nombreElem.setEnabled(false);
+            searchView.setQuery("", false);
+            searchView.setClickable(false);
             mostrarElementosMismoFormulario(elem, proyId);
+            btn_agregar.setEnabled(false);
+
         }
     }
 
@@ -153,8 +177,6 @@ public class PlanillaEditar extends AppCompatActivity {
             if (formId != -1){ //correcto
                 //exito = actualizarElementos(formId);
 
-                restaurarPreferencias();
-
                 Intent i = new Intent(this, Principal.class);
                 i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
                 i.putExtra(Planilla.DIAGRAMA, diagramaActual);
@@ -177,10 +199,6 @@ public class PlanillaEditar extends AppCompatActivity {
         return exito;
     }*/
 
-    private void restaurarPreferencias(){
-        SharedPreferences sp = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.clear().apply();
-    }
+
 
 }

@@ -20,7 +20,7 @@ public class parser_elementos {
             while ((line = csvReader.readLine()) != null) {
                 // separar cada columna por "separador"
                 data = line.split(separador);
-                nombreElemento = data[0];
+                nombreElemento = data[0]; //el nombre es la primer columna del excel. las demas no importan
                 salida.add(nombreElemento);
             }
             csvReader.close();
@@ -28,32 +28,5 @@ public class parser_elementos {
         }
         return salida;
     }
-
-    public static String obtenerNombresElementos(String pathElementos) {
-        String salida = null;
-        StringBuilder sb = new StringBuilder();
-        String line = "";
-        String nombreElemento ="";
-        String[] data;
-        try {
-            BufferedReader csvReader = new BufferedReader(new FileReader(pathElementos));
-            //csvReader.readLine();  //si hay encabezado
-            while ((line = csvReader.readLine()) != null) {
-                // separar cada columna por coma ","
-                data = line.split(separador);
-                nombreElemento = data[0];
-                if (sb.length() > 0) {
-                    sb.append(",");
-                }
-                sb.append(nombreElemento);
-            }
-            csvReader.close();
-            salida = sb.toString();
-        } catch (IOException e) {
-        }
-        return salida;
-    }
-
-
 
 }

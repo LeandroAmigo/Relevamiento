@@ -74,8 +74,8 @@
             android:id="@+id/btn_aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="250dp"
+            android:layout_marginStart="750dp"
+            android:layout_marginTop="410dp"
             android:onClick="aceptarDiagrama"
             android:text="Aceptar" />
 
@@ -83,8 +83,8 @@
             android:id="@+id/btn_cambiarDiagrama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="200dp"
+            android:layout_marginStart="750dp"
+            android:layout_marginTop="350dp"
             android:onClick="cambiarDiagramas"
             android:text="Cambiar Diagrama" />
 

@@ -157,21 +157,19 @@ public class Principal extends AppCompatActivity {
         i.putExtra(DiagramaCompleto.NOMBRE_PROYECTO, nombreProyecto);
         i.putExtra(DiagramaCompleto.DIAGRAMA, diagramaActual);
         startActivity(i);
-        //finish();
     }
 
     public void nuevoFormulario(View view){
         Intent i = new Intent(this, Planilla.class);
-        i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
-        i.putExtra(Marcar.DIAGRAMA, diagramaActual);
+        i.putExtra(NOMBRE_PROYECTO, nombreProyecto);
+        i.putExtra(DIAGRAMA, diagramaActual);
         startActivity(i);
-        //finish();
     }
 
     public void editarFormulario(View view){
         Intent i = new Intent(this, PlanillaEditar.class);
-        i.putExtra(Marcar.NOMBRE_PROYECTO, nombreProyecto);
-        i.putExtra(Marcar.DIAGRAMA, diagramaActual);
+        i.putExtra(NOMBRE_PROYECTO, nombreProyecto);
+        i.putExtra(DIAGRAMA, diagramaActual);
         startActivity(i);
     }
 

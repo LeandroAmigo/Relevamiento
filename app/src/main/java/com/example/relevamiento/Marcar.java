@@ -3,9 +3,7 @@ package com.example.relevamiento;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,7 +12,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +27,6 @@ import java.util.Collections;
 
 public class Marcar extends AppCompatActivity {
 
-    public static final String NOMBRE_PROYECTO = "proyecto_nombre";
     public static final String DIAGRAMA = "diagrama";
     public static final String MARCAS = "marcas";
     public static final String SWITCH = "switch";
@@ -50,7 +46,6 @@ public class Marcar extends AppCompatActivity {
 
     private Button btn_aceptar;
     private boolean correcto = true;
-    private float zoom, x, y;
 
 
     @Override
@@ -100,15 +95,7 @@ public class Marcar extends AppCompatActivity {
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", true);
         sendBroadcast(intent);
-        //no andaba
-       // cargarPreferencias(); //zoom y coords
-    }
 
-    private void cargarPreferencias() {
-        SharedPreferences preferences = getSharedPreferences("coordenadas", Context.MODE_PRIVATE);
-        zoom = preferences.getFloat("zoom", iv_diagrama.getCurrentZoom());
-        x = preferences.getFloat("coordX", iv_diagrama.getScrollPosition().x);
-        y = preferences.getFloat("coordY", iv_diagrama.getScrollPosition().y);
     }
 
 
@@ -292,9 +279,9 @@ public class Marcar extends AppCompatActivity {
     }
 
     public void acpeptar(View view){
-        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
-        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
-        sendBroadcast(intent);
+       // Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+       // intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+       // sendBroadcast(intent);
         Intent i = new Intent();
         i.putIntegerArrayListExtra(MARCAS, (ArrayList<Integer>) listaMarcas);
         i.putExtra(SWITCH, switch_correcto.isChecked());

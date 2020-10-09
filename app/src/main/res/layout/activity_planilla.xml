@@ -12,26 +12,30 @@
         android:id="@+id/lv_listaElem"
         android:layout_width="193dp"
         android:layout_height="288dp"
-        android:layout_marginStart="28dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_plano"
+        android:layout_marginStart="140dp"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_agregar"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_agegar"
+        android:id="@+id/btn_agregar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
         android:onClick="agregarElementos"
         android:text="Agregar"
         app:layout_constraintEnd_toStartOf="@+id/lv_listaElem"
-        app:layout_constraintStart_toEndOf="@+id/atv_nombreElementos"
+        app:layout_constraintStart_toEndOf="@+id/search_bar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="156dp"
         android:layout_height="140dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/lv_listaElem"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -61,12 +65,12 @@
         android:id="@+id/btn_plano"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="44dp"
         android:onClick="verPlano"
         android:text="Plano"
-        app:layout_constraintStart_toEndOf="@+id/atv_nombreElementos"
-        app:layout_constraintTop_toBottomOf="@+id/btn_agegar" />
+        app:layout_constraintEnd_toStartOf="@+id/lv_listaElem"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/btn_agregar" />
 
     <Button
         android:id="@+id/btn_guardar"
@@ -81,19 +85,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_listaElem" />
 
-   <!-- <com.example.relevamiento.repositorio.parsers.InstantAutoComplete -->
-    <com.example.relevamiento.helpers.InstantAutoComplete
-       android:id="@+id/atv_nombreElementos"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="10dp"
-       android:completionThreshold="1"
-       android:dropDownHeight="wrap_content"
-       android:hint="Ingrese Nombre Elemento"
-       android:contentDescription="hf_use_description|lista | hf_scroll_vertical | hf_overlay_number | hf_yes_number "
-       android:nextFocusUp="@id/atv_nombreElementos"
-       android:nextFocusLeft="@id/atv_nombreElementos"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent" />
+    <!-- <com.example.relevamiento.repositorio.parsers.InstantAutoComplete -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        content_description="lista"
+        text_field="keyboard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:dropDownHeight="wrap_content"
+        android:queryHint="Ingrese nombre Elementos... "
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/lv_todosElementos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription=" hf_scroll_vertical "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/search_bar"
+        app:layout_constraintStart_toStartOf="@+id/search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.31" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

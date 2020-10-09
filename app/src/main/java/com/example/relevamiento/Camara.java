@@ -100,9 +100,15 @@ public class Camara extends AppCompatActivity {
                     Uri tempUri = getImageUri(getApplicationContext(), photo);
 
                     // CALL THIS METHOD TO GET THE ACTUAL PATH
-                    File finalFile = new File(getRealPathFromURI(tempUri));
+                    String path = getRealPathFromURI(tempUri);
+                    File finalFile = new File(path);
 
                     Log.e("PATH", ""+finalFile); ///// ---> /storage/emulated/0/Pictures/1602088299819.jpg
+                        //////////////////////////probar si anda"""""""""""""""
+                    Intent i = new Intent();
+                    i.putExtra(Planilla.FOTO, path);
+                    setResult(Activity.RESULT_OK,i);
+                    finish();
 
                     break;
 

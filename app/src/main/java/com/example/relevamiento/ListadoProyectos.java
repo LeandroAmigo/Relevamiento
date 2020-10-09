@@ -19,7 +19,6 @@ public class ListadoProyectos extends AppCompatActivity {
 
     private Spinner spinner;
     private String seleccion;
-    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class ListadoProyectos extends AppCompatActivity {
     public void abrirProyecto(View view){
         if (spinner.getSelectedItem() != null ) {
             seleccion = spinner.getSelectedItem().toString();
-            intent = new Intent(this, Principal.class);
+            Intent intent = new Intent(this, Principal.class);
             intent.putExtra(Principal.NOMBRE_PROYECTO, seleccion);
             startActivity(intent);
             finish();
@@ -51,7 +50,7 @@ public class ListadoProyectos extends AppCompatActivity {
 
     public void editarProyecto(View view){
         seleccion = spinner.getSelectedItem().toString();
-        intent = new Intent(this, CrearCargarProyecto.class );
+        Intent intent = new Intent(this, CrearCargarProyecto.class );
         intent.putExtra(CrearCargarProyecto.NOMBRE_PROYECTO, seleccion);
         startActivity(intent);
         finish();
