@@ -279,9 +279,6 @@ public class Marcar extends AppCompatActivity {
     }
 
     public void acpeptar(View view){
-       // Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
-       // intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
-       // sendBroadcast(intent);
         Intent i = new Intent();
         i.putIntegerArrayListExtra(MARCAS, (ArrayList<Integer>) listaMarcas);
         i.putExtra(SWITCH, switch_correcto.isChecked());

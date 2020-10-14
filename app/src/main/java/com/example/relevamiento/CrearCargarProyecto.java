@@ -52,6 +52,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
 
         et_nombre =  findViewById(R.id.et_nombre);
         checkBox_fotos =  findViewById(R.id.checkBox_fotos);
+        checkBox_fotos.setChecked(true);
         lv_diagramas =  findViewById(R.id.lv_diagramas);
         tv_elementos =  findViewById(R.id.tv_elemento);
 

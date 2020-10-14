@@ -152,6 +152,7 @@ public class Repositorio {
         }
         //convertir lista actualizada a arreglo
         String[] diagramasActualizados = existentes.toArray(new String[0]);
+        //pasar a string para guardar en BD (TEXT)
         String diagramas = parser_diagramas.convertArrayToString(diagramasActualizados);
         ContentValues cv = new ContentValues();
         cv.put("proyecto_diagramas", diagramas);

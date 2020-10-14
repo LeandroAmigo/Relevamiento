@@ -67,6 +67,10 @@ public class Principal extends AppCompatActivity {
         setTitle("Proyecto: "+nombreProyecto);
 
         mostrarDatosProyectoPantalla();
+
+        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+        sendBroadcast(intent);
     }
 
 

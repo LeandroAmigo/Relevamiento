@@ -14,6 +14,7 @@ import com.example.relevamiento.db.DataBaseHelper;
 import com.example.relevamiento.repositorio.Repositorio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListadoProyectos extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class ListadoProyectos extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
 
         ArrayList<String> nombreProyectos = getProyectos();
+        Collections.reverse(nombreProyectos);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_proyectos, nombreProyectos);
         spinner.setAdapter(adapter);
     }

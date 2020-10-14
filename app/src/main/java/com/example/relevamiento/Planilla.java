@@ -77,9 +77,13 @@ public class Planilla extends AppCompatActivity {
     }
 
     private void mostrarListaElementos() {
+        int formId;
         ArrayList<Elemento> listaElementos = repo.getElementos(proyId);
         for (Elemento e: listaElementos) {
-            nombreElementos.add(e.getNombre());
+            formId = e.getFormId();
+            if (formId == 0) { // no tiene formulario asociado
+                nombreElementos.add(e.getNombre());
+            }
         }
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nombreElementos);
         lv_todosElementos.setAdapter(adapter);
@@ -126,11 +130,15 @@ public class Planilla extends AppCompatActivity {
             switch (requestCode) {
                 case ACTIVITY_GRABAR_AUDIO:
                     pathAudio = data.getStringExtra(AUDIO);
+                    Log.e("en PLanilla", pathAudio);
                     break;
 
                 case ACTIVITY_PLANO:
                     listaMarcas = data.getIntegerArrayListExtra(MARCAS);
                     correcto = data.getBooleanExtra(SWITCH, true);
+                     Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+                     intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+                     sendBroadcast(intent);
                     break;
 
                 case ACTIVITY_CAMARA:
@@ -179,14 +187,17 @@ public class Planilla extends AppCompatActivity {
             if (formId != -1){ //correcto
                 exito = actualizarElementos(formId);
 
+                //guardar AUDIO
+                //exito = repo.agregarAudioFormulario(formId, pathAudio);
+
+
                 Intent i = new Intent(this, Principal.class);
                 i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
                 i.putExtra(Planilla.DIAGRAMA, diagramaActual);
                 startActivity(i);
                 finish();
             }
-            /////solo guarda AUDIO para probar
-           // exito = repo.agregarDatosFormulario(formId, pathAudio);
+
 
         }
     }

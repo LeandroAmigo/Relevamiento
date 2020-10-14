@@ -7,10 +7,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import android.util.Log;
 import android.view.View;
@@ -19,9 +17,7 @@ import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.UUID;
 
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 public class Camara extends AppCompatActivity {
 
@@ -34,6 +30,7 @@ public class Camara extends AppCompatActivity {
 
     private ImageView mImageView;
     private Uri contentUri;
+    private String path;
 
 
     @Override
@@ -63,7 +60,7 @@ public class Camara extends AppCompatActivity {
      *
      * @param view The FileProvider camera button
      */
-    public void onLaunchCameraFileProvider(View view) {
+   /* public void onLaunchCameraFileProvider(View view) {
 
         final File mediaStorageDir = getExternalFilesDir(Environment.DIRECTORY_DCIM);
 
@@ -79,7 +76,7 @@ public class Camara extends AppCompatActivity {
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
 
         startActivityForResult(captureIntent, FILEPROVIDER_CAMERA_REQUEST_CODE);
-    }
+    }*/
 
     /**
      * Listener for result from external activities. Receives image data from camera.
@@ -100,19 +97,13 @@ public class Camara extends AppCompatActivity {
                     Uri tempUri = getImageUri(getApplicationContext(), photo);
 
                     // CALL THIS METHOD TO GET THE ACTUAL PATH
-                    String path = getRealPathFromURI(tempUri);
+                    path = getRealPathFromURI(tempUri);
                     File finalFile = new File(path);
 
-                    Log.e("PATH", ""+finalFile); ///// ---> /storage/emulated/0/Pictures/1602088299819.jpg
-                        //////////////////////////probar si anda"""""""""""""""
-                    Intent i = new Intent();
-                    i.putExtra(Planilla.FOTO, path);
-                    setResult(Activity.RESULT_OK,i);
-                    finish();
-
+                    Log.e("FINAL FILE", ""+finalFile); ///// ---> /storage/emulated/0/Pictures/1602088299819.jpg
                     break;
 
-                case FILEPROVIDER_CAMERA_REQUEST_CODE: // View saved file in DocumentViewer
+               /* case FILEPROVIDER_CAMERA_REQUEST_CODE: // View saved file in DocumentViewer
 
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
@@ -121,7 +112,7 @@ public class Camara extends AppCompatActivity {
                     intent.putExtra("zoom", "2");
 
                     startActivityForResult(intent, 1234);
-                    break;
+                    break;*/
             }
         }
     }
@@ -145,6 +136,13 @@ public class Camara extends AppCompatActivity {
             }
         }
         return path;
+    }
+
+    public void aceptar (View view){
+        Intent i = new Intent();
+        i.putExtra(Planilla.FOTO, path);
+        setResult(Activity.RESULT_OK,i);
+        finish();
     }
 
 

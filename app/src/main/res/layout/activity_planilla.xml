@@ -8,16 +8,28 @@
     android:focusableInTouchMode="true"
     tools:context=".Planilla">
 
-    <ListView
-        android:id="@+id/lv_listaElem"
-        android:layout_width="193dp"
-        android:layout_height="288dp"
-        android:layout_marginStart="140dp"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_agregar"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
+    <!-- <com.example.relevamiento.repositorio.parsers.InstantAutoComplete -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        content_description="lista "
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:dropDownHeight="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ListView
+        android:id="@+id/lv_todosElementos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription=" hf_scroll_vertical | hf_persists"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/search_bar"
+        app:layout_constraintStart_toStartOf="@+id/search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
     <Button
         android:id="@+id/btn_agregar"
@@ -27,6 +39,17 @@
         android:text="Agregar"
         app:layout_constraintEnd_toStartOf="@+id/lv_listaElem"
         app:layout_constraintStart_toEndOf="@+id/search_bar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/lv_listaElem"
+        android:layout_width="193dp"
+        android:layout_height="288dp"
+        android:layout_marginStart="140dp"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_agregar"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -84,30 +107,6 @@
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_listaElem" />
-
-    <!-- <com.example.relevamiento.repositorio.parsers.InstantAutoComplete -->
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_bar"
-        content_description="lista"
-        text_field="keyboard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:dropDownHeight="wrap_content"
-        android:queryHint="Ingrese nombre Elementos... "
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/lv_todosElementos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="2dp"
-        android:contentDescription=" hf_scroll_vertical "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/search_bar"
-        app:layout_constraintStart_toStartOf="@+id/search_bar"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"

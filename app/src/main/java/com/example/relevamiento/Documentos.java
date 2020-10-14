@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.developer.filepicker.controller.DialogSelectionListener;
@@ -22,6 +23,7 @@ public class Documentos extends AppCompatActivity {
 
     private final String mSampleMimeType = "application/pdf";
     private DialogProperties properties;
+    private TextView tv_nombreDocumento;
 
     private File mSampleFile;
     private String pathDocumento;
@@ -41,6 +43,7 @@ public class Documentos extends AppCompatActivity {
         setContentView(R.layout.activity_documentos);
 
         properties = new DialogProperties();
+        tv_nombreDocumento = findViewById(R.id.tv_nombreDoc);
 
        // abrir dialog picker para seleccionar archivo pdf
         dialogPicker();
@@ -66,6 +69,7 @@ public class Documentos extends AppCompatActivity {
                 //files is the array of the paths of files selected by the Application User.
                 if (files.length == 1) {
                     pathDocumento = files[0];
+                    mostrarNombreDocumentoCargado(pathDocumento);
                 }
             }
         });
@@ -110,6 +114,11 @@ public class Documentos extends AppCompatActivity {
     }
 
  */
+
+    private void mostrarNombreDocumentoCargado(String pathDocumento) {
+        String substring = pathDocumento.substring(22, pathDocumento.length()-4); //elimina ""mnt/sdcard/Documents/"" y tambien el "".csv""
+        tv_nombreDocumento.setText(substring);
+    }
 
 
 }
