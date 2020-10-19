@@ -10,9 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.example.relevamiento.modelos.Proyecto;
-import com.example.relevamiento.repositorio.Repositorio;
 import com.ortiz.touchview.TouchImageView;
 
 import java.io.File;
@@ -43,12 +40,12 @@ public class DiagramaCompleto extends AppCompatActivity {
         setContentView(R.layout.activity_diagrama_completo);
 
         iv_diagrama = (TouchImageView) findViewById(R.id.iv_diagrama);
-        iv_zoomIn = (ImageView) findViewById(R.id.zoomIn);
-        iv_zoomOut = (ImageView) findViewById(R.id.zoomOut);
-        iv_left = (ImageView) findViewById(R.id.left);
-        iv_right = (ImageView) findViewById(R.id.right);
-        iv_up = (ImageView) findViewById(R.id.up);
-        iv_down = (ImageView) findViewById(R.id.down);
+        iv_zoomIn =  findViewById(R.id.zoomIn);
+        iv_zoomOut =  findViewById(R.id.zoomOut);
+        iv_left =  findViewById(R.id.left);
+        iv_right =  findViewById(R.id.right);
+        iv_up =  findViewById(R.id.up);
+        iv_down =  findViewById(R.id.down);
 
         //asigna los oyentes a las imagenes invisibles
         AsignarOyentesImageViewTouchable();

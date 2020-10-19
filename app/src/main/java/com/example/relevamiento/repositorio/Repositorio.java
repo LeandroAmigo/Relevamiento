@@ -12,6 +12,7 @@ import com.example.relevamiento.db.DataBaseHelper;
 import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.modelos.Proyecto;
+import com.example.relevamiento.repositorio.parsers.parser_audiosYfotos;
 import com.example.relevamiento.repositorio.parsers.parser_diagramas;
 import com.example.relevamiento.repositorio.parsers.parser_elementos;
 import com.example.relevamiento.repositorio.parsers.parser_marcas;
@@ -83,7 +84,6 @@ public class Repositorio {
             pf = true;
         //crear Proyecto
         salida = new Proyecto(proyId, nombre_existente, listaDiagramas, pf);
-
         return salida;
     }
 
@@ -150,7 +150,7 @@ public class Repositorio {
                  existentes.add(s);
              }
         }
-        //convertir lista actualizada a arreglo
+        //convertir "existentes" a arreglo
         String[] diagramasActualizados = existentes.toArray(new String[0]);
         //pasar a string para guardar en BD (TEXT)
         String diagramas = parser_diagramas.convertArrayToString(diagramasActualizados);
@@ -272,6 +272,45 @@ public class Repositorio {
     }
 
 
+    public Formulario getFormulario (int formId){
+        Formulario salida;
+        String diagrama = null, marcas_existentes = null, fotos_existentes = null, audios_existentes = null;
+        int esCorrecto_existente = 0;
+        boolean correcto = false;
+        open();
+        Cursor c = BaseDeDatos.rawQuery
+                ("select formulario_diagrama, formulario_marcas, formulario_correcto, formulario_foto, formulario_audio from formularios where formulario_id =" +formId, null);
+        if (c.moveToFirst()) {
+            diagrama = c.getString(0);
+            marcas_existentes = c.getString(1);
+            esCorrecto_existente = c.getInt(2);
+            fotos_existentes = c.getString(3);
+            audios_existentes = c.getString(4);
+        }
+        close();
+        //parsear marcas
+        ArrayList<Integer> marcas = parser_marcas.convertStringToList(marcas_existentes);
+        //parsear correctitud
+        if (esCorrecto_existente == 1)
+            correcto = true;
+
+        salida = new Formulario (formId, diagrama, marcas , correcto);
+        if (fotos_existentes != null) {
+            ArrayList<String> fotos = parser_audiosYfotos.convertStringToList(fotos_existentes);
+            for (String foto: fotos){
+                salida.agregarFoto(foto);
+            }
+        }
+        if (audios_existentes != null){
+            ArrayList<String> audios = parser_audiosYfotos.convertStringToList(audios_existentes);
+            for (String audio: audios){
+                salida.agregarAudio(audio);
+            }
+        }
+        return salida;
+    }
+
+
     public int getCorrectitudFormulario ( int formId){
         int salida = -1;
         open();
@@ -305,17 +344,33 @@ public class Repositorio {
         return (int) result;
     }
 
-    public boolean agregarDatosFormulario(int formId, String pathAudio){
+    public boolean agregarAudioFormulario(int formId, ArrayList<String> listaAudios){
         boolean exito = false;
+        String str_audios = parser_audiosYfotos.convertListToString(listaAudios);
         ContentValues cv = new ContentValues();
-        cv.put("formulario_audio",pathAudio);
+        cv.put("formulario_audio", str_audios);
         open();
         int cant = BaseDeDatos.update("formularios", cv, "formulario_id =" +formId, null);
         close();
         if (cant == 1)
             exito = true;
 
-        Log.e("agregar al FORMULARIO", " ID: "+formId +" pathAudio: "+pathAudio);
+        Log.e("agregar al FORMULARIO", " ID: "+formId +" pathAudios: "+str_audios);
+        return exito;
+    }
+
+    public boolean agregarFotoFormulario(int formId, ArrayList<String> listaFotos){
+        boolean exito = false;
+        String str_fotos = parser_audiosYfotos.convertListToString(listaFotos);
+        ContentValues cv = new ContentValues();
+        cv.put("formulario_foto", str_fotos);
+        open();
+        int cant = BaseDeDatos.update("formularios", cv, "formulario_id =" +formId, null);
+        close();
+        if (cant == 1)
+            exito = true;
+
+        Log.e("agregar al FORMULARIO", " ID: "+formId +" pathFotos: "+str_fotos);
         return exito;
     }
 
@@ -367,4 +422,30 @@ public class Repositorio {
         close();
         return salida;
     }
+
+    public boolean actualizarFormulario(Formulario formulario) {
+        boolean exito = false;
+        String str_marcas = parser_marcas.convertListToString(formulario.getMarcas());
+        int formulario_correcto = 0;
+        if (formulario.isEsCorrecto()) {
+            formulario_correcto = 1;
+        }
+        String str_audios = parser_audiosYfotos.convertListToString(formulario.getAudios());
+        String str_fotos = parser_audiosYfotos.convertListToString(formulario.getFotos());
+
+        ContentValues cv = new ContentValues();
+        cv.put("formulario_marcas", str_marcas);
+        cv.put("formulario_correcto",formulario_correcto );
+        cv.put("formulario_foto", str_fotos);
+        cv.put("formulario_audio",str_audios);
+
+        open();
+        int cant = BaseDeDatos.update("formularios", cv, "formulario_id = " +formulario.getId(), null);
+        close();
+
+        if (cant == 1)
+            exito = true;
+        return exito;
+    }
+
 }

@@ -141,6 +141,7 @@ public class Camara extends AppCompatActivity {
     public void aceptar (View view){
         Intent i = new Intent();
         i.putExtra(Planilla.FOTO, path);
+        Log.e("Archivo salida (String)", path);
         setResult(Activity.RESULT_OK,i);
         finish();
     }

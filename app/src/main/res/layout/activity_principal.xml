@@ -82,14 +82,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="1"
+                android:backgroundTint="#D7F1EB"
+                android:drawableEnd="@drawable/ic_baseline_create_24"
+                android:drawableTint="#000000"
                 android:onClick="editarFormulario"
-                android:text="Editar" />
+                android:text="Editar"
+                android:textColor="#051B95" />
 
             <Button
                 android:id="@+id/btn_marcar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableEnd="@drawable/ic_baseline_add_circle_24"
+                android:drawableTint="#000000"
                 android:onClick="nuevoFormulario"
                 android:text="Marcar" />
         </LinearLayout>

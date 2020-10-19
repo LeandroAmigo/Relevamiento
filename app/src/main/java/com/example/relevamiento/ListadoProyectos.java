@@ -3,14 +3,11 @@ package com.example.relevamiento;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.example.relevamiento.db.DataBaseHelper;
 import com.example.relevamiento.repositorio.Repositorio;
 
 import java.util.ArrayList;
@@ -51,16 +48,22 @@ public class ListadoProyectos extends AppCompatActivity {
     }
 
     public void editarProyecto(View view){
-        seleccion = spinner.getSelectedItem().toString();
-        Intent intent = new Intent(this, CrearCargarProyecto.class );
-        intent.putExtra(CrearCargarProyecto.NOMBRE_PROYECTO, seleccion);
-        startActivity(intent);
-        finish();
-
+        if (spinner.getSelectedItem() != null ) {
+            seleccion = spinner.getSelectedItem().toString();
+            Intent intent = new Intent(this, CrearCargarProyecto.class);
+            intent.putExtra(CrearCargarProyecto.NOMBRE_PROYECTO, seleccion);
+            startActivity(intent);
+            finish();
+        }
     }
 
-   /* public void exportarProyecto(View view){
-        /// a futuro
+    /*public void exportarProyecto(View view){
+        if (spinner.getSelectedItem() != null ) {
+         seleccion = spinner.getSelectedItem().toString();
+         Exportar e = new Exportar(this);
+         e.exportarProyecto(seleccion);
+        }
+
     }
 
     */

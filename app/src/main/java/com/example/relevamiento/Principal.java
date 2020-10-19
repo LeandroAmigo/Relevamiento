@@ -47,7 +47,6 @@ public class Principal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-
         iv_diagrama =  findViewById(R.id.diagrama);
         lv_elementos =  findViewById(R.id.listaElem);
         tv_avance =  findViewById(R.id.tv_avance);
@@ -173,7 +172,7 @@ public class Principal extends AppCompatActivity {
     public void editarFormulario(View view){
         Intent i = new Intent(this, PlanillaEditar.class);
         i.putExtra(NOMBRE_PROYECTO, nombreProyecto);
-        i.putExtra(DIAGRAMA, diagramaActual);
+       // i.putExtra(DIAGRAMA, diagramaActual);
         startActivity(i);
     }
 

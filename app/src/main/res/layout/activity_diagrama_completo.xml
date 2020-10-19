@@ -80,14 +80,15 @@
             android:onClick="aceptarDiagrama"
             android:text="Aceptar" />
 
-        <Button
-            android:id="@+id/btn_cambiarDiagrama"
+
+        <ImageButton
+            android:id="@+id/imageButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="750dp"
-            android:layout_marginTop="350dp"
+            android:contentDescription="hf_use_description|cambiar"
             android:onClick="cambiarDiagramas"
-            android:text="Cambiar Diagrama" />
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@drawable/ic_baseline_sync_24" />
 
     </FrameLayout>
 

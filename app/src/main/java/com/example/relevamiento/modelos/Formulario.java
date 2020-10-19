@@ -7,35 +7,37 @@ public class Formulario {
     private String diagrama; //direccion a memoria del dispositivo
     private ArrayList<Integer> marcas; //[x1],[y1],[x2],[y2], ...,
     private boolean esCorrecto;
-    private String observacion;
-    private String foto;
-    private String audio;
-    private String imagen;
+    private ArrayList<String> fotos;
+    private ArrayList<String> audios;
 
     public Formulario( int id, String diag, ArrayList<Integer> m, boolean correct) {
         this.id = id;
         diagrama = diag;
         esCorrecto = correct;
         marcas = m;
-        observacion = null;
-        audio = null;
-        foto = null;
-        imagen = null;
-    }
-
-    public void setObservacion(String obs) {
-        observacion = obs;
-    }
-    public void setFoto(String f) {
-        foto = f;
-    }
-    public void setAudio(String a) { audio = a; }
-    public void setEsCorrecto(boolean correct) {
-        esCorrecto = correct;
+        audios = new ArrayList<>();
+        fotos = new ArrayList<>();
     }
 
 
-    public int getId() { return id; }
+    public void agregarFoto(String f) {
+        fotos.add(f);
+    }
+    public void agregarAudio(String a) {
+        audios.add(a);
+    }
+    public void setMarcas(ArrayList<Integer> marcas){
+        this.marcas = marcas;
+    }
+
+    public void setEsCorrecto(boolean esCorrecto) {
+        this.esCorrecto = esCorrecto;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public String getDiagrama() {
         return diagrama;
     }
@@ -48,21 +50,15 @@ public class Formulario {
         return esCorrecto;
     }
 
-    public String getObservacion() {
-        return observacion;
+    public ArrayList<String> getFotos() {
+        return fotos;
     }
 
-    public String getFoto() {
-        return foto;
+    public ArrayList<String> getAudios() {
+        return audios;
     }
 
-    public String getAudio() {
-        return audio;
-    }
 
-    public String getImagen() {
-        return imagen;
-    }
 
 
 

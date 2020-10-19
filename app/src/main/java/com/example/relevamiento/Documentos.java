@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,19 +87,23 @@ public class Documentos extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Error al abrir el documento",Toast.LENGTH_LONG).show();
             return;
         }
-        Uri contentUri = Uri.fromFile(new File(pathDocumento));
-        final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-        viewIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        viewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        viewIntent.setDataAndType(contentUri, mSampleMimeType);
-        viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //
-        // Optionally can control visual appearance
-        //
-        viewIntent.putExtra("page", "1"); // Open a specific page
-        viewIntent.putExtra("zoom", "2"); // Open at a specific zoom level
 
-        startActivity(viewIntent);
+        File document = new File(pathDocumento);
+        final Uri contentUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".fileprovider", document);
+
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                MimeTypeMap.getFileExtensionFromUrl(document.toURI().toString()));
+
+        if(mimeType != null){
+            final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+            viewIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            viewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            viewIntent.setDataAndType(contentUri, mimeType);
+            viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(viewIntent);
+        }
+
     }
 
     public void volver (View view){
@@ -116,7 +122,7 @@ public class Documentos extends AppCompatActivity {
  */
 
     private void mostrarNombreDocumentoCargado(String pathDocumento) {
-        String substring = pathDocumento.substring(22, pathDocumento.length()-4); //elimina ""mnt/sdcard/Documents/"" y tambien el "".csv""
+        String substring = pathDocumento.substring(22, pathDocumento.length()-4); //elimina ""mnt/sdcard/Documents/"" y tambien el "".pdf""
         tv_nombreDocumento.setText(substring);
     }
 

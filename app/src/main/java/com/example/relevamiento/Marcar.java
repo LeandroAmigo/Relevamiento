@@ -221,8 +221,7 @@ public class Marcar extends AppCompatActivity {
     private void marcarEnDiagramaNuevoFormulario(float x, float y) {
         //el bitmap actual se guarda en aux. se lo copia en mutableBitMap para modificarlo. se lo almacena en iv_imagen.. ciclo...
         BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
-        Bitmap aux = drawable.getBitmap();
-        Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap mutableBitMap = drawable.getBitmap().copy(Bitmap.Config.ARGB_8888, true);
 
         float [] eventXY = {x , y};
 
@@ -279,6 +278,10 @@ public class Marcar extends AppCompatActivity {
     }
 
     public void acpeptar(View view){
+        Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
+        intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
+        sendBroadcast(intent);
+
         Intent i = new Intent();
         i.putIntegerArrayListExtra(MARCAS, (ArrayList<Integer>) listaMarcas);
         i.putExtra(SWITCH, switch_correcto.isChecked());
@@ -301,8 +304,10 @@ public class Marcar extends AppCompatActivity {
         iv_diagrama.setImageBitmap(myBitmap);
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+       // super.onBackPressed();
+    }
 
 
 }

@@ -6,14 +6,17 @@ import androidx.appcompat.widget.SearchView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.relevamiento.modelos.Elemento;
+import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.repositorio.Repositorio;
 
 import java.util.ArrayList;
@@ -28,22 +31,25 @@ public class PlanillaEditar extends AppCompatActivity {
     public static final String AUDIO = "audio";
     public static final String FOTO = "foto";
 
-    private static final int ACTIVITY_GRABAR_AUDIO = 1;
-    private static final int ACTIVITY_FOTO = 2;
-    private static final int ACTIVITY_PLANO = 33;
+    private static final int ACTIVITY_GRABAR_AUDIO = 3461;
+    private static final int ACTIVITY_CAMARA = 1888;
+    private static final int ACTIVITY_PLANO = 3543;
+    private static final int ACTIVITY_DOCUMENTO = 6302;
 
 
     private Repositorio repo;
-    private int proyId, formId;
+    private int proyId, formId, cantAudios, cantFotos;
     private ArrayList<String> elem_seleccionados, nombreElementos;
     private ArrayAdapter<String> adapter, adapterSeleccion;
-    private String pathAudio, pathFoto, nombreProyecto, diagramaActual;
+    private String nombreProyecto, diagramaActual;
+    private TextView tv_cantAudios, tv_cantFotos;
 
     private androidx.appcompat.widget.SearchView searchView;
     private ListView lv_elementosSeleccionados, lv_todosElementos;
     private Button btn_agregar;
     private ArrayList<Integer> listaMarcas;
     private boolean correcto;
+    private Formulario formulario;
 
 
     @Override
@@ -51,11 +57,12 @@ public class PlanillaEditar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planilla);
 
-
         searchView = findViewById(R.id.search_bar);
         lv_elementosSeleccionados = findViewById(R.id.lv_listaElem);
         lv_todosElementos = findViewById(R.id.lv_todosElementos);
         btn_agregar = findViewById(R.id.btn_agregar);
+        tv_cantAudios = findViewById(R.id.tv_cantAudios);
+        tv_cantFotos = findViewById(R.id.tv_cantFotos);
 
         nombreElementos = new ArrayList<>();
         listaMarcas = new ArrayList<>();
@@ -70,12 +77,10 @@ public class PlanillaEditar extends AppCompatActivity {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
             proyId = repo.getIdProyecto(nombreProyecto);
         }
-        if (getIntent().hasExtra(DIAGRAMA)) {
-            diagramaActual = getIntent().getStringExtra(DIAGRAMA);
-        }
 
         mostrarListaElementos();
     }
+
 
     private void mostrarListaElementos() {
         int formId;
@@ -115,7 +120,7 @@ public class PlanillaEditar extends AppCompatActivity {
             Toast.makeText(this, "Ingresar Elemento relevado", Toast.LENGTH_SHORT).show();
         }else {
             searchView.setQuery("", false);
-            searchView.setClickable(false);
+            searchView.setClickable(false); //editar un unico formulario
             mostrarElementosMismoFormulario(elem, proyId);
             btn_agregar.setEnabled(false);
 
@@ -123,36 +128,80 @@ public class PlanillaEditar extends AppCompatActivity {
     }
 
     private void mostrarElementosMismoFormulario(String elem, int proyId) {
-        formId= repo.getFormId(elem, proyId);
+        formId = repo.getFormId(elem, proyId); // del elemento seleccionado obtengo su formulario
         ArrayList<String> elementosFormulario = repo.getElementosMismoFormulario(proyId, formId);  //lista de elementos mismo formulario
         for (String s: elementosFormulario) {
             elem_seleccionados.add(s);
         }
         lv_elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
+        //obtener de la BD los datos del formulario (marcas, correctitud, diagrama)
+        cargarDatosFormulario(formId);
+        inicializarContadores();
     }
+
+    private void cargarDatosFormulario(int formId) {
+        formulario = repo.getFormulario(formId);
+        diagramaActual = formulario.getDiagrama();
+        listaMarcas = formulario.getMarcas();
+        correcto = formulario.isEsCorrecto();
+    }
+    private void inicializarContadores() {
+        cantAudios = formulario.getAudios().size();
+        cantFotos = formulario.getFotos().size();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            switch (requestCode){
+                case ACTIVITY_GRABAR_AUDIO:
+                    String pathAudio = data.getStringExtra(AUDIO);
+                    if (pathAudio != null) {
+                        formulario.agregarAudio(pathAudio);
+                        cantAudios++;
+                        tv_cantAudios.setText(""+cantAudios);
+                        Log.e("en PLanilla", pathAudio);
+                    }
+                    break;
+
+                case ACTIVITY_PLANO:
+                    listaMarcas = data.getIntegerArrayListExtra(MARCAS);
+                    formulario.setMarcas(listaMarcas);
+                    correcto = data.getBooleanExtra(SWITCH, true);
+                    formulario.setEsCorrecto(correcto);
+                    break;
+
+                case ACTIVITY_CAMARA:
+                    String pathFoto = data.getStringExtra(FOTO);
+                    if (pathFoto != null) {
+                        formulario.agregarFoto(pathFoto);
+                        cantFotos++;
+                        tv_cantFotos.setText(""+cantFotos);
+                        Log.e("en PLanilla", pathFoto);
+                    }
+                    break;
+
+                case ACTIVITY_DOCUMENTO:
+                    break;
+            }
+        }
+    }
+
 
     public void agregarAudio(View view){
         Intent i = new Intent(this, GrabadoraAudio.class);
         startActivityForResult(i, ACTIVITY_GRABAR_AUDIO);
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ACTIVITY_GRABAR_AUDIO) {
-            if (resultCode == Activity.RESULT_OK) {
-                pathAudio = data.getStringExtra(AUDIO);
-            }
-        } else if (requestCode == ACTIVITY_PLANO){
-            if (resultCode == Activity.RESULT_OK) {
-                listaMarcas = data.getIntegerArrayListExtra(MARCAS);
-                correcto = data.getBooleanExtra(SWITCH, true);
-            }
-        }
-    }
 
     public void agregarFoto(View view) {
-        Intent i = new Intent(this, GrabadoraAudio.class);
-        startActivityForResult(i, ACTIVITY_FOTO);
+        if (repo.getProyecto(nombreProyecto).permite_fotos()) {
+            Intent i = new Intent(this, Camara.class);
+            startActivityForResult(i, ACTIVITY_CAMARA);
+        }else {
+            Toast.makeText(this, "Fotos: Opcion DESHABILITADA" , Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void verPlano(View view) {
@@ -163,19 +212,20 @@ public class PlanillaEditar extends AppCompatActivity {
         startActivityForResult(i, ACTIVITY_PLANO);
     }
 
+    public void verDocumento(View view) {
+        Intent i = new Intent(this, Documentos.class);
+        startActivityForResult(i, ACTIVITY_DOCUMENTO);
+    }
 
 
     public void guardarFormulario(View view){
         if (listaMarcas.size() < 4) {
             Toast.makeText(this, "Marcar region relevada", Toast.LENGTH_SHORT).show();
-        }else{  //actualizar Formulario en BD... marcas - correctitud - audio - foto -
+        }else{  //actualizar Formulario en BD: marcas - correctitud - audio - foto
+             boolean exito = repo.actualizarFormulario(formulario);
 
-
-            boolean exito;
-            //int formId = repo.crearFormulario(proyId, diagramaActual, listaMarcas, correcto);
-
-            if (formId != -1){ //correcto
-                //exito = actualizarElementos(formId);
+            if (exito) {
+                Toast.makeText(this, "Formulario guardado", Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(this, Principal.class);
                 i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
@@ -183,22 +233,7 @@ public class PlanillaEditar extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-            /////solo guarda AUDIO para probar
-            // exito = repo.agregarDatosFormulario(formId, pathAudio);
-
         }
     }
-
-   /* private boolean actualizarElementos(int formId) {
-        boolean exito= false;
-        for (String s: elem_seleccionados) {
-            int elemId = repo.getIdElemento(s, proyId);
-            exito = repo.actualizarElemento(elemId, formId);
-            Log.e("EXITO ACTULIZAR ELEM", ""+exito);
-        }
-        return exito;
-    }*/
-
-
 
 }

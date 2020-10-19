@@ -3,21 +3,16 @@ package com.example.relevamiento;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +20,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class GrabadoraAudio extends AppCompatActivity {
 
@@ -40,7 +32,7 @@ public class GrabadoraAudio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grabadora_audio);
 
-        btn_recorder = (Button)findViewById(R.id.btn_rec);
+        btn_recorder = findViewById(R.id.btn_rec);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1000);
         }
@@ -105,7 +97,7 @@ public class GrabadoraAudio extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Reproduciendo audio", Toast.LENGTH_SHORT).show();
     }
 
-    private void guardar() {
+    /*private void guardar() {
         //If you wanted to add this audio to the media library on the phone:
         ContentValues values = new ContentValues(4);
         long current = System.currentTimeMillis();
@@ -121,6 +113,7 @@ public class GrabadoraAudio extends AppCompatActivity {
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, newUri));
         Toast.makeText(this, "Added File " + newUri, Toast.LENGTH_LONG).show();
     }
+     */
 
 
 

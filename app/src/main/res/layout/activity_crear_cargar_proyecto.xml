@@ -98,10 +98,13 @@
 
     <Button
         android:id="@+id/btn_abrir"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:onClick="crear_actualizar_Proyecto"
         android:text="Abrir"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_diagramas" />

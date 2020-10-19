@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.repositorio.Repositorio;
@@ -33,10 +34,11 @@ public class Planilla extends AppCompatActivity {
 
 
     private Repositorio repo;
-    private int proyId;
-    private ArrayList<String> elem_seleccionados, nombreElementos;
+    private int proyId, cantAudios, cantFotos;
+    private ArrayList<String> elem_seleccionados, nombreElementos, audios, fotos;
     private ArrayAdapter<String> adapter, adapterSeleccion;
-    private String pathAudio, pathFoto, nombreProyecto, diagramaActual;
+    private String nombreProyecto, diagramaActual;
+    private TextView tv_cantAudios, tv_cantFotos;
 
     private androidx.appcompat.widget.SearchView searchView;
     private ListView elementosSeleccionados, lv_todosElementos;
@@ -52,14 +54,18 @@ public class Planilla extends AppCompatActivity {
         searchView = findViewById(R.id.search_bar);
         elementosSeleccionados =  findViewById(R.id.lv_listaElem);
         lv_todosElementos = findViewById(R.id.lv_todosElementos);
+        tv_cantAudios = findViewById(R.id.tv_cantAudios);
+        tv_cantFotos = findViewById(R.id.tv_cantFotos);
 
-        nombreElementos = new ArrayList<String>();
-        listaMarcas = new ArrayList<Integer>();
+        nombreElementos = new ArrayList<>();
+        listaMarcas = new ArrayList<>();
+        audios = new ArrayList<>();
+        fotos = new ArrayList<>();
 
         repo = new Repositorio(this);
         //inicializa lista de los ya seleccionados
-        elem_seleccionados = new ArrayList<String>();
-        adapterSeleccion = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, elem_seleccionados);
+        elem_seleccionados = new ArrayList<>();
+        adapterSeleccion = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, elem_seleccionados);
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -70,10 +76,18 @@ public class Planilla extends AppCompatActivity {
         }
 
         mostrarListaElementos();
+        inicializarContadores();
 
         Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
         intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
         sendBroadcast(intent);
+    }
+
+    private void inicializarContadores() {
+        cantAudios = 0;
+        tv_cantAudios.setText(""+cantAudios);
+        cantFotos = 0;
+        tv_cantFotos.setText(""+cantFotos);
     }
 
     private void mostrarListaElementos() {
@@ -85,7 +99,7 @@ public class Planilla extends AppCompatActivity {
                 nombreElementos.add(e.getNombre());
             }
         }
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nombreElementos);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, nombreElementos);
         lv_todosElementos.setAdapter(adapter);
 
         lv_todosElementos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,21 +143,28 @@ public class Planilla extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && data != null) {
             switch (requestCode) {
                 case ACTIVITY_GRABAR_AUDIO:
-                    pathAudio = data.getStringExtra(AUDIO);
-                    Log.e("en PLanilla", pathAudio);
+                    String pathAudio = data.getStringExtra(AUDIO);
+                    if (pathAudio != null) {
+                        audios.add(pathAudio);
+                        cantAudios++;
+                        tv_cantAudios.setText(""+cantAudios);
+                        Log.e("en PLanilla", pathAudio);
+                    }
                     break;
 
                 case ACTIVITY_PLANO:
                     listaMarcas = data.getIntegerArrayListExtra(MARCAS);
                     correcto = data.getBooleanExtra(SWITCH, true);
-                     Intent intent = new Intent("com.realwear.wearhf.intent.action.MOUSE_COMMANDS");
-                     intent.putExtra("com.realwear.wearhf.intent.extra.MOUSE_ENABLED", false);
-                     sendBroadcast(intent);
                     break;
 
                 case ACTIVITY_CAMARA:
-                    pathFoto = data.getStringExtra(FOTO);
-                    Log.e("en PLanilla", pathFoto);
+                    String pathFoto = data.getStringExtra(FOTO);
+                    if (pathFoto != null) {
+                        fotos.add(pathFoto);
+                        cantFotos++;
+                        tv_cantFotos.setText(""+cantFotos);
+                        Log.e("en PLanilla", pathFoto);
+                    }
                     break;
 
                 case ACTIVITY_DOCUMENTO:
@@ -153,8 +174,12 @@ public class Planilla extends AppCompatActivity {
     }
 
     public void agregarFoto(View view) {
-        Intent i = new Intent(this, Camara.class);
-        startActivityForResult(i,ACTIVITY_CAMARA);
+        if (repo.getProyecto(nombreProyecto).permite_fotos()) {
+            Intent i = new Intent(this, Camara.class);
+            startActivityForResult(i, ACTIVITY_CAMARA);
+        }else {
+            Toast.makeText(this, "Fotos: Opcion DESHABILITADA" , Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void agregarAudio(View view){
@@ -187,9 +212,13 @@ public class Planilla extends AppCompatActivity {
             if (formId != -1){ //correcto
                 exito = actualizarElementos(formId);
 
-                //guardar AUDIO
-                //exito = repo.agregarAudioFormulario(formId, pathAudio);
+                if ( !audios.isEmpty()) { //guardar Audio
+                    exito = repo.agregarAudioFormulario(formId, audios);
+                }
 
+                if ( !fotos.isEmpty()) { //guardar Foto
+                    exito = repo.agregarFotoFormulario(formId, fotos);
+                }
 
                 Intent i = new Intent(this, Principal.class);
                 i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
@@ -197,8 +226,6 @@ public class Planilla extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-
-
         }
     }
 

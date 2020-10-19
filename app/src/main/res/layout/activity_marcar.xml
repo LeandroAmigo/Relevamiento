@@ -74,16 +74,6 @@
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/btn_cancelar_marcar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:onClick="cancelar"
-        android:text="Cancelar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <Switch
         android:id="@+id/switch_marcar"
         android:layout_width="125dp"
@@ -107,4 +97,15 @@
         android:text="Aceptar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_cancelar_marcar" />
+
+    <Button
+        android:id="@+id/btn_cancelar_marcar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:onClick="cancelar"
+        android:text="Borrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
