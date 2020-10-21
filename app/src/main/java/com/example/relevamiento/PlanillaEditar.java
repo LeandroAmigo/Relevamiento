@@ -4,9 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,7 +47,7 @@ public class PlanillaEditar extends AppCompatActivity {
 
     private androidx.appcompat.widget.SearchView searchView;
     private ListView lv_elementosSeleccionados, lv_todosElementos;
-    private Button btn_agregar;
+    private Button btn_agregar, btn_eliminarForm;
     private ArrayList<Integer> listaMarcas;
     private boolean correcto;
     private Formulario formulario;
@@ -61,6 +62,8 @@ public class PlanillaEditar extends AppCompatActivity {
         lv_elementosSeleccionados = findViewById(R.id.lv_listaElem);
         lv_todosElementos = findViewById(R.id.lv_todosElementos);
         btn_agregar = findViewById(R.id.btn_agregar);
+        btn_eliminarForm = findViewById(R.id.btn_eliminarForm);
+        btn_eliminarForm.setVisibility(View.VISIBLE);
         tv_cantAudios = findViewById(R.id.tv_cantAudios);
         tv_cantFotos = findViewById(R.id.tv_cantFotos);
 
@@ -122,7 +125,8 @@ public class PlanillaEditar extends AppCompatActivity {
             searchView.setQuery("", false);
             searchView.setClickable(false); //editar un unico formulario
             mostrarElementosMismoFormulario(elem, proyId);
-            btn_agregar.setEnabled(false);
+            btn_agregar.setEnabled(false); //no se vuelve a usar
+            btn_eliminarForm.setEnabled(true); //se habilita
 
         }
     }
@@ -132,6 +136,11 @@ public class PlanillaEditar extends AppCompatActivity {
         ArrayList<String> elementosFormulario = repo.getElementosMismoFormulario(proyId, formId);  //lista de elementos mismo formulario
         for (String s: elementosFormulario) {
             elem_seleccionados.add(s);
+            // los elimina de la lista inicial de elementos
+            nombreElementos.remove(s);
+            adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
+            lv_todosElementos.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
         lv_elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
         //obtener de la BD los datos del formulario (marcas, correctitud, diagrama)
@@ -147,7 +156,9 @@ public class PlanillaEditar extends AppCompatActivity {
     }
     private void inicializarContadores() {
         cantAudios = formulario.getAudios().size();
+        tv_cantAudios.setText(""+cantAudios);
         cantFotos = formulario.getFotos().size();
+        tv_cantFotos.setText(""+cantFotos);
     }
 
 
@@ -162,7 +173,6 @@ public class PlanillaEditar extends AppCompatActivity {
                         formulario.agregarAudio(pathAudio);
                         cantAudios++;
                         tv_cantAudios.setText(""+cantAudios);
-                        Log.e("en PLanilla", pathAudio);
                     }
                     break;
 
@@ -179,7 +189,6 @@ public class PlanillaEditar extends AppCompatActivity {
                         formulario.agregarFoto(pathFoto);
                         cantFotos++;
                         tv_cantFotos.setText(""+cantFotos);
-                        Log.e("en PLanilla", pathFoto);
                     }
                     break;
 
@@ -226,14 +235,51 @@ public class PlanillaEditar extends AppCompatActivity {
 
             if (exito) {
                 Toast.makeText(this, "Formulario guardado", Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(this, Principal.class);
-                i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
-                i.putExtra(Planilla.DIAGRAMA, diagramaActual);
-                startActivity(i);
-                finish();
+                volverPrincipal();
             }
         }
     }
 
+    public void eliminarformulario(View view){
+        AlertDialog diaBox = confirmacionEliminar();
+        diaBox.show();
+    }
+
+    private AlertDialog confirmacionEliminar() {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Eliminar Relevamiento")
+                .setMessage("¿Seguro desea eliminar?")
+
+                .setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        boolean exito = repo.eliminarFormulario(formId);
+                        if (exito) {
+                            dialog.dismiss();
+                            volverPrincipal();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "error al eliminar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
+
+    private void volverPrincipal(){
+        Intent i = new Intent(this, Principal.class);
+        i.putExtra(Planilla.NOMBRE_PROYECTO, nombreProyecto);
+        i.putExtra(Planilla.DIAGRAMA, diagramaActual);
+        startActivity(i);
+        finish();
+    }
 }

@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
@@ -27,7 +26,6 @@ public class Documentos extends AppCompatActivity {
     private DialogProperties properties;
     private TextView tv_nombreDocumento;
 
-    private File mSampleFile;
     private String pathDocumento;
 
     /**
@@ -95,15 +93,18 @@ public class Documentos extends AppCompatActivity {
                 MimeTypeMap.getFileExtensionFromUrl(document.toURI().toString()));
 
         if(mimeType != null){
-            final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-            viewIntent.addCategory(Intent.CATEGORY_DEFAULT);
-            viewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            viewIntent.setDataAndType(contentUri, mimeType);
-            viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if( !mimeType.equals(mSampleMimeType) ){
+                Toast.makeText(getApplicationContext(),"el formato debe ser PDF (xxx.pdf)",Toast.LENGTH_LONG).show();
+            }else{
+                final Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+                viewIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                viewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                viewIntent.setDataAndType(contentUri, mimeType);
+                viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            startActivity(viewIntent);
+                startActivity(viewIntent);
+            }
         }
-
     }
 
     public void volver (View view){
@@ -121,10 +122,15 @@ public class Documentos extends AppCompatActivity {
 
  */
 
+    public void seleccionar( View view){
+        dialogPicker();
+    }
+
     private void mostrarNombreDocumentoCargado(String pathDocumento) {
         String substring = pathDocumento.substring(22, pathDocumento.length()-4); //elimina ""mnt/sdcard/Documents/"" y tambien el "".pdf""
         tv_nombreDocumento.setText(substring);
     }
+
 
 
 }

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.BaseAdapter;
 
 import com.example.relevamiento.db.DataBaseHelper;
 import com.example.relevamiento.modelos.Elemento;
@@ -114,8 +115,6 @@ public class Repositorio {
             long result = BaseDeDatos.insert("proyectos", null, cv);
         close();
 
-        Log.e("PROYECTO", nombreProyecto +" "+ diagramas +" "+ permite_fotos );
-
         if (pathElementos != null) {
             int proyId = getIdProyecto(nombreProyecto);
             agregarElementos(proyId, pathElementos);
@@ -185,7 +184,6 @@ public class Repositorio {
             cv.put("proyecto_id", proyId);
             BaseDeDatos.insert("elementos", null, cv);
 
-            Log.e("AGRGANDO ELEMENTO", listaElementos.get(i) +" AL PROYECTO "+ proyId );
         }
         close();
     }
@@ -196,8 +194,6 @@ public class Repositorio {
             cv.put("elemento_nombre", nombre);
             cv.put("proyecto_id", proyId);
             BaseDeDatos.insert("elementos", null, cv);
-
-            Log.e("AGRGANDO ELEMENTO", nombre+" AL PROYECTO "+ proyId );
 
         close();
     }
@@ -236,7 +232,6 @@ public class Repositorio {
         close();
         if (cant == 1)
             exito = true;
-        Log.e("actualizar ELEMENTO:", "elemento ID: "+elemId+" formID: "+formId);
         return exito;
     }
 
@@ -339,8 +334,6 @@ public class Repositorio {
         long result = BaseDeDatos.insert("formularios", null, cv);
         close();
 
-        Log.e("crear FORMULARIO: ID",(int)result +" diag: "+diagrama+ " -marcas: "+marcas+" correct: "+formulario_correcto);
-
         return (int) result;
     }
 
@@ -355,7 +348,6 @@ public class Repositorio {
         if (cant == 1)
             exito = true;
 
-        Log.e("agregar al FORMULARIO", " ID: "+formId +" pathAudios: "+str_audios);
         return exito;
     }
 
@@ -370,7 +362,6 @@ public class Repositorio {
         if (cant == 1)
             exito = true;
 
-        Log.e("agregar al FORMULARIO", " ID: "+formId +" pathFotos: "+str_fotos);
         return exito;
     }
 
@@ -448,4 +439,14 @@ public class Repositorio {
         return exito;
     }
 
+    public boolean eliminarFormulario(int formId) {
+        open();
+            long result = BaseDeDatos.delete("formularios", "formulario_id = " +formId, null);
+        close();
+        if(result == -1)
+            return false;
+        else
+            return true;
+
+    }
 }

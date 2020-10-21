@@ -77,7 +77,6 @@ public class DiagramaCompleto extends AppCompatActivity {
             public void onClick(View view) {
                 iv_diagrama.setMaxZoom(10);
                 float zm = iv_diagrama.getCurrentZoom()* 2.0f;
-                Toast.makeText(getApplicationContext(),"CURRENT ZOOM:  "+zm, Toast.LENGTH_SHORT).show();
                 iv_diagrama.setZoom(zm, iv_diagrama.getScrollPosition().x, iv_diagrama.getScrollPosition().y);
             }
         });

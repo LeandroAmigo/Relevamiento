@@ -11,7 +11,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,7 +37,6 @@ public class Principal extends AppCompatActivity {
     private Proyecto proyectoSeleccionado;
     private Repositorio repo;
     private ImageView iv_diagrama;
-    private Bitmap myBitmap;
     private ListView lv_elementos;
     private TextView tv_avance;
 
@@ -93,7 +91,6 @@ public class Principal extends AppCompatActivity {
                 cant++; // para porcentaje
             }
             listaStatus.add(new StatusAdapter (e.getNombre(), correctitud ));
-            Log.e("STATUS", "nombre: "+e.getNombre()+" correctitud: "+correctitud);
         }
 
         MyAdapter adapter = new MyAdapter(this, listaStatus);
@@ -101,7 +98,6 @@ public class Principal extends AppCompatActivity {
         //actualizar avance
         if (listaElementos.size()>0) {
             tv_avance.setText("Completado: " + ((cant * 100) / listaElementos.size()) + "% ");
-            Log.e("sda", "Completado: " + ((cant * 100) / listaElementos.size()) + "% ");
         }
     }
 
@@ -112,7 +108,7 @@ public class Principal extends AppCompatActivity {
     private void mostrarDiagrama() {
         File imgFile = new File(diagramaActual);
         if (imgFile.exists()) {
-            myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             iv_diagrama.setImageBitmap(myBitmap); //setea el diagrama seleccionado
 
            mostrarFormularios(diagramaActual);

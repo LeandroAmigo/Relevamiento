@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -129,7 +128,6 @@ public class CrearCargarProyecto extends AppCompatActivity {
 
         if (proyectoSeleccionado == null){  //crear proyecto
             if (pathDiagramas != null && !nombreProyecto.isEmpty() && !existeNombre(nombreProyecto)) {
-                Log.e("CREAR PROY", nombreProyecto + " - " + pathDiagramas + " - " + pathElementos + " - " + permiteFoto);
                 exito = repo.crearProyecto(nombreProyecto, pathDiagramas, pathElementos, permiteFoto); //guarda BD
             }else if (nombreProyecto.isEmpty()) {
                     Toast.makeText(this, "Ingresar nombre ", Toast.LENGTH_SHORT).show();
@@ -141,12 +139,10 @@ public class CrearCargarProyecto extends AppCompatActivity {
         }else { //editar
             int proyId = proyectoSeleccionado.getId();
             if (!nombreProyecto.equals(proyectoSeleccionado.getNombre())) {
-                Log.e("EDITANDO NOMBRE", nombreProyecto + " -- " + proyectoSeleccionado.getNombre());
                 exito = repo.actualizarNombreProyecto(proyId, nombreProyecto); //sobreescribe
             }
             if (pathDiagramas != null) {
                 //se agregan los nuevos diagramas de pathDiagramas (se verifica que no esten duplicados)
-                Log.e("EDITANDO DIAGRAMAS", pathDiagramas + " -- " + proyectoSeleccionado.getDiagramas());
                 exito =  repo.actualizarDiagramasProyecto(proyId, proyectoSeleccionado.getDiagramas(), pathDiagramas); //agrega
             }
             if (permiteFoto != proyectoSeleccionado.permite_fotos()) {

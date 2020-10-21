@@ -17,7 +17,7 @@
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_fotoCamara"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onLaunchCameraBasic"
@@ -26,11 +26,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_aceptarCamara"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="aceptar"
         android:text="Aceptar"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/btn_fotoCamara"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

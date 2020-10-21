@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class Planilla extends AppCompatActivity {
     private ArrayAdapter<String> adapter, adapterSeleccion;
     private String nombreProyecto, diagramaActual;
     private TextView tv_cantAudios, tv_cantFotos;
+    private Button btn_eliminarForm;
 
     private androidx.appcompat.widget.SearchView searchView;
     private ListView elementosSeleccionados, lv_todosElementos;
@@ -56,6 +58,8 @@ public class Planilla extends AppCompatActivity {
         lv_todosElementos = findViewById(R.id.lv_todosElementos);
         tv_cantAudios = findViewById(R.id.tv_cantAudios);
         tv_cantFotos = findViewById(R.id.tv_cantFotos);
+        btn_eliminarForm = findViewById(R.id.btn_eliminarForm);
+        btn_eliminarForm.setVisibility(View.INVISIBLE);
 
         nombreElementos = new ArrayList<>();
         listaMarcas = new ArrayList<>();
@@ -63,9 +67,11 @@ public class Planilla extends AppCompatActivity {
         fotos = new ArrayList<>();
 
         repo = new Repositorio(this);
+
         //inicializa lista de los ya seleccionados
         elem_seleccionados = new ArrayList<>();
-        adapterSeleccion = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, elem_seleccionados);
+        adapterSeleccion = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
+        adapterSeleccion.setNotifyOnChange(true);
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -100,6 +106,7 @@ public class Planilla extends AppCompatActivity {
             }
         }
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, nombreElementos);
+        adapter.setNotifyOnChange(true);
         lv_todosElementos.setAdapter(adapter);
 
         lv_todosElementos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,8 +136,13 @@ public class Planilla extends AppCompatActivity {
             Toast.makeText(this, "Ingresar Elemento relevado", Toast.LENGTH_SHORT).show();
         }else {
             searchView.setQuery("", false);
-            if ( !nombreElementos.contains(elem)){
+            if ( !nombreElementos.contains(elem)){ // se agrega a la BD si no existia
                 repo.agregarNuevoElemento(proyId, elem);
+            }else{ // si existia se elimina de la lista donde fue seleccionado y actualiza la vista
+                nombreElementos.remove(elem);
+                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, nombreElementos);
+                lv_todosElementos.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
             elem_seleccionados.add(elem); //lista de elementos relevados
             elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
@@ -148,7 +160,6 @@ public class Planilla extends AppCompatActivity {
                         audios.add(pathAudio);
                         cantAudios++;
                         tv_cantAudios.setText(""+cantAudios);
-                        Log.e("en PLanilla", pathAudio);
                     }
                     break;
 
@@ -163,7 +174,6 @@ public class Planilla extends AppCompatActivity {
                         fotos.add(pathFoto);
                         cantFotos++;
                         tv_cantFotos.setText(""+cantFotos);
-                        Log.e("en PLanilla", pathFoto);
                     }
                     break;
 
@@ -234,7 +244,6 @@ public class Planilla extends AppCompatActivity {
         for (String s: elem_seleccionados) {
             int elemId = repo.getIdElemento(s, proyId);
             exito = repo.actualizarElemento(elemId, formId);
-            Log.e("EXITO ACTULIZAR ELEM", ""+exito);
         }
         return exito;
     }

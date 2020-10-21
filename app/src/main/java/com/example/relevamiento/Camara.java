@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -29,6 +30,7 @@ public class Camara extends AppCompatActivity {
     private static final String EXTRA_RESULT = "data";
 
     private ImageView mImageView;
+    private Button btn_aceptar;
     private Uri contentUri;
     private String path;
 
@@ -43,6 +45,8 @@ public class Camara extends AppCompatActivity {
         setContentView(R.layout.activity_camara);
 
         mImageView = (ImageView) findViewById(R.id.camera_image_view);
+        btn_aceptar = findViewById(R.id.btn_aceptarCamara);
+        btn_aceptar.setEnabled(false);
     }
 
     /**
@@ -100,7 +104,7 @@ public class Camara extends AppCompatActivity {
                     path = getRealPathFromURI(tempUri);
                     File finalFile = new File(path);
 
-                    Log.e("FINAL FILE", ""+finalFile); ///// ---> /storage/emulated/0/Pictures/1602088299819.jpg
+                    btn_aceptar.setEnabled(true);
                     break;
 
                /* case FILEPROVIDER_CAMERA_REQUEST_CODE: // View saved file in DocumentViewer
@@ -141,7 +145,6 @@ public class Camara extends AppCompatActivity {
     public void aceptar (View view){
         Intent i = new Intent();
         i.putExtra(Planilla.FOTO, path);
-        Log.e("Archivo salida (String)", path);
         setResult(Activity.RESULT_OK,i);
         finish();
     }
