@@ -5,7 +5,6 @@ import androidx.appcompat.widget.SearchView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.repositorio.Repositorio;
+import com.example.relevamiento.repositorio.parsers.AdapterElemSeleccionadosPlanilla;
+
 import java.util.ArrayList;
 
 public class Planilla extends AppCompatActivity {
@@ -70,8 +71,7 @@ public class Planilla extends AppCompatActivity {
 
         //inicializa lista de los ya seleccionados
         elem_seleccionados = new ArrayList<>();
-        adapterSeleccion = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, elem_seleccionados);
-        adapterSeleccion.setNotifyOnChange(true);
+        
 
         if (getIntent().hasExtra(NOMBRE_PROYECTO)) {
             nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
@@ -145,8 +145,9 @@ public class Planilla extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
             elem_seleccionados.add(elem); //lista de elementos relevados
-            elementosSeleccionados.setAdapter(adapterSeleccion); //mostrarlos
+            elementosSeleccionados.setAdapter(new AdapterElemSeleccionadosPlanilla(this, elem_seleccionados));
         }
+
     }
 
     @Override

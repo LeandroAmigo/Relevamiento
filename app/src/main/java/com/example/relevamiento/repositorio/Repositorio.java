@@ -443,10 +443,10 @@ public class Repositorio {
         open();
             long result = BaseDeDatos.delete("formularios", "formulario_id = " +formId, null);
         close();
-        if(result == -1)
+        if(result == -1) {
             return false;
-        else
+        }else{
             return true;
-
+        }
     }
 }
