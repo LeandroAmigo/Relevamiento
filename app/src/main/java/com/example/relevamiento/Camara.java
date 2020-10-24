@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -59,28 +58,7 @@ public class Camara extends AppCompatActivity {
         startActivityForResult(intent, BASIC_CAMERA_REQUEST_CODE);
     }
 
-    /**
-     * Listener for when the FileProvider camera button is clicked
-     *
-     * @param view The FileProvider camera button
-     */
-   /* public void onLaunchCameraFileProvider(View view) {
 
-        final File mediaStorageDir = getExternalFilesDir(Environment.DIRECTORY_DCIM);
-
-        final File file = new File(mediaStorageDir, "devexamples-" + UUID.randomUUID() + ".jpg");
-
-        contentUri = FileProvider.getUriForFile(
-                getApplicationContext(),
-                getApplicationContext().getPackageName() + ".fileprovider",
-                file);
-
-        final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); // OR ACTION_VIDEO_CAPTURE
-        captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-
-        startActivityForResult(captureIntent, FILEPROVIDER_CAMERA_REQUEST_CODE);
-    }*/
 
     /**
      * Listener for result from external activities. Receives image data from camera.

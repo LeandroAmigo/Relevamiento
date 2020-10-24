@@ -168,7 +168,6 @@ public class Principal extends AppCompatActivity {
     public void editarFormulario(View view){
         Intent i = new Intent(this, PlanillaEditar.class);
         i.putExtra(NOMBRE_PROYECTO, nombreProyecto);
-       // i.putExtra(DIAGRAMA, diagramaActual);
         startActivity(i);
     }
 

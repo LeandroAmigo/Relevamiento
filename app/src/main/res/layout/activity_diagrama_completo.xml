@@ -71,15 +71,15 @@
             android:contentDescription="hf_use_description|Abajo"
             app:srcCompat="@android:drawable/screen_background_dark_transparent" />
 
+
         <Button
             android:id="@+id/btn_aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="750dp"
-            android:layout_marginTop="410dp"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="110dp"
             android:onClick="aceptarDiagrama"
             android:text="Aceptar" />
-
 
         <ImageButton
             android:id="@+id/imageButton4"

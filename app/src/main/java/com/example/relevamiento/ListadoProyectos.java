@@ -57,15 +57,24 @@ public class ListadoProyectos extends AppCompatActivity {
         }
     }
 
-    /*public void exportarProyecto(View view){
+    public void exportarProyecto(View view){
         if (spinner.getSelectedItem() != null ) {
-         seleccion = spinner.getSelectedItem().toString();
-         Exportar e = new Exportar(this);
-         e.exportarProyecto(seleccion);
+            seleccion = spinner.getSelectedItem().toString();
+            Intent intent = new Intent(this, Exportar2.class);
+            intent.putExtra(Exportar2.NOMBRE_PROYECTO, seleccion);
+            startActivityForResult(intent, 2);
         }
-
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==2)
+        {
+            //do the things u wanted
+        }
     }
 
-    */
 
 }

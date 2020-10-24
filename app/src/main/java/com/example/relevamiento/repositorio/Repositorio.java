@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.util.Log;
-import android.widget.BaseAdapter;
 
 import com.example.relevamiento.db.DataBaseHelper;
 import com.example.relevamiento.modelos.Elemento;
@@ -449,4 +447,18 @@ public class Repositorio {
             return true;
         }
     }
+
+    public ArrayList<Integer> getIdFormulariosDeProyecto(int proyId) {
+        ArrayList<Integer> salida = new ArrayList<Integer>();
+        open();
+        Cursor c = BaseDeDatos.rawQuery("select formulario_id from formularios where proyecto_id =" +proyId, null);
+        if (c.moveToFirst()) {
+            do {
+                salida.add(c.getInt(0)); //"select 0,1,2,3... from proyectos"
+            } while (c.moveToNext());
+        }
+        close();
+        return salida;
+    }
+
 }

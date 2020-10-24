@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Documentos"></activity>
+        <activity android:name=".Exportar2"></activity>
+        <activity android:name=".Documentos" />
         <activity android:name=".Camara" />
         <activity android:name=".PlanillaEditar" />
         <activity
