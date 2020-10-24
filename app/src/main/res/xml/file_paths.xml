@@ -2,5 +2,6 @@
     <external-files-path name="my_photos" path="DCIM" />
     <external-files-path name="my_documents" path="Documents" />
     <external-files-path name="my_movies" path="Movies" />
+    <external-path name="my_images" path="Android/data/com.example.relevamiento/files/Pictures" />
     <external-path name="external_files" path="."/>
 </paths>
