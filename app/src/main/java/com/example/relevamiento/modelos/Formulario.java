@@ -18,8 +18,7 @@ public class Formulario {
         audios = new ArrayList<>();
         fotos = new ArrayList<>();
     }
-
-
+    
     public void agregarFoto(String f) {
         fotos.add(f);
     }

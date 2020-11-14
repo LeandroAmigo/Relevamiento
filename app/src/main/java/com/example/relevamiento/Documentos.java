@@ -112,15 +112,7 @@ public class Documentos extends AppCompatActivity {
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
-/*   NO TESTEADO TODAVIAA
-    @Override
-    public void onBackPressed (){
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
-    }
 
- */
 
     public void seleccionar( View view){
         dialogPicker();

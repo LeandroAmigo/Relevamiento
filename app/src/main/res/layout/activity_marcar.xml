@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/BackGround"
     tools:context=".Marcar">
 
 
     <FrameLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="40dp"
@@ -74,6 +76,31 @@
 
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/tv_mic_cambiarDiagrama"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="hf_no_number"
+        android:drawableStart="@drawable/ic_baseline_mic_24"
+        android:paddingStart="2dp"
+        android:paddingEnd="8dp"
+        android:text="Hacer Click"
+        android:textAllCaps="true"
+        android:textSize="16dp"
+        android:textColor="@color/textColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+
+    <ImageButton
+        android:id="@+id/imageButton_mira"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_mic_cambiarDiagrama"
+        app:srcCompat="@drawable/ic_baseline_gps_fixed_24" />
+
     <Switch
         android:id="@+id/switch_marcar"
         android:layout_width="125dp"
@@ -83,6 +110,7 @@
         android:onClick="switch_correcto"
         android:text="Correcto"
         android:textStyle="bold"
+        android:textColor="@color/textColor"
         android:thumb="@drawable/thumb"
         android:track="@drawable/thumb_track"
         app:layout_constraintBottom_toBottomOf="parent"

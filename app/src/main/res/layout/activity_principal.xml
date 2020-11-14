@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/BackGround"
     tools:context=".Principal"
     android:contentDescription="hf_hide_help">
 
@@ -40,25 +41,25 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toEndOf="@id/guideline">
 
         <TextView
             android:id="@+id/tv_avance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/textColor"/>
 
         <LinearLayout
             android:id="@+id/layoutElem"
             android:layout_width="match_parent"
-            android:layout_height="310dp"
+            android:layout_height="270dp"
             android:contentDescription="hf_no_number"
             android:orientation="vertical">
 
@@ -67,7 +68,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:dividerHeight="1dp" />
+                android:dividerHeight="1dp"
+                android:textColor="@color/textColor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/tv_mic_subir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="hf_no_number"
+                android:drawableStart="@drawable/ic_baseline_mic_24"
+                android:paddingStart="2dp"
+                android:paddingEnd="8dp"
+                android:text="subir pagina"
+                android:textAllCaps="true"
+                android:textColor="@color/textColor"/>
+
+            <TextView
+                android:id="@+id/tv_mic_bajar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="hf_no_number"
+                android:drawableStart="@drawable/ic_baseline_mic_24"
+                android:paddingStart="2dp"
+                android:paddingEnd="8dp"
+                android:text="bajar pagina"
+                android:textAllCaps="true"
+                android:textColor="@color/textColor"/>
         </LinearLayout>
 
         <LinearLayout
@@ -82,12 +117,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="1"
-                android:backgroundTint="#D7F1EB"
                 android:drawableEnd="@drawable/ic_baseline_create_24"
                 android:drawableTint="#000000"
                 android:onClick="editarFormulario"
-                android:text="Editar"
-                android:textColor="#051B95" />
+                android:text="Editar" />
 
             <Button
                 android:id="@+id/btn_marcar"
@@ -97,16 +130,17 @@
                 android:drawableEnd="@drawable/ic_baseline_add_circle_24"
                 android:drawableTint="#000000"
                 android:onClick="nuevoFormulario"
-                android:text="Marcar" />
+                android:text="Marcar"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_diagramas"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="top"
+            android:layout_height="37dp"
             android:onClick="cambiarDiagramas"
             android:text="Diagramas" />
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

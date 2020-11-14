@@ -179,7 +179,7 @@ public class CrearCargarProyecto extends AppCompatActivity {
                 String substring = s.substring(21, s.length() - 4); //elimina ""mnt/sdcard/Pictures/"" y tambien el "".jpg""
                 nombrediagramas.add(substring);
             }
-            ArrayAdapter<String> arrayadapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nombrediagramas);
+            ArrayAdapter<String> arrayadapter = new ArrayAdapter<String>(this, R.layout.tv_listadiagramas_crearcargar, nombrediagramas);
             lv_diagramas.setAdapter(arrayadapter);
 
     }

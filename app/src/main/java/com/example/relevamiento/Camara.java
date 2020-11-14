@@ -75,9 +75,16 @@ public class Camara extends AppCompatActivity {
             if(photoFile!=null) {
                // displayMessage(getBaseContext(),photoFile.getAbsolutePath());
                // Log.i("Mayank",photoFile.getAbsolutePath());
-                Uri photoURI  = Uri.fromFile(photoFile);
+             //   Uri photoURI  = Uri.fromFile(photoFile);
                 path = photoFile.toString();
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+                Uri photoURI2 = FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        photoFile);
+
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI2);
+                Log.e("URI2", photoURI2.toString());
                 startActivityForResult(cameraIntent, CAPTURE_IMAGE_REQUEST);
             }
         }
@@ -109,9 +116,10 @@ public class Camara extends AppCompatActivity {
     {
         // External sdcard location
         File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 IMAGE_DIRECTORY_NAME);
+
+
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -128,6 +136,8 @@ public class Camara extends AppCompatActivity {
         return mediaFile;
 
     }
+
+
 
     private void displayMessage(Context context, String message) {
         Toast.makeText(context,message, Toast.LENGTH_LONG).show();

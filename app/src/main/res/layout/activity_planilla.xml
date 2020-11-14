@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:background="@color/BackGround"
     tools:context=".PlanillaEditar">
 
     <!-- <com.example.relevamiento.repositorio.parsers.InstantAutoComplete -->
@@ -30,6 +31,29 @@
         app:layout_constraintEnd_toEndOf="@+id/search_bar"
         app:layout_constraintStart_toStartOf="@+id/search_bar"
         app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+
+    <TextView
+        android:id="@+id/tv_mic_arriba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="hf_no_number"
+        android:drawableStart="@drawable/ic_baseline_mic_24"
+        android:text="Subir pagina"
+        android:textColor="@color/textColor"
+        app:layout_constraintBottom_toTopOf="@+id/tv_mic_abajo"
+        app:layout_constraintStart_toEndOf="@+id/lv_todosElementos"
+        app:layout_constraintTop_toBottomOf="@+id/btn_guardar" />
+
+    <TextView
+        android:id="@+id/tv_mic_abajo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="hf_no_number"
+        android:drawableStart="@drawable/ic_baseline_mic_24"
+        android:text="Bajar pagina"
+        android:textColor="@color/textColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lv_todosElementos" />
 
     <Button
         android:id="@+id/btn_agregar"
@@ -83,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textColor="@color/textColor"
                 android:gravity="center" />
         </LinearLayout>
 
@@ -105,6 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textColor="@color/textColor"
                 android:gravity="center" />
         </LinearLayout>
 
@@ -135,9 +161,8 @@
         android:onClick="guardarFormulario"
         android:text="Guardar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lv_listaElem"
+        app:layout_constraintStart_toStartOf="@+id/lv_listaElem"
         app:layout_constraintTop_toBottomOf="@+id/lv_listaElem" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -145,7 +170,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.31" />
+        app:layout_constraintGuide_begin="265dp" />
 
     <Button
         android:id="@+id/btn_eliminarForm"

@@ -15,13 +15,13 @@ import com.example.relevamiento.R;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CustomAdapter extends BaseAdapter {
+public class AdapterSeleccionDiagramas extends BaseAdapter {
 
     private Context context;
     private ArrayList<String> diagramas;
     private Bitmap myBitmap;
 
-    public CustomAdapter (Context context, ArrayList<String> diagramas) {
+    public AdapterSeleccionDiagramas(Context context, ArrayList<String> diagramas) {
         this.context = context;
         this.diagramas = diagramas;
     }
@@ -43,7 +43,7 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view1 = LayoutInflater.from(context).inflate(R.layout.row_data, null);
+        View view1 = LayoutInflater.from(context).inflate(R.layout.row_selecciondiagramas, null);
 
         TextView name = view1.findViewById(R.id.nombreDiagramas);
         ImageView image = view1.findViewById(R.id.diagramas);

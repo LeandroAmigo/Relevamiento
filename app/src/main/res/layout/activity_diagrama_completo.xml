@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:contentDescription=" hf_hide_help"
+    android:background="@color/BackGround"
     tools:context=".DiagramaCompleto">
 
     <FrameLayout
@@ -76,8 +77,8 @@
             android:id="@+id/btn_aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="250dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginStart="750dp"
+            android:layout_marginTop="410dp"
             android:onClick="aceptarDiagrama"
             android:text="Aceptar" />
 
@@ -89,6 +90,78 @@
             android:onClick="cambiarDiagramas"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/ic_baseline_sync_24" />
+
+        <TextView
+            android:id="@+id/tv_mic_cambiarDiagrama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Cambiar"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="70dp"/>
+
+        <TextView
+            android:id="@+id/tv_mic_acercar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Acercar"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="130dp"/>
+        <TextView
+            android:id="@+id/tv_mic_alejar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Alejar"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="160dp"/>
+        <TextView
+            android:id="@+id/tv_mic_derecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Derecha"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="190dp"/>
+        <TextView
+            android:id="@+id/tv_mic_izq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Izquierda"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="220dp"/>
+        <TextView
+            android:id="@+id/tv_mic_arriba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Arriba"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="250dp"/>
+        <TextView
+            android:id="@+id/tv_mic_abajo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_mic_24"
+            android:text="Abajo"
+            android:textColor="@color/textColor"
+            android:textAllCaps="true"
+            android:contentDescription="hf_no_number"
+            android:layout_marginTop="280dp"/>
 
     </FrameLayout>
 

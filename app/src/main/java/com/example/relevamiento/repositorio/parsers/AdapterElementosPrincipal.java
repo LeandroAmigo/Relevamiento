@@ -12,12 +12,12 @@ import com.example.relevamiento.R;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends BaseAdapter {
+public class AdapterElementosPrincipal extends BaseAdapter {
 
     private ArrayList<StatusAdapter> status;
     private Context context;
 
-    public MyAdapter(Context context, ArrayList<StatusAdapter> records){
+    public AdapterElementosPrincipal(Context context, ArrayList<StatusAdapter> records){
         this.context = context;
         status = records;
     }
@@ -39,7 +39,7 @@ public class MyAdapter extends BaseAdapter {
 
 
     public View getView(int position, View view, ViewGroup parent){
-        View view2 =  LayoutInflater.from(context).inflate(R.layout.listview_custom, null);
+        View view2 =  LayoutInflater.from(context).inflate(R.layout.listview_elementos_principal, null);
 
         TextView name = (TextView) view2.findViewById(R.id.tv_viewholder);
         name.setText(getItem(position).getNombreElemento());

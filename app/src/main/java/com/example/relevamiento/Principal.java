@@ -20,7 +20,7 @@ import com.example.relevamiento.modelos.Elemento;
 import com.example.relevamiento.modelos.Formulario;
 import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.Repositorio;
-import com.example.relevamiento.repositorio.parsers.MyAdapter;
+import com.example.relevamiento.repositorio.parsers.AdapterElementosPrincipal;
 import com.example.relevamiento.repositorio.parsers.StatusAdapter;
 
 import java.io.File;
@@ -93,7 +93,7 @@ public class Principal extends AppCompatActivity {
             listaStatus.add(new StatusAdapter (e.getNombre(), correctitud ));
         }
 
-        MyAdapter adapter = new MyAdapter(this, listaStatus);
+        AdapterElementosPrincipal adapter = new AdapterElementosPrincipal(this, listaStatus);
         lv_elementos.setAdapter(adapter);
         //actualizar avance
         if (listaElementos.size()>0) {

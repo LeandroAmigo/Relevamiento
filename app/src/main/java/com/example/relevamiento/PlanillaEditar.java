@@ -93,7 +93,7 @@ public class PlanillaEditar extends AppCompatActivity {
             if (formId != 0) //tiene formulario asociado
                 nombreElementos.add(e.getNombre());
         }
-        adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
+        adapter = new ArrayAdapter<String>(this, R.layout.tv_listadiagramas_crearcargar, nombreElementos);
         lv_todosElementos.setAdapter(adapter);
 
         lv_todosElementos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -138,7 +138,7 @@ public class PlanillaEditar extends AppCompatActivity {
             elem_seleccionados.add(s);
             // los elimina de la lista inicial de elementos
             nombreElementos.remove(s);
-            adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, nombreElementos);
+            adapter = new ArrayAdapter(this, R.layout.tv_listadiagramas_crearcargar, nombreElementos);
             lv_todosElementos.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }

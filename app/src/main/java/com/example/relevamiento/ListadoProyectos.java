@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.relevamiento.repositorio.Repositorio;
 
@@ -72,6 +73,7 @@ public class ListadoProyectos extends AppCompatActivity {
         // check if the request code is same as what is passed  here it is 2
         if(requestCode==2)
         {
+            Toast.makeText(this, "Datos exportados exitosamente", Toast.LENGTH_SHORT).show();
             //do the things u wanted
         }
     }

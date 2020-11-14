@@ -5,7 +5,6 @@ import androidx.appcompat.widget.SearchView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -106,7 +105,7 @@ public class Planilla extends AppCompatActivity {
                 nombreElementos.add(e.getNombre());
             }
         }
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, nombreElementos);
+        adapter = new ArrayAdapter<>(this, R.layout.tv_listadiagramas_crearcargar, nombreElementos);
         adapter.setNotifyOnChange(true);
         lv_todosElementos.setAdapter(adapter);
 
@@ -141,7 +140,7 @@ public class Planilla extends AppCompatActivity {
                 repo.agregarNuevoElemento(proyId, elem);
             }else{ // si existia se elimina de la lista donde fue seleccionado y actualiza la vista
                 nombreElementos.remove(elem);
-                adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, nombreElementos);
+                adapter = new ArrayAdapter(this, R.layout.tv_listadiagramas_crearcargar, nombreElementos);
                 lv_todosElementos.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

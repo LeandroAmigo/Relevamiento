@@ -12,18 +12,12 @@ public class Elemento {
         this.formId = formId;
     }
 
-
     public String getNombre() {
         return nombre;
     }
     public int getId() {
         return id;
     }
-
-    public void setFormId(int formId) {
-        this.formId = formId;
-    }
-
     public int getFormId() {
         return formId;
     }

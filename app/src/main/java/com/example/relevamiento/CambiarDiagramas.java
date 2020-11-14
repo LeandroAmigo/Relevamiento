@@ -11,7 +11,7 @@ import android.widget.GridView;
 
 import com.example.relevamiento.modelos.Proyecto;
 import com.example.relevamiento.repositorio.Repositorio;
-import com.example.relevamiento.repositorio.parsers.CustomAdapter;
+import com.example.relevamiento.repositorio.parsers.AdapterSeleccionDiagramas;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,7 @@ public class CambiarDiagramas extends AppCompatActivity {
 
     private void mostrarDiagramas() {
         final ArrayList<String> diagramas = proyectoSeleccionado.getDiagramas();
-        CustomAdapter customAdapter = new CustomAdapter(this, diagramas);
+        AdapterSeleccionDiagramas customAdapter = new AdapterSeleccionDiagramas(this, diagramas);
         gridView.setAdapter(customAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

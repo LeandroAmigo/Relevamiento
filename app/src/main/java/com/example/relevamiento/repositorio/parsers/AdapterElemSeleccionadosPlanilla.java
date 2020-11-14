@@ -48,7 +48,7 @@ public class AdapterElemSeleccionadosPlanilla extends BaseAdapter {
         // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.row, null);
+            vi = inflater.inflate(R.layout.tv_elemrelevados, null);
         TextView text = (TextView) vi.findViewById(R.id.text);
         text.setText(data.get(position).toString());
         return vi;

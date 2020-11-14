@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:textSize="24sp"
     android:padding="10sp"
-    android:textColor="#3A7EC3"
+    android:textColor="@color/colorPrimary"
     android:dropDownHeight="300dp"
     xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.example.relevamiento.modelos.Elemento;
@@ -38,6 +39,7 @@ public class Exportar2 extends AppCompatActivity {
     private int proyId;
     private ImageView iv_diagrama;
     private Button button1;
+    private TextView tv_infoExportar;
 
 
     @Override
@@ -48,6 +50,7 @@ public class Exportar2 extends AppCompatActivity {
         repo = new Repositorio(this);
         iv_diagrama = findViewById(R.id.iv_diagramaExp);
         button1=(Button)findViewById(R.id.button1);
+        tv_infoExportar= findViewById(R.id.tv_infoExportar);
 
         nombreProyecto = getIntent().getStringExtra(NOMBRE_PROYECTO);
         exportarProyecto(nombreProyecto);
@@ -56,7 +59,6 @@ public class Exportar2 extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String message="Datos Exportados ";
                 Intent intent=new Intent();
                 setResult(2,intent);
                 finish();//finishing activity
@@ -78,6 +80,14 @@ public class Exportar2 extends AppCompatActivity {
 
         exportarElementos(proyId);
         exportarFormularios(proyId);
+
+        controlarVista();
+    }
+
+    private void controlarVista() {
+        button1.setEnabled(true);
+        tv_infoExportar.setText("Se exportaron los datos exitosamente");
+
     }
 
     private void crearCarpetaInicial() {
@@ -102,7 +112,7 @@ public class Exportar2 extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) iv_diagrama.getDrawable();
         Bitmap aux = drawable.getBitmap();
         Bitmap mutableBitMap = aux.copy(Bitmap.Config.ARGB_8888, true);
-        exportarDiagrama(mutableBitMap, pathDiagrama);
+        exportarDiagrama(mutableBitMap, pathDiagrama); //genera una imagen a partir del bitmap
 
     }
 
@@ -166,7 +176,7 @@ public class Exportar2 extends AppCompatActivity {
             fileWriter.append(";");
             fileWriter.append("Correctitud");
             fileWriter.append(";");
-            fileWriter.append("# Formulario");
+            fileWriter.append("Num de Formulario");
             fileWriter.append("\n");
 
             for (Elemento e : listaElementos) {
@@ -190,7 +200,6 @@ public class Exportar2 extends AppCompatActivity {
                 fileWriter.append(""+formId);
                 fileWriter.append("\n");
 
-                Log.e("ENTER", "dsfas");
             }
             fileWriter.close();
         } catch (Exception exc) { }
@@ -209,13 +218,13 @@ public class Exportar2 extends AppCompatActivity {
         try {
             FileWriter fileWriter = new FileWriter(archivoAgenda);
             // encabezado tabla
-            fileWriter.append("# Formulario");
+            fileWriter.append("Num de Formulario");
             fileWriter.append(";");
             fileWriter.append("Diagrama");
             fileWriter.append(";");
-            fileWriter.append("Fotos (_,_)");
+            fileWriter.append("Fotos");
             fileWriter.append(";");
-            fileWriter.append("Audios (_,_)");
+            fileWriter.append("Audios");
             fileWriter.append("\n");
 
             for (Integer id: todosIdForm) {
