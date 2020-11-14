@@ -18,6 +18,7 @@
             android:layout_centerHorizontal="true"
             android:text="Diagrama"
             android:textSize="25dp"
+            android:textColor="@color/textColor"
             android:textStyle="normal|italic" />
 
         <ImageView
